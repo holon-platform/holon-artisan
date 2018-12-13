@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.holon-platform</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.1.1</version>
+	</parent>
+
+	<groupId>com.holon-platform.artisan</groupId>
+	<artifactId>holon-artisan-root</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<packaging>pom</packaging>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Holon Artisan root</description>
+
+	<url>https://holon-platform.com</url>
+
+	<organization>
+		<name>The Holon Platform</name>
+		<url>https://holon-platform.com</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Holon development team</name>
+			<email>dev@holon-platform.com</email>
+			<organization>The Holon Platform</organization>
+			<organizationUrl>https://holon-platform.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<url>https://github.com/holon-platform/holon-artisan/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:git:https://github.com/holon-platform/holon-artisan.git</connection>
+		<url>https://github.com/holon-platform/holon-artisan</url>
+		<developerConnection>scm:git:https://github.com/holon-platform/holon-artisan.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Holon Vaadin Flow -->
+		<holon.vaadin.flow.version>5.2.0-beta1-SNAPSHOT</holon.vaadin.flow.version>
+
+	</properties>
+
+	<modules>
+		<module>vaadin-flow-components</module>
+	</modules>
+
+	<dependencies>
+		<!-- JUnit 5 tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Logback for tests -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Aggregate javadocs -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>aggregate-javadocs</id>
+						<phase>package</phase>
+						<inherited>false</inherited>
+						<goals>
+							<goal>aggregate-jar</goal>
+						</goals>
+						<configuration>
+							<show>public</show>
+							<excludePackageNames>*.internal.*;*.examples.*</excludePackageNames>
+							<quiet>true</quiet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Assembly apidocs -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>apidocs-assembly</id>
+						<phase>package</phase>
+						<inherited>false</inherited>
+						<configuration>
+							<appendAssemblyId>true</appendAssemblyId>
+							<descriptorRefs>
+								<descriptorRef>apidocs</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
