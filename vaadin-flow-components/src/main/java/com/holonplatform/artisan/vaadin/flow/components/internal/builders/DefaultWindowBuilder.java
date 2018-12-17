@@ -44,6 +44,9 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	private final DefaultHasStyleConfigurator styleConfigurator;
 	private final DefaultHasSizeConfigurator sizeConfigurator;
 
+	/**
+	 * Default constructor
+	 */
 	public DefaultWindowBuilder() {
 		super();
 		this.instance = new DefaultWindow();
