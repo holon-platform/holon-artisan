@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.holonplatform.artisan.vaadin.flow.components.Window;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -48,17 +49,20 @@ public class DefaultWindow extends Dialog implements Window {
 		addThemeVariants(WindowVariant.SCROLLABLE);
 
 		header = new HorizontalLayout();
+		header.addClassName("h-window-header");
 		header.setWidth("100%");
 		header.setJustifyContentMode(JustifyContentMode.BETWEEN);
 		header.setDefaultVerticalComponentAlignment(Alignment.CENTER);
 
 		// add title
 		title = new Span("");
+		title.addClassName("h-window-title");
 		header.add(title);
 		header.setFlexGrow(1, title);
 
 		// add maximize/minimize/close buttons
 		buttons = new HorizontalLayout();
+		buttons.addClassName("h-window-buttons");
 		buttons.setSpacing(false);
 		header.add(buttons);
 
@@ -91,17 +95,19 @@ public class DefaultWindow extends Dialog implements Window {
 
 		// add scrollable content Div
 		content = new Div();
+		content.addClassName("h-window-content");
 		content.setSizeFull();
 		content.getStyle().set("overflow", "auto");
 		add(content);
 
 		// add footer
 		footer = new HorizontalLayout();
+		footer.addClassName("h-window-footer");
 		footer.setWidth("100%");
 		footer.setJustifyContentMode(JustifyContentMode.END);
 		add(footer);
 
-		title.setVisible(false);
+//		title.setVisible(false);
 		buttons.setVisible(false);
 		btnMaximize.setVisible(false);
 		btnMinimize.setVisible(false);
@@ -120,7 +126,7 @@ public class DefaultWindow extends Dialog implements Window {
 
 	/**
 	 * Gets the title text.
-	 * @return Optional title text
+	 * @return Optional Optional window title value
 	 */
 	public Optional<String> getTitle() {
 		String titleText = title.getText();
@@ -132,7 +138,7 @@ public class DefaultWindow extends Dialog implements Window {
 
 	/**
 	 * Sets window title
-	 * @param windowTitle
+	 * @param windowTitle Window title value
 	 */
 	public void setTitle(String windowTitle) {
 		title.setText(windowTitle);
@@ -151,7 +157,8 @@ public class DefaultWindow extends Dialog implements Window {
 	 * Makes the window explicitly closable
 	 * <p>
 	 * This method add a close button on window header
-	 * @param closable
+	 * </p>
+	 * @param closable <code>true</code> value for closable window, <code>false</code> otherwise
 	 */
 	public void setClosable(boolean closable) {
 		buttons.setVisible(closable);
@@ -170,7 +177,8 @@ public class DefaultWindow extends Dialog implements Window {
 	 * Makes the window resizable
 	 * <p>
 	 * This method add classic buttons to maximize and minimize window
-	 * @param resizable
+	 * </p>
+	 * @param resizable <code>true</code> value for resizable window, <code>false</code> otherwise
 	 */
 	public void setResizable(boolean resizable) {
 		buttons.setVisible(resizable);
@@ -182,16 +190,20 @@ public class DefaultWindow extends Dialog implements Window {
 	 * Adds components to a scrollable div
 	 * <p>
 	 * This method set a list of components to a scrollable Div
-	 * @param components Components to add to current window
+	 * </p>
+	 * @param component Component to set as Window content
 	 */
-	public void setContent(Component... components) {
-		content.add(components);
+	public void setContent(Component component) {
+		ObjectUtils.argumentNotNull(component, "Window content must be not null");
+		content.removeAll();
+		content.add(component);
 	}
 
 	/**
 	 * Adds component to window header
 	 * <p>
 	 * This method set a list of components to a header
+	 * </p>
 	 * @param component Component to add to header
 	 */
 	public void addHeaderComponent(Component component) {
@@ -203,6 +215,7 @@ public class DefaultWindow extends Dialog implements Window {
 	 * Adds component to footer
 	 * <p>
 	 * This method set a list of components to a footer
+	 * </p>
 	 * @param component Component to add to footer
 	 */
 	public void addFooterComponent(Component component) {

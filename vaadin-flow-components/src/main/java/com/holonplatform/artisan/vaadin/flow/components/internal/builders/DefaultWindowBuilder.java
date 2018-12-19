@@ -149,6 +149,21 @@ public class DefaultWindowBuilder implements WindowBuilder {
 		return this;
 	}
 
+	@Override
+	public WindowBuilder fullSize() {
+		return withThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT);
+	}
+
+	@Override
+	public WindowBuilder fullWidth() {
+		return withThemeVariants(WindowVariant.FULL_WIDTH);
+	}
+
+	@Override
+	public WindowBuilder fullHeight() {
+		return withThemeVariants(WindowVariant.FULL_HEIGHT);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.String[])
@@ -187,7 +202,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 * Component)
 	 */
 	@Override
-	public WindowBuilder content(Component... content) {
+	public WindowBuilder content(Component content) {
 		ObjectUtils.argumentNotNull(content, "Window content must be not null");
 		this.instance.setContent(content);
 		return this;
@@ -222,6 +237,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 */
 	@Override
 	public WindowBuilder withHeaderComponent(Component component) {
+		ObjectUtils.argumentNotNull(component, "Window header content must be not null");
 		this.instance.addHeaderComponent(component);
 		return this;
 	}
@@ -233,6 +249,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 */
 	@Override
 	public WindowBuilder withFooterComponent(Component component) {
+		ObjectUtils.argumentNotNull(component, "Window footer content must be not null");
 		this.instance.addFooterComponent(component);
 		return this;
 	}
@@ -268,34 +285,12 @@ public class DefaultWindowBuilder implements WindowBuilder {
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder#removeThemeVariants(com.holonplatform.
-	 * artisan.vaadin.flow.components.internal.WindowVariant[])
-	 */
-	@Override
-	public WindowBuilder removeThemeVariants(WindowVariant... variants) {
-		this.instance.removeThemeVariants(variants);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder#withThemeVariants(com.holonplatform.
 	 * artisan.vaadin.flow.components.internal.WindowVariant[])
 	 */
 	@Override
 	public WindowBuilder withThemeVariants(WindowVariant... variants) {
 		this.instance.addThemeVariants(variants);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder#fullsize()
-	 */
-	@Override
-	public WindowBuilder fullsize() {
-		this.instance.addThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT);
 		return this;
 	}
 

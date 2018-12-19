@@ -22,7 +22,7 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 
 	/**
 	 * Sets the {@link Localizable} window title.
-	 * @param title The {@link Localizable} window title
+	 * @param title The {@link Localizable} window title (not null)
 	 * @return this
 	 * @see LocalizationProvider
 	 */
@@ -30,7 +30,7 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 
 	/**
 	 * Sets the window title.
-	 * @param title The window title to set
+	 * @param title The window title to set (not null)
 	 * @return this
 	 */
 	default WindowBuilder title(String title) {
@@ -40,7 +40,7 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 	/**
 	 * Sets the localizable window title.
 	 * @param defaultTitle Default window title if no translation is available for given <code>messageCode</code> for
-	 *        current {@link Locale}
+	 *        current {@link Locale} (not null)
 	 * @param messageCode Window title translation message key
 	 * @param arguments Optional window title translation arguments
 	 * @return this
@@ -56,7 +56,7 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 	 * @param content The content component (not null)
 	 * @return this
 	 */
-	WindowBuilder content(Component... content);
+	WindowBuilder content(Component content);
 
 	/**
 	 * Sets whether window is closable.
@@ -81,9 +81,10 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 	/**
 	 * Adds component to window header
 	 * <p>
-	 * Component is added between window title and close/resize buttons
+	 * Component is added at the end (right alignment) of the header, between window title (if present) and close/resize
+	 * buttons (if present)
 	 * </p>
-	 * @param component The component to add to window header
+	 * @param component The component to add to window header (not null)
 	 * @return this
 	 */
 	WindowBuilder withHeaderComponent(Component component);
@@ -91,9 +92,9 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 	/**
 	 * Adds component to window footer
 	 * <p>
-	 * By default component is added to the end of the footer through {@link JustifyContentMode#END}
+	 * By default component is added at the end of the footer through {@link JustifyContentMode#END}
 	 * </p>
-	 * @param component The component to add to window footer
+	 * @param component The component to add to window footer (not null)
 	 * @return this
 	 */
 	WindowBuilder withFooterComponent(Component component);
@@ -126,19 +127,6 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 	 * @return this
 	 */
 	WindowBuilder withThemeVariants(WindowVariant... variants);
-
-	/**
-	 * Removes theme variants from the component.
-	 * @param variants theme variants to remove
-	 * @return this
-	 */
-	WindowBuilder removeThemeVariants(WindowVariant... variants);
-	
-	/**
-	 * Sets width and heigth to 100% 
-	 * @return this
-	 */
-	WindowBuilder fullsize();
 
 	/**
 	 * Build the {@link Window}.
