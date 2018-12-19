@@ -289,4 +289,14 @@ public class DefaultWindowBuilder implements WindowBuilder {
 		return this;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder#fullsize()
+	 */
+	@Override
+	public WindowBuilder fullsize() {
+		this.instance.addThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT);
+		return this;
+	}
+
 }

@@ -109,13 +109,17 @@ public class DefaultWindow extends Dialog implements Window {
 		footer.setVisible(false);
 	}
 
+	/**
+	 * Gets current window
+	 * @return Component
+	 */
 	@Override
 	public Component getComponent() {
 		return this;
 	}
 
 	/**
-	 * Get the title text.
+	 * Gets the title text.
 	 * @return Optional title text
 	 */
 	public Optional<String> getTitle() {
@@ -126,6 +130,10 @@ public class DefaultWindow extends Dialog implements Window {
 		return Optional.empty();
 	}
 
+	/**
+	 * Sets window title
+	 * @param windowTitle
+	 */
 	public void setTitle(String windowTitle) {
 		title.setText(windowTitle);
 		title.setVisible(true);
@@ -140,9 +148,10 @@ public class DefaultWindow extends Dialog implements Window {
 	}
 
 	/**
-	 * Make the window explicitly closable
+	 * Makes the window explicitly closable
 	 * <p>
 	 * This method add a close button on window header
+	 * @param closable
 	 */
 	public void setClosable(boolean closable) {
 		buttons.setVisible(closable);
@@ -150,7 +159,7 @@ public class DefaultWindow extends Dialog implements Window {
 	}
 
 	/**
-	 * Check if window is resizable
+	 * Checks if window is resizable
 	 * @return true if maximize/minimize buttons are visible
 	 */
 	public boolean isResizable() {
@@ -158,9 +167,10 @@ public class DefaultWindow extends Dialog implements Window {
 	}
 
 	/**
-	 * Make the window resizable
+	 * Makes the window resizable
 	 * <p>
 	 * This method add classic buttons to maximize and minimize window
+	 * @param resizable
 	 */
 	public void setResizable(boolean resizable) {
 		buttons.setVisible(resizable);
@@ -169,18 +179,20 @@ public class DefaultWindow extends Dialog implements Window {
 	}
 
 	/**
-	 * Set components to scrollable div
+	 * Adds components to a scrollable div
 	 * <p>
 	 * This method set a list of components to a scrollable Div
+	 * @param components Components to add to current window
 	 */
 	public void setContent(Component... components) {
 		content.add(components);
 	}
 
 	/**
-	 * Set components to header
+	 * Adds component to window header
 	 * <p>
 	 * This method set a list of components to a header
+	 * @param component Component to add to header
 	 */
 	public void addHeaderComponent(Component component) {
 		header.setVisible(true);
@@ -188,9 +200,10 @@ public class DefaultWindow extends Dialog implements Window {
 	}
 
 	/**
-	 * Set components to footer
+	 * Adds component to footer
 	 * <p>
 	 * This method set a list of components to a footer
+	 * @param component Component to add to footer
 	 */
 	public void addFooterComponent(Component component) {
 		footer.setVisible(true);

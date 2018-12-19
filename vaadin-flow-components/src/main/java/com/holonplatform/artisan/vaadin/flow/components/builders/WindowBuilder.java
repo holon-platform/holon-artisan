@@ -123,14 +123,22 @@ public interface WindowBuilder extends ComponentConfigurator<WindowBuilder>, Has
 	/**
 	 * Adds theme variants to the component.
 	 * @param variants theme variants to add
+	 * @return this
 	 */
 	WindowBuilder withThemeVariants(WindowVariant... variants);
 
 	/**
 	 * Removes theme variants from the component.
 	 * @param variants theme variants to remove
+	 * @return this
 	 */
 	WindowBuilder removeThemeVariants(WindowVariant... variants);
+	
+	/**
+	 * Sets width and heigth to 100% 
+	 * @return this
+	 */
+	WindowBuilder fullsize();
 
 	/**
 	 * Build the {@link Window}.
