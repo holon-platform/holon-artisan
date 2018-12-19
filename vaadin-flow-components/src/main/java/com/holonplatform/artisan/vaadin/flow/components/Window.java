@@ -25,7 +25,7 @@ public interface Window extends HasStyle, HasSize, HasComponent, HasTheme {
 	void close();
 
 	/**
-	 * Get a builder to create {@link Window} instances.
+	 * Gets a builder to create {@link Window} instances.
 	 * @return A new {@link WindowBuilder}
 	 */
 	static WindowBuilder builder() {
