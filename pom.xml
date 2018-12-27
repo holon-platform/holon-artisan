@@ -56,10 +56,12 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<!-- Holon Vaadin Flow -->
 		<holon.vaadin.flow.version>5.2.0-beta1-SNAPSHOT</holon.vaadin.flow.version>
-
+		<!-- Vaadin Flow -->
+		<vaadin.version>12.0.3</vaadin.version>
+		<!-- Spring Boot Version -->
+		<spring.boot.version>2.1.1.RELEASE</spring.boot.version>
 	</properties>
 
 	<modules>
@@ -83,7 +85,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<scope>test</scope>
+			<!-- <scope>test</scope> -->
 		</dependency>
 	</dependencies>
 
