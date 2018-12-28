@@ -16,7 +16,11 @@
 package com.holonplatform.artisan.demo.window;
 
 import com.holonplatform.artisan.demo.root.Menu;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -26,6 +30,18 @@ public class HomePage extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
 
 	public HomePage() {
-		add(new H1("Holon Artisan Demo"));
+		super();
+		add(new H1("Welcome to Holon Artisan Demo"));
+
+		Label lblText = new Label();
+		lblText.getElement().setProperty("innerHTML",
+				"Welcome to the <b>Artisan Demo Project</b> of the Holon Platform.</br> Here you can find all custom components developed by our team "
+						+ "to give you a set of new useful objects to improve your web apps...");
+		add(lblText);
+		add(new H3("Check out platform website:"));
+		add(new Anchor("https://holon-platform.com", "https://holon-platform.com"));
+		add(new H5("Holon Platform on GitHub:"));
+		add(new Anchor("https://github.com/holon-platform", "https://github.com/holon-platform"));
+
 	}
 }
