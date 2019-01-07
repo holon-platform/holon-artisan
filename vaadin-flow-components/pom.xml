@@ -18,14 +18,11 @@
 	<url>https://holon-platform.com</url>
 
 	<dependencies>
-
-		<!-- Holon vaadin flow -->
+		<!-- Holon Vaadin flow -->
 		<dependency>
 			<groupId>com.holon-platform.vaadin</groupId>
 			<artifactId>holon-vaadin-flow</artifactId>
-			<version>${holon.vaadin.flow.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

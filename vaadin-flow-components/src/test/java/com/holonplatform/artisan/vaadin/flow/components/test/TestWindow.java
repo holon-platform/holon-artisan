@@ -61,7 +61,7 @@ public class TestWindow {
 		assertTrue(wnd.getTitle().isPresent());
 		assertEquals("localizableTitle", wnd.getTitle().get());
 
-		wnd = (DefaultWindow) Window.builder().title("defaultTitle", null, null).build();
+		wnd = (DefaultWindow) Window.builder().title("defaultTitle").build();
 		assertTrue(wnd.getTitle().isPresent());
 		assertEquals("defaultTitle", wnd.getTitle().get());
 

@@ -119,7 +119,7 @@ public class WindowPage extends SplitLayout {
 			FormLayout formLayout = new FormLayout(new TextField("Name"), new TextField("Surname"),
 					new DatePicker("Birthdate:"), new Checkbox("Enabled"));
 
-			Window.builder().title("Form layout", "holon-artisan-window-form-test", null).content(formLayout)
+			Window.builder().title("Form layout", "holon-artisan-window-form-test").content(formLayout)
 					.withFooterComponent(new Button("Save")).build().open();
 			setCodeLabel("Window.builder().title(\"Form layout\", \"holon-artisan-window-form-test\", null)"
 					+ "<b>.content(formLayout)</b>.withFooterComponent(new Button(\"Save\")).build().open();");

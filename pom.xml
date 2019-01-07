@@ -56,18 +56,28 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Holon Vaadin Flow -->
-		<holon.vaadin.flow.version>5.2.0-beta1-SNAPSHOT</holon.vaadin.flow.version>
-		<!-- Vaadin Flow -->
-		<vaadin.version>12.0.3</vaadin.version>
-		<!-- Spring Boot Version -->
-		<spring.boot.version>2.1.1.RELEASE</spring.boot.version>
+
+		<!-- Holon Platform -->
+		<holon.platform.version>5.2.0-rc2</holon.platform.version>
 	</properties>
 
 	<modules>
 		<module>vaadin-flow-components</module>
 		<module>demo</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Holon Platform BOM -->
+			<dependency>
+				<groupId>com.holon-platform</groupId>
+				<artifactId>bom</artifactId>
+				<version>${holon.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- JUnit 5 tests -->
@@ -85,7 +95,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<!-- <scope>test</scope> -->
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
