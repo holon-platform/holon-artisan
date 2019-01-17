@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.holon-platform.artisan</groupId>
+		<artifactId>holon-artisan-root</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>holon-artisan-vaadin-flow-export</artifactId>
+	<packaging>jar</packaging>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Holon Artisan Vaadin Flow export services and components</description>
+
+	<url>https://holon-platform.com</url>
+
+	<dependencies>
+		<!-- Holon Vaadin flow -->
+		<dependency>
+			<groupId>com.holon-platform.vaadin</groupId>
+			<artifactId>holon-vaadin-flow</artifactId>
+		</dependency>
+		<!-- Apache POI -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- JDK9 Automatic-Module-Name -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Automatic-Module-Name>com.holonplatform.artisan.vaadin.flow.export</Automatic-Module-Name>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

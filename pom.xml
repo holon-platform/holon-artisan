@@ -55,14 +55,20 @@
 	</scm>
 
 	<properties>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Holon Platform -->
-		<holon.platform.version>5.2.0-rc2</holon.platform.version>
+		<holon.platform.version>5.2.1</holon.platform.version>
+
+		<!-- Apache POI -->
+		<poi.version>4.0.1</poi.version>
+
 	</properties>
 
 	<modules>
 		<module>vaadin-flow-components</module>
+		<module>vaadin-flow-export</module>
 		<module>demo</module>
 	</modules>
 
@@ -75,6 +81,13 @@
 				<version>${holon.platform.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<!-- Apache POI -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
