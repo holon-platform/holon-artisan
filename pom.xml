@@ -67,6 +67,7 @@
 	</properties>
 
 	<modules>
+		<module>core</module>
 		<module>vaadin-flow-components</module>
 		<module>vaadin-flow-export</module>
 		<module>demo</module>
