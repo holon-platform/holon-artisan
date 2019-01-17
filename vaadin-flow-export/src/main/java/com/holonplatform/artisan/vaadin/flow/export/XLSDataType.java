@@ -29,6 +29,8 @@ public enum XLSDataType {
 	NUMERIC,
 
 	DATE,
+	
+	ENUM,
 
 	FORMULA
 
