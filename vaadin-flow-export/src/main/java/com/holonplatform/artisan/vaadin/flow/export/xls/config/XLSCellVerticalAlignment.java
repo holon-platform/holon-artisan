@@ -2,7 +2,12 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 
-public enum CellVerticalAlignment {
+/**
+ * XLS cell vertical alignment.
+ * 
+ * @since 1.0.0
+ */
+public enum XLSCellVerticalAlignment {
 
 	@Caption(value = "Default", messageCode = "holon.artisan.export.xls.cell.vertical.alignemnt.default")
 	DEFAULT,

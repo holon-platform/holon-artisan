@@ -2,7 +2,12 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 
-public enum CellBorder {
+/**
+ * XLS cell border style.
+ * 
+ * @since 1.0.0
+ */
+public enum XLSCellBorder {
 
 	@Caption(value = "None", messageCode = "holon.artisan.export.xls.cell.border.none")
 	NONE,

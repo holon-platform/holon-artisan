@@ -2,6 +2,11 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 
+/**
+ * XLS colors.
+ * 
+ * @since 1.0.0
+ */
 public enum XLSColor {
 
 	@Caption(value = "Automatic", messageCode = "holon.artisan.export.xls.color.automatic")

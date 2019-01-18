@@ -2,7 +2,12 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 
-public enum CellAlignment {
+/**
+ * XLS cell horizontal alignment.
+ * 
+ * @since 1.0.0
+ */
+public enum XLSCellAlignment {
 
 	/**
 	 * Default.

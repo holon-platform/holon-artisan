@@ -27,6 +27,7 @@ import javax.annotation.Priority;
 
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration;
 import com.holonplatform.core.internal.utils.TypeUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.temporal.TemporalType;
@@ -44,12 +45,12 @@ public class DefaultPropertyXLSValueProvider<T> implements PropertyXLSValueProvi
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.export.PropertyXLSValueProvider#provide(com.holonplatform.core.property.
-	 * Property, java.lang.Object)
+	 * com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider#provide(com.holonplatform.core.property
+	 * .Property, com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration, java.lang.Object)
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public XLSValue<?> provide(Property<T> property, T value) {
+	public XLSValue<?> provide(Property<T> property, XLSPropertyConfiguration configuration, T value) {
 		// check type
 		if (TypeUtils.isBoolean(property.getType())) {
 			return XLSValue.booleanValue((Boolean) value);

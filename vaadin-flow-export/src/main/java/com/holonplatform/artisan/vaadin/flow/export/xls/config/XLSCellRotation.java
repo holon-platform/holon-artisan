@@ -2,7 +2,12 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 
-public enum CellRotation {
+/**
+ * XLS cell rotation.
+ * 
+ * @since 1.0.0
+ */
+public enum XLSCellRotation {
 
 	@Caption(value = "None", messageCode = "holon.artisan.export.xls.cell.rotation.none")
 	NONE,
