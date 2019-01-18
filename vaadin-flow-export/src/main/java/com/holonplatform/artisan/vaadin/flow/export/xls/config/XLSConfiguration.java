@@ -56,12 +56,6 @@ public interface XLSConfiguration extends Serializable {
 	XLSFileVersion getFileVersion();
 
 	/**
-	 * Get the export file name.
-	 * @return The export file name
-	 */
-	Optional<String> getFileName();
-
-	/**
 	 * Get the export sheet name.
 	 * @return The export sheet name
 	 */
@@ -103,5 +97,11 @@ public interface XLSConfiguration extends Serializable {
 	 * @return Whether the cell should be auto-sized by default
 	 */
 	boolean isShrinkToFitByDefault();
+
+	/**
+	 * Get the default header cells configuration.
+	 * @return the default header cells configuration
+	 */
+	XLSCellConfiguration getDefaultHeaderConfiguration();
 
 }
