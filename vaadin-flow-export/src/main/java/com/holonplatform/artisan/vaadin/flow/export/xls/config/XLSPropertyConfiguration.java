@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 import com.holonplatform.artisan.core.internal.DecodableMode;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSPropertyConfiguration;
 import com.holonplatform.core.i18n.Localizable;
 
 /**
@@ -32,7 +33,7 @@ public interface XLSPropertyConfiguration extends Serializable {
 	 * Get the header localizable text.
 	 * @return the header localizable text
 	 */
-	Localizable getHeader();
+	Optional<Localizable> getHeader();
 
 	/**
 	 * Get the header cell configuration.
@@ -62,6 +63,84 @@ public interface XLSPropertyConfiguration extends Serializable {
 	 * Get the {@link DecodableMode} to use to decode decodable data types.
 	 * @return The {@link DecodableMode}
 	 */
-	DecodableMode getDecodableMode();
+	Optional<DecodableMode> getDecodableMode();
+
+	/**
+	 * Clone this configuration.
+	 * @return Cloned configuration builder
+	 */
+	Builder cloneConfiguration();
+
+	/**
+	 * Get a builder to create a new {@link XLSPropertyConfiguration}.
+	 * @return A {@link XLSPropertyConfiguration} builder
+	 */
+	static Builder builder() {
+		return new DefaultXLSPropertyConfiguration.DefaultBuilder();
+	}
+
+	/**
+	 * {@link XLSPropertyConfiguration} builder.
+	 */
+	public interface Builder {
+
+		/**
+		 * Set the header text.
+		 * @param header The header text
+		 * @return this
+		 */
+		Builder header(Localizable header);
+
+		/**
+		 * Set the header text.
+		 * @param header The header text
+		 * @return this
+		 */
+		default Builder header(String header) {
+			return header(Localizable.builder().message(header).build());
+		}
+
+		/**
+		 * Set the header cell configuration.
+		 * @param headerConfiguration The header cell configuration
+		 * @return this
+		 */
+		Builder headerConfiguration(XLSCellConfiguration headerConfiguration);
+
+		/**
+		 * Set the cell configuration.
+		 * @param cellConfiguration The cell configuration
+		 * @return this
+		 */
+		Builder cellConfiguration(XLSCellConfiguration cellConfiguration);
+
+		/**
+		 * Set whether to use the group separator for numeric data types.
+		 * @param numberGroupSeparator The group separator mode
+		 * @return this
+		 */
+		Builder numberGroupSeparator(XLSNumberGroupSeparator numberGroupSeparator);
+
+		/**
+		 * Set the decimal positions to display for numeric data types.
+		 * @param numberDecimals the decimal positions
+		 * @return this
+		 */
+		Builder numberDecimals(Integer numberDecimals);
+
+		/**
+		 * Set the decodable mode for decodable data types.
+		 * @param decodableMode The decodable mode
+		 * @return this
+		 */
+		Builder decodableMode(DecodableMode decodableMode);
+
+		/**
+		 * Build the {@link XLSPropertyConfiguration}.
+		 * @return The {@link XLSPropertyConfiguration} instance
+		 */
+		XLSPropertyConfiguration build();
+
+	}
 
 }

@@ -313,6 +313,36 @@ public class DefaultXLSCellConfiguration implements XLSCellConfiguration {
 		this.borderLeftColor = (borderLeftColor != null) ? borderLeftColor : XLSColor.AUTOMATIC;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration#cloneConfiguration()
+	 */
+	@Override
+	public Builder cloneConfiguration() {
+		final Builder builder = XLSCellConfiguration.builder();
+		builder.bold(isBold());
+		builder.italic(isItalic());
+		builder.underline(isUnderline());
+		builder.strikeOut(isStrikeOut());
+		builder.wrap(isWrap());
+		builder.shrinkToFit(isShrinkToFit());
+		builder.fontSize(getFontSize());
+		builder.fontColor(getFontColor());
+		builder.backgroundColor(getBackgroundColor());
+		builder.alignment(getAlignment());
+		builder.verticalAlignment(getVerticalAlignment());
+		builder.rotation(getRotation());
+		builder.borderTop(getBorderTop());
+		builder.borderRight(getBorderRight());
+		builder.borderBottom(getBorderBottom());
+		builder.borderLeft(getBorderLeft());
+		builder.borderTopColor(getBorderTopColor());
+		builder.borderRightColor(getBorderRightColor());
+		builder.borderBottomColor(getBorderBottomColor());
+		builder.borderLeftColor(getBorderLeftColor());
+		return builder;
+	}
+
 	public static class DefaultBuilder implements Builder {
 
 		private final DefaultXLSCellConfiguration instance = new DefaultXLSCellConfiguration();

@@ -148,6 +148,12 @@ public interface XLSCellConfiguration extends Serializable {
 	XLSColor getBorderLeftColor();
 
 	/**
+	 * Clone this configuration.
+	 * @return Cloned configuration builder
+	 */
+	Builder cloneConfiguration();
+
+	/**
 	 * Get a builder to create a new {@link XLSCellConfiguration}.
 	 * @return A {@link XLSCellConfiguration} builder
 	 */
