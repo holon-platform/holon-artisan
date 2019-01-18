@@ -23,11 +23,16 @@ import com.holonplatform.artisan.vaadin.flow.export.ExportProgressState;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.DefaultXLSExporter;
 import com.holonplatform.core.property.PropertyBox;
 import com.vaadin.flow.data.provider.DataProvider;
 
 /**
- * Export for XLS format.
+ * XLS format data exporter.
+ * <p>
+ * The exporter uses a {@link PropertyBox} item type {@link DataProvider} as data source. The {@link XLSConfiguration}
+ * type can be used to provide the export configuration.
+ * </p>
  *
  * @since 1.0.0
  */
@@ -67,8 +72,7 @@ public interface XLSExporter {
 	 * @return A new {@link XLSExporter} builder
 	 */
 	static Builder builder(Supplier<DataProvider<PropertyBox, ?>> dataSource) {
-		// TODO
-		return null;
+		return new DefaultXLSExporter.DefaultBuilder(dataSource);
 	}
 
 	/**
@@ -78,7 +82,7 @@ public interface XLSExporter {
 
 		/**
 		 * Set the XLS configuration supplier.
-		 * @param configuration The configuration supplier
+		 * @param configuration The configuration supplier (not null)
 		 * @return this
 		 */
 		Builder configuration(Supplier<XLSConfiguration> configuration);

@@ -17,6 +17,8 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import java.io.Serializable;
 
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSCellConfiguration;
+
 /**
  * Configuration of a cell.
  *
@@ -144,5 +146,167 @@ public interface XLSCellConfiguration extends Serializable {
 	 * @return The cell left border color, {@link XLSColor#AUTOMATIC} if not configured
 	 */
 	XLSColor getBorderLeftColor();
+
+	/**
+	 * Get a builder to create a new {@link XLSCellConfiguration}.
+	 * @return A {@link XLSCellConfiguration} builder
+	 */
+	static Builder builder() {
+		return new DefaultXLSCellConfiguration.DefaultBuilder();
+	}
+
+	/**
+	 * XLSCellConfiguration builder.
+	 */
+	public interface Builder {
+
+		/**
+		 * Set the font style as bold.
+		 * @param bold Whether the font is bold
+		 * @return this
+		 */
+		Builder bold(boolean bold);
+
+		/**
+		 * Set the font style as italic.
+		 * @param italic Whether the font is italic
+		 * @return this
+		 */
+		Builder italic(boolean italic);
+
+		/**
+		 * Set the font style as underline.
+		 * @param underline Whether the font is underline
+		 * @return this
+		 */
+		Builder underline(boolean underline);
+
+		/**
+		 * Set the font style as strikeout.
+		 * @param strikeOut Whether the font is strikeout
+		 * @return this
+		 */
+		Builder strikeOut(boolean strikeOut);
+
+		/**
+		 * Set whether the text should be wrapped, i.e. to make all content visible within a cell by displaying it on
+		 * multiple lines.
+		 * @param wrap Whether the text should be wrapped
+		 * @return this
+		 */
+		Builder wrap(boolean wrap);
+
+		/**
+		 * Set whether the cell should be auto-sized.
+		 * @param shrinkToFit Whether the cell should be auto-sized.
+		 * @return this
+		 */
+		Builder shrinkToFit(boolean shrinkToFit);
+
+		/**
+		 * Set the font size.
+		 * @param fontSize The font size
+		 * @return this
+		 */
+		Builder fontSize(XLSFontSize fontSize);
+
+		/**
+		 * Set the font size.
+		 * @param fontColor The font color
+		 * @return this
+		 */
+		Builder fontColor(XLSColor fontColor);
+
+		/**
+		 * Set the cell background color.
+		 * @param backgroundColor The background color
+		 * @return this
+		 */
+		Builder backgroundColor(XLSColor backgroundColor);
+
+		/**
+		 * Set the cell horizontal alignment.
+		 * @param alignment the cell horizontal alignment
+		 * @return this
+		 */
+		Builder alignment(XLSCellAlignment alignment);
+
+		/**
+		 * Set the cell vertical alignment.
+		 * @param verticalAlignment the cell vertical alignment
+		 * @return this
+		 */
+		Builder verticalAlignment(XLSCellVerticalAlignment verticalAlignment);
+
+		/**
+		 * Set the cell text rotation.
+		 * @param rotation the cell text rotation
+		 * @return this
+		 */
+		Builder rotation(XLSCellRotation rotation);
+
+		/**
+		 * Set the cell top border style.
+		 * @param borderTop The top border style
+		 * @return this
+		 */
+		Builder borderTop(XLSCellBorder borderTop);
+
+		/**
+		 * Set the cell right border style.
+		 * @param borderRight The right border style
+		 * @return this
+		 */
+		Builder borderRight(XLSCellBorder borderRight);
+
+		/**
+		 * Set the cell bottom border style.
+		 * @param borderBottom The bottom border style
+		 * @return this
+		 */
+		Builder borderBottom(XLSCellBorder borderBottom);
+
+		/**
+		 * Set the cell left border style.
+		 * @param borderLeft The left border style
+		 * @return this
+		 */
+		Builder borderLeft(XLSCellBorder borderLeft);
+
+		/**
+		 * Set the cell top border color.
+		 * @param borderTopColor The top border color
+		 * @return this
+		 */
+		Builder borderTopColor(XLSColor borderTopColor);
+
+		/**
+		 * Set the cell right border color.
+		 * @param borderRightColor The right border color
+		 * @return this
+		 */
+		Builder borderRightColor(XLSColor borderRightColor);
+
+		/**
+		 * Set the cell bottom border color.
+		 * @param borderBottomColor The bottom border color
+		 * @return this
+		 */
+		Builder borderBottomColor(XLSColor borderBottomColor);
+
+		/**
+		 * Set the cell left border color.
+		 * @param borderLeftColor The left border color
+		 * @return this
+		 */
+		Builder borderLeftColor(XLSColor borderLeftColor);
+
+		/**
+		 * Build the configuration.
+		 * @return The {@link XLSCellConfiguration} instance
+		 */
+		XLSCellConfiguration build();
+
+	}
 
 }
