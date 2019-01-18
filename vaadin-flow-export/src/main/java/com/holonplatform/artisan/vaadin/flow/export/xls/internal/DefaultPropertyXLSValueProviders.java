@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.io.Serializable;
 import java.security.AccessController;
@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.WeakHashMap;
 
-import com.holonplatform.artisan.vaadin.flow.export.PropertyXLSValueProvider;
+import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
 import com.holonplatform.core.internal.Logger;
 import com.holonplatform.core.internal.property.PropertyLogger;
 import com.holonplatform.core.internal.utils.ClassUtils;

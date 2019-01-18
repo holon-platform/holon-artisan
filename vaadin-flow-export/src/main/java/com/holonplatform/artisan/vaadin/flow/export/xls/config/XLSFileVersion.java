@@ -1,8 +1,8 @@
-package com.holonplatform.artisan.vaadin.flow.export.config;
+package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 
-public enum ExcelFileVersion {
+public enum XLSFileVersion {
 
 	@Caption(value = "Excel 95/2003", messageCode = "holon.artisan.export.xls.file.version.xls")
 	XLS("xls"),
@@ -12,7 +12,7 @@ public enum ExcelFileVersion {
 
 	private final String extension;
 
-	private ExcelFileVersion(String extension) {
+	private XLSFileVersion(String extension) {
 		this.extension = extension;
 	}
 

@@ -13,11 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.util.Optional;
 
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 import com.holonplatform.core.temporal.TemporalType;
 
 /**

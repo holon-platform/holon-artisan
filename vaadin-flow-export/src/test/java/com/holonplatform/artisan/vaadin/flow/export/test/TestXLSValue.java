@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.holonplatform.artisan.vaadin.flow.export.XLSDataType;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 public class TestXLSValue {
 

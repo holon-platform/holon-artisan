@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,8 +25,8 @@ import java.util.Date;
 
 import javax.annotation.Priority;
 
-import com.holonplatform.artisan.vaadin.flow.export.PropertyXLSValueProvider;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 import com.holonplatform.core.internal.utils.TypeUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.temporal.TemporalType;

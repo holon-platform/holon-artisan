@@ -13,25 +13,31 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
+
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 /**
- * Excel cell data types.
+ * Formula type {@link XLSValue}.
  *
  * @since 1.0.0
  */
-public enum XLSDataType {
+public class XLSFormulaValue extends AbstractXLSValue<String> {
 
-	BOOLEAN,
+	private static final long serialVersionUID = -2488811245908391033L;
 
-	STRING,
+	public XLSFormulaValue(String value) {
+		super(value, null, null);
+	}
 
-	NUMERIC,
-
-	DATE,
-	
-	ENUM,
-
-	FORMULA
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.XLSValue#getDataType()
+	 */
+	@Override
+	public XLSDataType getDataType() {
+		return XLSDataType.FORMULA;
+	}
 
 }

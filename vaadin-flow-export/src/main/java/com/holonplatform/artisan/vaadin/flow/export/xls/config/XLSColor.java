@@ -1,4 +1,4 @@
-package com.holonplatform.artisan.vaadin.flow.export.config;
+package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import com.holonplatform.core.i18n.Caption;
 

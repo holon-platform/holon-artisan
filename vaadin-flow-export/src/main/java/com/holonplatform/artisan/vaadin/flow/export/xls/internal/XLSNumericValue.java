@@ -13,22 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
-import com.holonplatform.artisan.vaadin.flow.export.XLSDataType;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 /**
- * Boolean type {@link XLSValue}.
+ * Numeric type {@link XLSValue}.
  *
  * @since 1.0.0
  */
-public class XLSBooleanValue extends AbstractXLSValue<Boolean> {
+public class XLSNumericValue extends AbstractXLSValue<Number> {
 
-	private static final long serialVersionUID = -2420108034432668478L;
+	private static final long serialVersionUID = 5577482374496574033L;
 
-	public XLSBooleanValue(Boolean value) {
-		super(value, null, null);
+	public XLSNumericValue(Number value, String dataFormat) {
+		super(value, null, dataFormat);
 	}
 
 	/*
@@ -37,7 +37,7 @@ public class XLSBooleanValue extends AbstractXLSValue<Boolean> {
 	 */
 	@Override
 	public XLSDataType getDataType() {
-		return XLSDataType.BOOLEAN;
+		return XLSDataType.NUMERIC;
 	}
 
 }

@@ -13,25 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
-import java.util.Date;
-
-import com.holonplatform.artisan.vaadin.flow.export.XLSDataType;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
-import com.holonplatform.core.temporal.TemporalType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 /**
- * Date type {@link XLSValue}.
+ * ENum type {@link XLSValue}.
+ * 
+ * @param <E> Enum class
  *
  * @since 1.0.0
  */
-public class XLSDateValue extends AbstractXLSValue<Date> {
+public class XLSEnumValue<E extends Enum<E>> extends AbstractXLSValue<E> {
 
-	private static final long serialVersionUID = 8576091621985253707L;
+	private static final long serialVersionUID = 2474156464196065185L;
 
-	public XLSDateValue(Date value, TemporalType temporalType, String dataFormat) {
-		super(value, temporalType, dataFormat);
+	public XLSEnumValue(E value) {
+		super(value, null, null);
 	}
 
 	/*
@@ -40,7 +39,7 @@ public class XLSDateValue extends AbstractXLSValue<Date> {
 	 */
 	@Override
 	public XLSDataType getDataType() {
-		return XLSDataType.DATE;
+		return XLSDataType.ENUM;
 	}
 
 }

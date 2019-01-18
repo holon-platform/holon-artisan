@@ -13,25 +13,25 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
-import java.time.OffsetDateTime;
+import java.util.Date;
 
-import com.holonplatform.artisan.vaadin.flow.export.XLSDataType;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 import com.holonplatform.core.temporal.TemporalType;
 
 /**
- * OffsetDateTime type {@link XLSValue}.
+ * Date type {@link XLSValue}.
  *
  * @since 1.0.0
  */
-public class XLSOffsetDateTimeValue extends AbstractXLSValue<OffsetDateTime> {
+public class XLSDateValue extends AbstractXLSValue<Date> {
 
-	private static final long serialVersionUID = 8318551825273052469L;
+	private static final long serialVersionUID = 8576091621985253707L;
 
-	public XLSOffsetDateTimeValue(OffsetDateTime value, String dataFormat) {
-		super(value, TemporalType.DATE_TIME, dataFormat);
+	public XLSDateValue(Date value, TemporalType temporalType, String dataFormat) {
+		super(value, temporalType, dataFormat);
 	}
 
 	/*

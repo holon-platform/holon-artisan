@@ -13,22 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
-import com.holonplatform.artisan.vaadin.flow.export.XLSDataType;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 /**
- * Numeric type {@link XLSValue}.
+ * String type {@link XLSValue}.
  *
  * @since 1.0.0
  */
-public class XLSNumericValue extends AbstractXLSValue<Number> {
+public class XLSStringValue extends AbstractXLSValue<String> {
 
-	private static final long serialVersionUID = 5577482374496574033L;
+	private static final long serialVersionUID = 2625838341346179448L;
 
-	public XLSNumericValue(Number value, String dataFormat) {
-		super(value, null, dataFormat);
+	public XLSStringValue(String value) {
+		super(value, null, null);
 	}
 
 	/*
@@ -37,7 +37,7 @@ public class XLSNumericValue extends AbstractXLSValue<Number> {
 	 */
 	@Override
 	public XLSDataType getDataType() {
-		return XLSDataType.NUMERIC;
+		return XLSDataType.STRING;
 	}
 
 }

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export;
+package com.holonplatform.artisan.vaadin.flow.export.xls;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,18 +25,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSBooleanValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSCalendarValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSDateValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSEnumValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSFormulaValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSLocalDateTimeValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSLocalDateValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSLocalTimeValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSNumericValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSOffsetDateTimeValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSOffsetTimeValue;
-import com.holonplatform.artisan.vaadin.flow.export.internal.XLSStringValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSBooleanValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSCalendarValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSDateValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSEnumValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSFormulaValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSLocalDateTimeValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSLocalDateValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSLocalTimeValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSNumericValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSOffsetDateTimeValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSOffsetTimeValue;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSStringValue;
 import com.holonplatform.core.temporal.TemporalType;
 
 /**

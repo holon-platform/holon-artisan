@@ -13,25 +13,22 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.internal;
+package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
-import java.time.LocalDateTime;
-
-import com.holonplatform.artisan.vaadin.flow.export.XLSDataType;
-import com.holonplatform.artisan.vaadin.flow.export.XLSValue;
-import com.holonplatform.core.temporal.TemporalType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 /**
- * LocalDateTime type {@link XLSValue}.
+ * Boolean type {@link XLSValue}.
  *
  * @since 1.0.0
  */
-public class XLSLocalDateTimeValue extends AbstractXLSValue<LocalDateTime> {
+public class XLSBooleanValue extends AbstractXLSValue<Boolean> {
 
-	private static final long serialVersionUID = -3673256384991205932L;
+	private static final long serialVersionUID = -2420108034432668478L;
 
-	public XLSLocalDateTimeValue(LocalDateTime value, String dataFormat) {
-		super(value, TemporalType.DATE_TIME, dataFormat);
+	public XLSBooleanValue(Boolean value) {
+		super(value, null, null);
 	}
 
 	/*
@@ -40,7 +37,7 @@ public class XLSLocalDateTimeValue extends AbstractXLSValue<LocalDateTime> {
 	 */
 	@Override
 	public XLSDataType getDataType() {
-		return XLSDataType.DATE;
+		return XLSDataType.BOOLEAN;
 	}
 
 }

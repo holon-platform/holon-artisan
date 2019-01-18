@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export;
+package com.holonplatform.artisan.vaadin.flow.export.xls;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Priority;
 
-import com.holonplatform.artisan.vaadin.flow.export.internal.DefaultPropertyXLSValueProviderRegistry;
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.DefaultPropertyXLSValueProviderRegistry;
 import com.holonplatform.core.Context;
 import com.holonplatform.core.config.ConfigProperty;
 import com.holonplatform.core.internal.utils.ObjectUtils;
