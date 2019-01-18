@@ -17,7 +17,6 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.io.OutputStream;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.export.ExportProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
@@ -25,6 +24,7 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.PropertyBox;
+import com.holonplatform.core.property.PropertySet;
 import com.vaadin.flow.data.provider.DataProvider;
 
 /**
@@ -34,35 +34,46 @@ import com.vaadin.flow.data.provider.DataProvider;
  */
 public class DefaultXLSExporter implements XLSExporter {
 
-	private final Supplier<DataProvider<PropertyBox, ?>> dataSourceSupplier;
+	private final DataProvider<PropertyBox, ?> dataSource;
+	private final PropertySet<?> propertySet;
 
-	private Supplier<XLSConfiguration> configurationSupplier = () -> null;
+	private XLSConfiguration configuration;
 
 	/**
 	 * Constructor.
-	 * @param dataSourceSupplier The {@link DataProvider} supplier (not null)
+	 * @param dataSource The {@link DataProvider} to use as data source (not null)
+	 * @param propertySet The property set to use (not null)
 	 */
-	public DefaultXLSExporter(Supplier<DataProvider<PropertyBox, ?>> dataSourceSupplier) {
+	public DefaultXLSExporter(DataProvider<PropertyBox, ?> dataSource, PropertySet<?> propertySet) {
 		super();
-		ObjectUtils.argumentNotNull(dataSourceSupplier, "The DataProvider supplier must be not null");
-		this.dataSourceSupplier = dataSourceSupplier;
+		ObjectUtils.argumentNotNull(dataSource, "The DataProvider must be not null");
+		ObjectUtils.argumentNotNull(propertySet, "The PropertySet must be not null");
+		this.dataSource = dataSource;
+		this.propertySet = propertySet;
 	}
 
 	/**
-	 * Set the {@link XLSConfiguration} supplier,
-	 * @param configurationSupplier the configuration supplier to set (not null)
+	 * Set the {@link XLSConfiguration} to use.
+	 * @param configuration the configuration to set
 	 */
-	protected void setConfigurationSupplier(Supplier<XLSConfiguration> configurationSupplier) {
-		ObjectUtils.argumentNotNull(configurationSupplier, "The configuration supplier must be not null");
-		this.configurationSupplier = configurationSupplier;
+	protected void setConfigurationSupplier(XLSConfiguration configuration) {
+		this.configuration = configuration;
 	}
 
 	/**
 	 * Get the {@link DataProvider} to use as export data source.
-	 * @return Optional {@link DataProvider}
+	 * @return The {@link DataProvider}
 	 */
-	protected Optional<DataProvider<PropertyBox, ?>> getDataProvider() {
-		return Optional.ofNullable(dataSourceSupplier.get());
+	protected DataProvider<PropertyBox, ?> getDataProvider() {
+		return dataSource;
+	}
+
+	/**
+	 * Get the property set.
+	 * @return the property set
+	 */
+	protected PropertySet<?> getPropertySet() {
+		return propertySet;
 	}
 
 	/**
@@ -70,7 +81,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * @return Optional export configuration
 	 */
 	protected Optional<XLSConfiguration> getConfiguration() {
-		return Optional.ofNullable(configurationSupplier.get());
+		return Optional.ofNullable(configuration);
 	}
 
 	/*
@@ -83,7 +94,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			throws ExportException {
 		ObjectUtils.argumentNotNull(outputStream, "The data output stream must be not null");
 		ObjectUtils.argumentNotNull(exportProgressCallback, "The export progres callback must be not null");
-		
+
 		// TODO
 	}
 
@@ -96,20 +107,22 @@ public class DefaultXLSExporter implements XLSExporter {
 
 		/**
 		 * Constructor.
-		 * @param dataSourceSupplier The {@link DataProvider} supplier (not null)
+		 * @param dataSource The {@link DataProvider} to use as data source (not null)
+		 * @param propertySet The property set to use (not null)
 		 */
-		public DefaultBuilder(Supplier<DataProvider<PropertyBox, ?>> dataSourceSupplier) {
+		public DefaultBuilder(DataProvider<PropertyBox, ?> dataSource, PropertySet<?> propertySet) {
 			super();
-			this.exporter = new DefaultXLSExporter(dataSourceSupplier);
+			this.exporter = new DefaultXLSExporter(dataSource, propertySet);
 		}
 
 		/*
 		 * (non-Javadoc)
-		 * @see com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter.Builder#configuration(java.util.function.
-		 * Supplier)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter.Builder#configuration(com.holonplatform.artisan.
+		 * vaadin.flow.export.xls.config.XLSConfiguration)
 		 */
 		@Override
-		public Builder configuration(Supplier<XLSConfiguration> configuration) {
+		public Builder configuration(XLSConfiguration configuration) {
 			this.exporter.setConfigurationSupplier(configuration);
 			return this;
 		}

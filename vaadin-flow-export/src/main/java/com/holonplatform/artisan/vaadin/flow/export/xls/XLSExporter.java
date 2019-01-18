@@ -24,7 +24,9 @@ import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.DefaultXLSExporter;
+import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
+import com.holonplatform.core.property.PropertySet;
 import com.vaadin.flow.data.provider.DataProvider;
 
 /**
@@ -60,19 +62,33 @@ public interface XLSExporter {
 	/**
 	 * Get a {@link XLSExporter} using given {@link DataProvider} as export data source.
 	 * @param dataSource The export data source (not null)
+	 * @param propertySet The property set to use (not null)
 	 * @return A new {@link XLSExporter} builder
 	 */
-	static Builder builder(DataProvider<PropertyBox, ?> dataSource) {
-		return builder(() -> dataSource);
+	static Builder builder(DataProvider<PropertyBox, ?> dataSource, PropertySet<?> propertySet) {
+		return new DefaultXLSExporter.DefaultBuilder(dataSource, propertySet);
 	}
 
 	/**
 	 * Get a {@link XLSExporter} using given {@link DataProvider} supplier as export data source.
 	 * @param dataSource The export data source provider (not null)
+	 * @param properties The property set to use (not null)
 	 * @return A new {@link XLSExporter} builder
 	 */
-	static Builder builder(Supplier<DataProvider<PropertyBox, ?>> dataSource) {
-		return new DefaultXLSExporter.DefaultBuilder(dataSource);
+	@SuppressWarnings("rawtypes")
+	static <P extends Property> Builder builder(Supplier<DataProvider<PropertyBox, ?>> dataSource,
+			Iterable<P> properties) {
+		return builder(dataSource, PropertySet.of(properties));
+	}
+
+	/**
+	 * Get a {@link XLSExporter} using given {@link DataProvider} supplier as export data source.
+	 * @param dataSource The export data source provider (not null)
+	 * @param properties The property set to use (not null)
+	 * @return A new {@link XLSExporter} builder
+	 */
+	static Builder builder(Supplier<DataProvider<PropertyBox, ?>> dataSource, Property<?>... properties) {
+		return builder(dataSource, PropertySet.of(properties));
 	}
 
 	/**
@@ -81,20 +97,11 @@ public interface XLSExporter {
 	public interface Builder {
 
 		/**
-		 * Set the XLS configuration supplier.
-		 * @param configuration The configuration supplier (not null)
-		 * @return this
-		 */
-		Builder configuration(Supplier<XLSConfiguration> configuration);
-
-		/**
 		 * Set the XLS configuration.
 		 * @param configuration The configuration to set
 		 * @return this
 		 */
-		default Builder configuration(XLSConfiguration configuration) {
-			return configuration(() -> configuration);
-		}
+		Builder configuration(XLSConfiguration configuration);
 
 		/**
 		 * Build the exporter.
