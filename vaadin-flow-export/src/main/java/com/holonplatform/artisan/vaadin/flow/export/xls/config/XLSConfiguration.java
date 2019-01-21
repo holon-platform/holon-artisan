@@ -16,9 +16,11 @@
 package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSConfiguration;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 
@@ -93,8 +95,8 @@ public interface XLSConfiguration extends Serializable {
 	boolean isWrapByDefault();
 
 	/**
-	 * Get whether the cell should be auto-sized by default.
-	 * @return Whether the cell should be auto-sized by default
+	 * Get whether the cells should be auto-sized by default.
+	 * @return Whether the cells should be auto-sized by default
 	 */
 	boolean isShrinkToFitByDefault();
 
@@ -103,5 +105,169 @@ public interface XLSConfiguration extends Serializable {
 	 * @return the default header cells configuration
 	 */
 	XLSCellConfiguration getDefaultHeaderConfiguration();
+	
+	/**
+	 * Clone this configuration.
+	 * @return Cloned configuration builder
+	 */
+	Builder cloneConfiguration();
+
+	/**
+	 * Get a builder to create a new {@link XLSConfiguration}.
+	 * @return A {@link XLSConfiguration} builder
+	 */
+	static Builder builder() {
+		return new DefaultXLSConfiguration.DefaultBuilder();
+	}
+
+	/**
+	 * {@link XLSConfiguration} builder.
+	 */
+	public interface Builder {
+
+		/**
+		 * Set the properties to export and their order.
+		 * @param properties the properties to export
+		 * @return this
+		 */
+		Builder properties(List<Property<?>> properties);
+
+		/**
+		 * Set the properties to export and their order.
+		 * @param properties the properties to export
+		 * @return this
+		 */
+		default Builder properties(Property<?>... properties) {
+			return properties(Arrays.asList(properties));
+		}
+
+		/**
+		 * Set the configuration for given property.
+		 * @param property The property (not null)
+		 * @param configuration The property configuration
+		 * @return this
+		 */
+		Builder propertyConfiguration(Property<?> property, XLSPropertyConfiguration configuration);
+
+		/**
+		 * Add a property for which to provide a total footer.
+		 * @param property The property for which to provide a total footer (not null)
+		 * @return this
+		 */
+		Builder withTotalProperty(Property<?> property);
+
+		/**
+		 * Set the export file version.
+		 * @param fileVersion the file version to set
+		 * @return this
+		 */
+		Builder fileVersion(XLSFileVersion fileVersion);
+
+		/**
+		 * Set the export sheet name.
+		 * @param sheetName the sheet name to set
+		 * @return this
+		 */
+		Builder sheetName(Localizable sheetName);
+
+		/**
+		 * Set the export sheet name.
+		 * @param sheetName The sheet name
+		 * @return this
+		 */
+		default Builder sheetName(String sheetName) {
+			return sheetName((sheetName == null) ? null : Localizable.builder().message(sheetName).build());
+		}
+
+		/**
+		 * Set the export sheet name.
+		 * @param defaultName Default sheet name if no translation is available for given <code>messageCode</code>
+		 * @param messageCode Sheet name translation message key
+		 * @param arguments Optional translation arguments
+		 * @return this
+		 */
+		default Builder sheetName(String defaultName, String messageCode, Object... arguments) {
+			return sheetName(Localizable.builder().message((defaultName == null) ? "" : defaultName)
+					.messageCode(messageCode).messageArguments(arguments).build());
+		}
+
+		/**
+		 * Set the title text.
+		 * @param title the title to set
+		 * @return this
+		 */
+		Builder title(Localizable title);
+
+		/**
+		 * Set the title text.
+		 * @param title The title
+		 * @return this
+		 */
+		default Builder title(String title) {
+			return title((title == null) ? null : Localizable.builder().message(title).build());
+		}
+
+		/**
+		 * Set the title text.
+		 * @param defaultTitle Default title text if no translation is available for given <code>messageCode</code>
+		 * @param messageCode Title text translation message key
+		 * @param arguments Optional translation arguments
+		 * @return this
+		 */
+		default Builder title(String defaultTitle, String messageCode, Object... arguments) {
+			return title(Localizable.builder().message((defaultTitle == null) ? "" : defaultTitle)
+					.messageCode(messageCode).messageArguments(arguments).build());
+		}
+
+		/**
+		 * Set the title font size.
+		 * @param titleFontSize the title font size to set
+		 * @return this
+		 */
+		Builder titleFontSize(XLSFontSize titleFontSize);
+
+		/**
+		 * Set the title font color.
+		 * @param titleFontColor the title font color to set
+		 * @return this
+		 */
+		Builder titleFontColor(XLSColor titleFontColor);
+
+		/**
+		 * Set the default font size.
+		 * @param defaultFontSize the default font size to set
+		 * @return this
+		 */
+		Builder defaultFontSize(XLSFontSize defaultFontSize);
+
+		/**
+		 * Set whether to wrap text (i.e. to make all content visible within a cell by displaying it on multiple lines)
+		 * by default.
+		 * @param wrapByDefault Whether to wrap text by default
+		 * @return this
+		 */
+		Builder wrapByDefault(boolean wrapByDefault);
+
+		/**
+		 * Set whether the cells should be auto-sized by default
+		 * @param shrinkToFitByDefault Whether the cells should be auto-sized by default
+		 * @return this
+		 */
+		Builder shrinkToFitByDefault(boolean shrinkToFitByDefault);
+
+		/**
+		 * Set the default header cells configuration.
+		 * @param defaultHeaderConfiguration the default header cells configuration to set
+		 * @return this
+		 */
+		Builder defaultHeaderConfiguration(XLSCellConfiguration defaultHeaderConfiguration);
+
+		/**
+		 * Build the {@link XLSConfiguration}.
+		 * @return The {@link XLSConfiguration} instance
+		 */
+		XLSConfiguration build();
+
+	}
 
 }
