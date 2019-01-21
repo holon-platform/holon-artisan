@@ -27,7 +27,7 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 public class TestXLSValue {
 
-	enum TestEnum {
+	private enum TestEnum {
 
 		ONE, TWO;
 

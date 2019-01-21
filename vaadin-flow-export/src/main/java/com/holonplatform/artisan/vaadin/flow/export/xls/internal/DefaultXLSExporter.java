@@ -288,7 +288,6 @@ public class DefaultXLSExporter implements XLSExporter {
 			cell.setCellStyle(style);
 			// text
 			cell.setCellValue(localize(title));
-
 			return true;
 		}).orElse(Boolean.FALSE);
 	}
@@ -326,7 +325,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			// value
 			cell.setCellValue(localize(
 					configuration.getPropertyConfiguration(property).flatMap(cfg -> cfg.getHeader()).orElse(property),
-					"?"));
+					property.getName()));
 		}
 	}
 
@@ -626,8 +625,8 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 		// background
 		if (!cellConfiguration.getBackgroundColor().isAuto()) {
-			style.setFillBackgroundColor(cellConfiguration.getBackgroundColor().getIndex1());
 			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			style.setFillForegroundColor(cellConfiguration.getBackgroundColor().getIndex1());
 		}
 		// font
 		style.setFont(getOrCreateFont(workbook, configuration, cellConfiguration));
