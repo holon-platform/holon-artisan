@@ -53,7 +53,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	private XLSFontSize defaultFontSize = XLSFontSize.AUTOMATIC;
 	private boolean wrapByDefault = false;
 	private boolean shrinkToFitByDefault = false;
-	private XLSCellConfiguration defaultHeaderConfiguration = XLSCellConfiguration.builder().build();
+	private XLSCellConfiguration headerConfiguration = DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 
 	/*
 	 * (non-Javadoc)
@@ -161,11 +161,11 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#getDefaultHeaderConfiguration()
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#getHeaderConfiguration()
 	 */
 	@Override
-	public XLSCellConfiguration getDefaultHeaderConfiguration() {
-		return defaultHeaderConfiguration;
+	public XLSCellConfiguration getHeaderConfiguration() {
+		return headerConfiguration;
 	}
 
 	/**
@@ -261,12 +261,12 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	}
 
 	/**
-	 * Set the default header cells configuration.
-	 * @param defaultHeaderConfiguration the default header cells configuration to set
+	 * Set the header cells configuration.
+	 * @param headerConfiguration the header cells configuration to set
 	 */
-	protected void setDefaultHeaderConfiguration(XLSCellConfiguration defaultHeaderConfiguration) {
-		this.defaultHeaderConfiguration = (defaultHeaderConfiguration != null) ? defaultHeaderConfiguration
-				: XLSCellConfiguration.builder().build();
+	protected void setHeaderConfiguration(XLSCellConfiguration headerConfiguration) {
+		this.headerConfiguration = (headerConfiguration != null) ? headerConfiguration
+				: DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 	}
 
 	/*
@@ -289,7 +289,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 		builder.defaultFontSize(getDefaultFontSize());
 		builder.wrapByDefault(isWrapByDefault());
 		builder.shrinkToFitByDefault(isShrinkToFitByDefault());
-		builder.defaultHeaderConfiguration(getDefaultHeaderConfiguration());
+		builder.headerConfiguration(getHeaderConfiguration());
 		return builder;
 	}
 
@@ -428,8 +428,8 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 		 * com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration)
 		 */
 		@Override
-		public Builder defaultHeaderConfiguration(XLSCellConfiguration defaultHeaderConfiguration) {
-			this.configuration.setDefaultHeaderConfiguration(defaultHeaderConfiguration);
+		public Builder headerConfiguration(XLSCellConfiguration headerConfiguration) {
+			this.configuration.setHeaderConfiguration(headerConfiguration);
 			return this;
 		}
 

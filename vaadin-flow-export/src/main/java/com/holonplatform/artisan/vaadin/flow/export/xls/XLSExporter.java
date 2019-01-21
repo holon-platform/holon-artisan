@@ -24,6 +24,7 @@ import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.DefaultXLSExporter;
+import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
@@ -39,6 +40,9 @@ import com.vaadin.flow.data.provider.DataProvider;
  * @since 1.0.0
  */
 public interface XLSExporter {
+
+	public static final Localizable DEFAULT_SHEET_NAME = Localizable.of("export",
+			"holon.artisan.export.xls.default.sheet.name");
 
 	/**
 	 * Export the data to the provided {@link OutputStream}.

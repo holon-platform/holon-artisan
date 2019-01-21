@@ -1,5 +1,10 @@
 package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 
+import java.awt.Color;
+import java.util.Optional;
+
+import org.apache.poi.hssf.util.HSSFColor;
+
 import com.holonplatform.core.i18n.Caption;
 
 /**
@@ -163,16 +168,35 @@ public enum XLSColor {
 		this.rgb = rgb;
 	}
 
-	public int getIndex1() {
-		return index1;
+	public short getIndex1() {
+		return (short) index1;
 	}
 
-	public int getIndex2() {
-		return index2;
+	public short getIndex2() {
+		return (short) index2;
 	}
 
 	public int getRgb() {
 		return rgb;
+	}
+
+	/**
+	 * Checks whether this value represents the {@link #AUTOMATIC} value.
+	 * @return Whether this value is the {@link #AUTOMATIC} value
+	 */
+	public boolean isAuto() {
+		return this == AUTOMATIC;
+	}
+
+	/**
+	 * Get the color as HSSFColor.
+	 * @return The HSSFColor
+	 */
+	public Optional<HSSFColor> asHSSFColor() {
+		if (XLSColor.AUTOMATIC != this) {
+			return Optional.of(new HSSFColor(getIndex1(), getIndex2(), new Color(getRgb())));
+		}
+		return Optional.empty();
 	}
 
 }

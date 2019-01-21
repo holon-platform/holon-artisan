@@ -89,4 +89,12 @@ public enum XLSFontSize {
 		return points;
 	}
 
+	/**
+	 * Checks whether this value represents the {@link #AUTOMATIC} value.
+	 * @return Whether this value is the {@link #AUTOMATIC} value
+	 */
+	public boolean isAuto() {
+		return this == XLSFontSize.AUTOMATIC;
+	}
+
 }

@@ -101,11 +101,11 @@ public interface XLSConfiguration extends Serializable {
 	boolean isShrinkToFitByDefault();
 
 	/**
-	 * Get the default header cells configuration.
-	 * @return the default header cells configuration
+	 * Get the header cells configuration.
+	 * @return the header cells configuration
 	 */
-	XLSCellConfiguration getDefaultHeaderConfiguration();
-	
+	XLSCellConfiguration getHeaderConfiguration();
+
 	/**
 	 * Clone this configuration.
 	 * @return Cloned configuration builder
@@ -256,11 +256,11 @@ public interface XLSConfiguration extends Serializable {
 		Builder shrinkToFitByDefault(boolean shrinkToFitByDefault);
 
 		/**
-		 * Set the default header cells configuration.
-		 * @param defaultHeaderConfiguration the default header cells configuration to set
+		 * Set the header cells configuration.
+		 * @param neaderConfiguration the header cells configuration to set
 		 * @return this
 		 */
-		Builder defaultHeaderConfiguration(XLSCellConfiguration defaultHeaderConfiguration);
+		Builder headerConfiguration(XLSCellConfiguration neaderConfiguration);
 
 		/**
 		 * Build the {@link XLSConfiguration}.

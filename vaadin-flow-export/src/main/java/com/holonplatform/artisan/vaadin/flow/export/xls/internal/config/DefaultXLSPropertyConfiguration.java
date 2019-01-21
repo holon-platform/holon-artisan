@@ -33,7 +33,7 @@ public class DefaultXLSPropertyConfiguration implements XLSPropertyConfiguration
 	private static final long serialVersionUID = -7058713135533211604L;
 
 	private Localizable header;
-	private XLSCellConfiguration headerConfiguration = XLSCellConfiguration.builder().build();
+	private XLSCellConfiguration headerConfiguration = DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 	private XLSCellConfiguration cellConfiguration = XLSCellConfiguration.builder().build();
 	private XLSNumberGroupSeparator numberGroupSeparator = XLSNumberGroupSeparator.DEFAULT;
 	private Integer numberDecimals = null;
@@ -99,7 +99,7 @@ public class DefaultXLSPropertyConfiguration implements XLSPropertyConfiguration
 
 	public void setHeaderConfiguration(XLSCellConfiguration headerConfiguration) {
 		this.headerConfiguration = (headerConfiguration != null) ? headerConfiguration
-				: XLSCellConfiguration.builder().build();
+				: DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 	}
 
 	public void setCellConfiguration(XLSCellConfiguration cellConfiguration) {

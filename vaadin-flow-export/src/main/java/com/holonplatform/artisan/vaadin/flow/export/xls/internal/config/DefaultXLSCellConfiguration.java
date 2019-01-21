@@ -32,6 +32,9 @@ public class DefaultXLSCellConfiguration implements XLSCellConfiguration {
 
 	private static final long serialVersionUID = 7156475483174456634L;
 
+	static final XLSCellConfiguration DEFAULT_HEADER_CONFIGURATION = XLSCellConfiguration.builder().bold(true)
+			.backgroundColor(XLSColor.GREY_25_PERCENT).borderBottom(XLSCellBorder.THIN).wrap(true).build();
+
 	private boolean bold = false;
 	private boolean italic = false;
 	private boolean underline = false;
@@ -576,6 +579,93 @@ public class DefaultXLSCellConfiguration implements XLSCellConfiguration {
 			return instance;
 		}
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((alignment == null) ? 0 : alignment.hashCode());
+		result = prime * result + ((backgroundColor == null) ? 0 : backgroundColor.hashCode());
+		result = prime * result + (bold ? 1231 : 1237);
+		result = prime * result + ((borderBottom == null) ? 0 : borderBottom.hashCode());
+		result = prime * result + ((borderBottomColor == null) ? 0 : borderBottomColor.hashCode());
+		result = prime * result + ((borderLeft == null) ? 0 : borderLeft.hashCode());
+		result = prime * result + ((borderLeftColor == null) ? 0 : borderLeftColor.hashCode());
+		result = prime * result + ((borderRight == null) ? 0 : borderRight.hashCode());
+		result = prime * result + ((borderRightColor == null) ? 0 : borderRightColor.hashCode());
+		result = prime * result + ((borderTop == null) ? 0 : borderTop.hashCode());
+		result = prime * result + ((borderTopColor == null) ? 0 : borderTopColor.hashCode());
+		result = prime * result + ((fontColor == null) ? 0 : fontColor.hashCode());
+		result = prime * result + ((fontSize == null) ? 0 : fontSize.hashCode());
+		result = prime * result + (italic ? 1231 : 1237);
+		result = prime * result + ((rotation == null) ? 0 : rotation.hashCode());
+		result = prime * result + (shrinkToFit ? 1231 : 1237);
+		result = prime * result + (strikeOut ? 1231 : 1237);
+		result = prime * result + (underline ? 1231 : 1237);
+		result = prime * result + ((verticalAlignment == null) ? 0 : verticalAlignment.hashCode());
+		result = prime * result + (wrap ? 1231 : 1237);
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DefaultXLSCellConfiguration other = (DefaultXLSCellConfiguration) obj;
+		if (alignment != other.alignment)
+			return false;
+		if (backgroundColor != other.backgroundColor)
+			return false;
+		if (bold != other.bold)
+			return false;
+		if (borderBottom != other.borderBottom)
+			return false;
+		if (borderBottomColor != other.borderBottomColor)
+			return false;
+		if (borderLeft != other.borderLeft)
+			return false;
+		if (borderLeftColor != other.borderLeftColor)
+			return false;
+		if (borderRight != other.borderRight)
+			return false;
+		if (borderRightColor != other.borderRightColor)
+			return false;
+		if (borderTop != other.borderTop)
+			return false;
+		if (borderTopColor != other.borderTopColor)
+			return false;
+		if (fontColor != other.fontColor)
+			return false;
+		if (fontSize != other.fontSize)
+			return false;
+		if (italic != other.italic)
+			return false;
+		if (rotation != other.rotation)
+			return false;
+		if (shrinkToFit != other.shrinkToFit)
+			return false;
+		if (strikeOut != other.strikeOut)
+			return false;
+		if (underline != other.underline)
+			return false;
+		if (verticalAlignment != other.verticalAlignment)
+			return false;
+		if (wrap != other.wrap)
+			return false;
+		return true;
 	}
 
 }
