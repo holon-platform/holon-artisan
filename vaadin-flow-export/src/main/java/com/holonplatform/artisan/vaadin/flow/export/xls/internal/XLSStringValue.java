@@ -28,7 +28,7 @@ public class XLSStringValue extends AbstractXLSValue<String> {
 	private static final long serialVersionUID = 2625838341346179448L;
 
 	public XLSStringValue(String value) {
-		super(value, null, null);
+		super(String.class, value, null, null);
 	}
 
 	/*

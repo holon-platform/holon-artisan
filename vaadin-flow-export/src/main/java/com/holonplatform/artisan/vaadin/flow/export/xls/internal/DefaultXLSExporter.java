@@ -15,14 +15,20 @@
  */
 package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -44,7 +50,11 @@ import com.holonplatform.artisan.vaadin.flow.export.ExportProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.ExportProgressState;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
+import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
+import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellAlignment;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellBorder;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration;
@@ -54,14 +64,22 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSColor;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSFileVersion;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSFontSize;
+import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSNumberGroupSeparator;
+import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration;
+import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.i18n.Localizable;
+import com.holonplatform.core.i18n.LocalizationContext;
 import com.holonplatform.core.internal.Logger;
+import com.holonplatform.core.internal.utils.AnnotationUtils;
+import com.holonplatform.core.internal.utils.ConversionUtils;
 import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.core.internal.utils.TypeUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
+import com.holonplatform.core.property.PropertyValueProvider;
+import com.holonplatform.core.property.VirtualProperty;
 import com.holonplatform.vaadin.flow.components.Components;
-import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
 
@@ -74,12 +92,21 @@ public class DefaultXLSExporter implements XLSExporter {
 
 	protected static final Logger LOGGER = ArtisanLogger.create();
 
+	private static final int DEFAULT_BATCH_SIZE = 20;
+
+	private static final XLSCellConfiguration DEFAULT_CELL_CONFIGURATION = XLSCellConfiguration.builder().build();
+	private static final XLSPropertyConfiguration DEFAULT_PROPERTY_CONFIGURATION = XLSPropertyConfiguration.builder()
+			.build();
+
 	private final DataProvider<PropertyBox, ?> dataSource;
 	private final PropertySet<?> propertySet;
 
 	private XLSConfiguration configuration;
+	private PropertyXLSValueProviderRegistry propertyXLSValueProviderRegistry;
+	private LocalizationContext localizationContext;
 
 	private final Map<FontConfiguration, Font> workbookFonts = new HashMap<>();
+	private final Map<StyleConfiguration, CellStyle> workbookStyles = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -95,11 +122,27 @@ public class DefaultXLSExporter implements XLSExporter {
 	}
 
 	/**
-	 * Set the {@link XLSConfiguration} to use.
-	 * @param configuration the configuration to set
+	 * Set the {@link XLSConfiguration} to use
+	 * @param configuration The configuration to set
 	 */
-	protected void setConfigurationSupplier(XLSConfiguration configuration) {
+	protected void setConfiguration(XLSConfiguration configuration) {
 		this.configuration = configuration;
+	}
+
+	/**
+	 * Set the {@link PropertyXLSValueProviderRegistry} to use.
+	 * @param registry the registry to set
+	 */
+	protected void setPropertyXLSValueProviderRegistry(PropertyXLSValueProviderRegistry registry) {
+		this.propertyXLSValueProviderRegistry = registry;
+	}
+
+	/**
+	 * Set the {@link LocalizationContext} to use.
+	 * @param localizationContext the localization context to set
+	 */
+	protected void setLocalizationContext(LocalizationContext localizationContext) {
+		this.localizationContext = localizationContext;
 	}
 
 	/**
@@ -126,6 +169,21 @@ public class DefaultXLSExporter implements XLSExporter {
 		return Optional.ofNullable(configuration);
 	}
 
+	/**
+	 * Get the {@link PropertyXLSValueProviderRegistry} to use.
+	 * @return Optional registry to use
+	 */
+	protected Optional<PropertyXLSValueProviderRegistry> getPropertyXLSValueProviderRegistry() {
+		return Optional.ofNullable(propertyXLSValueProviderRegistry);
+	}
+
+	/**
+	 * @return the localizationContext
+	 */
+	protected Optional<LocalizationContext> getLocalizationContext() {
+		return Optional.ofNullable(localizationContext);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter#export(java.io.OutputStream,
@@ -138,6 +196,7 @@ public class DefaultXLSExporter implements XLSExporter {
 		ObjectUtils.argumentNotNull(exportProgressCallback, "The export progres callback must be not null");
 
 		workbookFonts.clear();
+		workbookStyles.clear();
 
 		LOGGER.debug(() -> "Start XLS export...");
 
@@ -161,39 +220,33 @@ public class DefaultXLSExporter implements XLSExporter {
 
 			// Sheet setup
 			final String sheetName = localize(configuration.getSheetName().orElse(DEFAULT_SHEET_NAME), "export");
-
 			final Sheet sheet = workbook.createSheet(WorkbookUtil.createSafeSheetName(sheetName, '_'));
-
 			updateExportProgress(exportProgressCallback, totalSteps, 1);
 
-			int currentRowIndex = 0;
-
 			// Title
-			if (createTitleRow(workbook, sheet, 0, configuration)) {
-				currentRowIndex++;
-			}
+			boolean hasTitle = createTitleRow(workbook, sheet, 0, configuration);
 			updateExportProgress(exportProgressCallback, totalSteps, 2);
 
 			// Header
-			createHeaderRow(workbook, sheet, currentRowIndex, configuration, properties);
-			currentRowIndex++;
+			int headerRowIndex = hasTitle ? 1 : 0;
+			createHeaderRow(workbook, sheet, headerRowIndex, configuration, properties);
 			updateExportProgress(exportProgressCallback, totalSteps, 3);
 
 			// Data
-
-			// TODO
+			int dataEndRowIndex = createDataRows(workbook, sheet, headerRowIndex, configuration, properties,
+					exportProgressCallback, totalSteps, 3);
 
 			// Totals
-
-			// TODO
-			updateExportProgress(exportProgressCallback, totalSteps, (totalSteps - 1));
+			if (dataEndRowIndex > headerRowIndex) {
+				int dataStartRowIndex = headerRowIndex + 1;
+				// TODO
+			}
 
 			// Write to stream
-
-			// TODO
+			workbook.write(outputStream);
 			updateExportProgress(exportProgressCallback, totalSteps, totalSteps);
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new ExportException("Export failed", e);
 		}
 	}
@@ -265,6 +318,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			// style
 			cell.setCellStyle(configuration.getPropertyConfiguration(property).map(cfg -> cfg.getHeaderConfiguration())
 					.filter(cfg -> !cfg.equals(headerConfig)).map(cfg -> {
+						LOGGER.debug(() -> "Create custom header style for property: " + property);
 						CellStyle headerStyle = workbook.createCellStyle();
 						configureCellStyle(workbook, headerStyle, configuration, cfg);
 						return headerStyle;
@@ -274,6 +328,253 @@ public class DefaultXLSExporter implements XLSExporter {
 					configuration.getPropertyConfiguration(property).flatMap(cfg -> cfg.getHeader()).orElse(property),
 					"?"));
 		}
+	}
+
+	protected int createDataRows(Workbook workbook, Sheet sheet, int lastRowIndex, XLSConfiguration configuration,
+			List<Property<?>> properties, ExportProgressCallback exportProgressCallback, int totalSteps, int lastStep) {
+
+		final PropertyXLSValueProviderRegistry registry = getPropertyXLSValueProviderRegistry()
+				.orElseGet(() -> PropertyXLSValueProviderRegistry.get());
+
+		int rowIndex = lastRowIndex;
+		int progressStep = lastStep;
+
+		int offset = 0;
+		List<PropertyBox> results = Collections.emptyList();
+		do {
+			results = getDataProvider()
+					.fetch(new Query<>(offset, DEFAULT_BATCH_SIZE, Collections.emptyList(), null, null))
+					.collect(Collectors.toList());
+			for (PropertyBox result : results) {
+				rowIndex++;
+				final Row row = sheet.createRow(rowIndex);
+				createDataRow(workbook, row, configuration, properties, registry, result);
+				progressStep = ((progressStep + 1) < totalSteps) ? (progressStep + 1) : progressStep;
+				updateExportProgress(exportProgressCallback, totalSteps, progressStep);
+			}
+			offset += DEFAULT_BATCH_SIZE;
+		} while (!results.isEmpty());
+
+		return rowIndex;
+	}
+
+	protected void createDataRow(Workbook workbook, Row row, XLSConfiguration configuration,
+			List<Property<?>> properties, PropertyXLSValueProviderRegistry registry, PropertyBox value) {
+		for (int i = 0; i < properties.size(); i++) {
+			@SuppressWarnings("unchecked")
+			final Property<Object> property = (Property<Object>) properties.get(i);
+			final Cell cell = row.createCell(i);
+			// property configuration
+			final XLSPropertyConfiguration propertyConfiguration = configuration.getPropertyConfiguration(property)
+					.orElse(DEFAULT_PROPERTY_CONFIGURATION);
+			// value provider
+			PropertyXLSValueProvider<Object> provider = registry.getProvider(property)
+					.orElseGet(() -> new DefaultPropertyXLSValueProvider<>());
+			// value
+			Object propertyValue = null;
+			if (value != null && value.contains(property)) {
+				propertyValue = value.getValue(property);
+			} else {
+				if (VirtualProperty.class.isAssignableFrom(property.getClass())) {
+					final PropertyValueProvider<?> valueProvider = ((VirtualProperty<?>) property).getValueProvider();
+					if (valueProvider != null) {
+						propertyValue = valueProvider.getPropertyValue(value);
+					}
+				}
+			}
+			// get XLS value using provider
+			XLSValue<?> xlsv = provider.provide(property, propertyConfiguration, propertyValue);
+			if (xlsv == null) {
+				// fallback to default
+				xlsv = XLSValue.stringValue((propertyValue == null) ? null : String.valueOf(propertyValue));
+			}
+			final XLSValue<?> xlsValue = xlsv;
+			setCellValue(cell, xlsValue);
+			// style
+			cell.setCellStyle(getOrCreateStyle(workbook, property, configuration,
+					configuration.getPropertyConfiguration(property).map(cfg -> cfg.getCellConfiguration())
+							.orElse(DEFAULT_CELL_CONFIGURATION),
+					xlsValue.getDataFormat().orElseGet(() -> getDefaultDataFormat(xlsValue, propertyConfiguration))));
+		}
+	}
+
+	protected String getDefaultDataFormat(XLSValue<?> xlsValue, XLSPropertyConfiguration configuration) {
+		if (XLSDataType.NUMERIC == xlsValue.getDataType()) {
+			if (TypeUtils.isIntegerNumber(xlsValue.getValueType())) {
+				switch (configuration.getNumberGroupSeparator()) {
+				case DISABLED:
+					return "0";
+				case ENABLED:
+					return "#,##0";
+				case DEFAULT:
+				default:
+					return null;
+				}
+			}
+			if (TypeUtils.isDecimalNumber(xlsValue.getValueType())) {
+				StringBuilder sb = new StringBuilder();
+				if (configuration.getNumberGroupSeparator() == XLSNumberGroupSeparator.ENABLED) {
+					sb.append("#,##0.");
+				} else {
+					sb.append("0.");
+				}
+				int decimals = configuration.getNumberDecimals().orElse(2);
+				if (decimals < 1) {
+					decimals = 2;
+				}
+				for (int i = 0; i < decimals; i++) {
+					sb.append("0");
+				}
+				return sb.toString();
+			}
+		}
+		return null;
+	}
+
+	protected void setCellValue(Cell cell, XLSValue<?> xlsValue) {
+		boolean valueSetted = false;
+		switch (xlsValue.getDataType()) {
+		case BOOLEAN:
+			valueSetted = setBooleanValue(cell, xlsValue);
+			break;
+		case DATE:
+			valueSetted = setDateValue(cell, xlsValue);
+			break;
+		case ENUM:
+			valueSetted = setEnumValue(cell, xlsValue);
+			break;
+		case FORMULA:
+			valueSetted = setFormulaValue(cell, xlsValue);
+			break;
+		case NUMERIC:
+			valueSetted = setNumericValue(cell, xlsValue);
+			break;
+		case STRING:
+		default:
+			valueSetted = setStringValue(cell, xlsValue);
+			break;
+		}
+		if (!valueSetted) {
+			cell.setCellType(CellType.BLANK);
+		}
+	}
+
+	protected boolean setBooleanValue(Cell cell, XLSValue<?> xlsValue) {
+		return xlsValue.getValue().map(v -> {
+			if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
+				// fallback to string
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(String.valueOf(v));
+				return true;
+			}
+			cell.setCellType(CellType.BOOLEAN);
+			cell.setCellValue((Boolean) v);
+			return true;
+		}).orElse(Boolean.FALSE);
+	}
+
+	protected boolean setNumericValue(Cell cell, XLSValue<?> xlsValue) {
+		return xlsValue.getValue().map(v -> {
+			if (!TypeUtils.isNumber(xlsValue.getValueType())) {
+				// fallback to string
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(String.valueOf(v));
+				return true;
+			}
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue(ConversionUtils.convertNumberToTargetClass((Number) v, Double.class));
+			return true;
+		}).orElse(Boolean.FALSE);
+	}
+
+	protected boolean setDateValue(Cell cell, XLSValue<?> xlsValue) {
+		return xlsValue.getValue().map(v -> {
+			if (Date.class.isAssignableFrom(xlsValue.getValueType())) {
+				cell.setCellValue((Date) v);
+				return true;
+			}
+			if (Calendar.class.isAssignableFrom(xlsValue.getValueType())) {
+				cell.setCellValue((Calendar) v);
+				return true;
+			}
+			if (LocalDate.class.isAssignableFrom(xlsValue.getValueType())) {
+				cell.setCellValue(ConversionUtils.fromLocalDate((LocalDate) v));
+				return true;
+			}
+			if (LocalDateTime.class.isAssignableFrom(xlsValue.getValueType())) {
+				cell.setCellValue(ConversionUtils.fromLocalDateTime((LocalDateTime) v));
+				return true;
+			}
+			if (LocalTime.class.isAssignableFrom(xlsValue.getValueType())) {
+				final LocalTime time = (LocalTime) v;
+				final Calendar calendar = Calendar.getInstance();
+				calendar.set(Calendar.YEAR, 0);
+				calendar.set(Calendar.MONTH, 0);
+				calendar.set(Calendar.DAY_OF_MONTH, 0);
+				calendar.set(Calendar.MILLISECOND, 0);
+				calendar.set(Calendar.HOUR_OF_DAY, time.getHour());
+				calendar.set(Calendar.MINUTE, time.getMinute());
+				calendar.set(Calendar.SECOND, time.getSecond());
+				cell.setCellValue(calendar.getTime());
+				return true;
+			}
+			// fallback to string
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(String.valueOf(v));
+			return true;
+		}).orElse(Boolean.FALSE);
+	}
+
+	protected boolean setEnumValue(Cell cell, XLSValue<?> xlsValue) {
+		return xlsValue.getValue().map(v -> {
+			if (!TypeUtils.isEnum(xlsValue.getValueType())) {
+				// fallback to string
+				cell.setCellType(CellType.STRING);
+				cell.setCellValue(String.valueOf(v));
+				return true;
+			}
+			Enum<?> ev = (Enum<?>) v;
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(localize(getEnumCaption(ev), ev.name()));
+			return true;
+		}).orElse(Boolean.FALSE);
+	}
+
+	protected boolean setStringValue(Cell cell, XLSValue<?> xlsValue) {
+		return xlsValue.getValue().map(v -> {
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(String.valueOf(v));
+			return true;
+		}).orElse(Boolean.FALSE);
+	}
+
+	protected boolean setFormulaValue(Cell cell, XLSValue<?> xlsValue) {
+		return xlsValue.getValue().map(v -> {
+			cell.setCellType(CellType.FORMULA);
+			cell.setCellFormula(String.valueOf(v));
+			return true;
+		}).orElse(Boolean.FALSE);
+	}
+
+	/**
+	 * Get given enum localizable caption value, using the {@link Caption} annotation if available.
+	 * @param value The enum value
+	 * @return The enum localizable caption, using the {@link Caption} annotation if available or the enum value name if
+	 *         not
+	 */
+	private static Localizable getEnumCaption(Enum<?> value) {
+		try {
+			final java.lang.reflect.Field field = value.getClass().getField(value.name());
+			if (field.isAnnotationPresent(Caption.class)) {
+				String captionMessage = AnnotationUtils.getStringValue(field.getAnnotation(Caption.class).value());
+				return Localizable.builder().message((captionMessage != null) ? captionMessage : value.name())
+						.messageCode(AnnotationUtils.getStringValue(field.getAnnotation(Caption.class).messageCode()))
+						.build();
+			}
+		} catch (@SuppressWarnings("unused") NoSuchFieldException | SecurityException e) {
+			return Localizable.of(value.name());
+		}
+		return Localizable.of(value.name());
 	}
 
 	protected void configureCellStyle(Workbook workbook, CellStyle style, XLSConfiguration configuration,
@@ -361,6 +662,21 @@ public class DefaultXLSExporter implements XLSExporter {
 
 	}
 
+	protected CellStyle getOrCreateStyle(Workbook workbook, Property<?> property, XLSConfiguration configuration,
+			XLSCellConfiguration cellConfiguration, String dataFormat) {
+		final StyleConfiguration styleConfiguration = new StyleConfiguration(cellConfiguration, dataFormat);
+
+		return workbookStyles.computeIfAbsent(styleConfiguration, config -> {
+			LOGGER.debug(() -> "Create custom cell style for property: " + property);
+			CellStyle style = workbook.createCellStyle();
+			configureCellStyle(workbook, style, configuration, cellConfiguration);
+			if (dataFormat != null && !dataFormat.trim().equals("")) {
+				style.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat(dataFormat));
+			}
+			return style;
+		});
+	}
+
 	protected void updateExportProgress(ExportProgressCallback exportProgressCallback, int totalSteps,
 			int completedSteps) {
 		final ExportProgressState state = exportProgressCallback.onExportProgress(totalSteps, completedSteps);
@@ -377,7 +693,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		if (message == null) {
 			return defaultText;
 		}
-		return LocalizationProvider.localize(message).orElse(defaultText);
+		Optional<LocalizationContext> ctx = getLocalizationContext();
+		if (!ctx.isPresent()) {
+			ctx = LocalizationContext.getCurrent();
+		}
+		return ctx.map(lc -> lc.getMessage(message, true)).orElse(defaultText);
 	}
 
 	protected Optional<Localizable> isValidMessage(Localizable message) {
@@ -483,7 +803,30 @@ public class DefaultXLSExporter implements XLSExporter {
 		 */
 		@Override
 		public Builder configuration(XLSConfiguration configuration) {
-			this.exporter.setConfigurationSupplier(configuration);
+			this.exporter.setConfiguration(configuration);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter.Builder#registry(com.holonplatform.artisan.
+		 * vaadin.flow.export.xls.PropertyXLSValueProviderRegistry)
+		 */
+		@Override
+		public Builder registry(PropertyXLSValueProviderRegistry registry) {
+			this.exporter.setPropertyXLSValueProviderRegistry(registry);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter.Builder#localizationContext(com.holonplatform.
+		 * core.i18n.LocalizationContext)
+		 */
+		@Override
+		public Builder localizationContext(LocalizationContext localizationContext) {
+			this.exporter.setLocalizationContext(localizationContext);
 			return this;
 		}
 
@@ -499,6 +842,8 @@ public class DefaultXLSExporter implements XLSExporter {
 	}
 
 	private static class FontConfiguration implements Serializable {
+
+		private static final long serialVersionUID = -6829041483209389400L;
 
 		private final boolean bold;
 		private final boolean italic;
@@ -551,6 +896,50 @@ public class DefaultXLSExporter implements XLSExporter {
 			if (strikeout != other.strikeout)
 				return false;
 			if (underline != other.underline)
+				return false;
+			return true;
+		}
+
+	}
+
+	private static class StyleConfiguration implements Serializable {
+
+		private final XLSCellConfiguration configuration;
+		private final String dataFormat;
+
+		public StyleConfiguration(XLSCellConfiguration configuration, String dataFormat) {
+			super();
+			this.configuration = configuration;
+			this.dataFormat = dataFormat;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((configuration == null) ? 0 : configuration.hashCode());
+			result = prime * result + ((dataFormat == null) ? 0 : dataFormat.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			StyleConfiguration other = (StyleConfiguration) obj;
+			if (configuration == null) {
+				if (other.configuration != null)
+					return false;
+			} else if (!configuration.equals(other.configuration))
+				return false;
+			if (dataFormat == null) {
+				if (other.dataFormat != null)
+					return false;
+			} else if (!dataFormat.equals(other.dataFormat))
 				return false;
 			return true;
 		}

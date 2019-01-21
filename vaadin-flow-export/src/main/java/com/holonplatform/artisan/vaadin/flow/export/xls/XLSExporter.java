@@ -25,6 +25,7 @@ import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExport
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.DefaultXLSExporter;
 import com.holonplatform.core.i18n.Localizable;
+import com.holonplatform.core.i18n.LocalizationContext;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
@@ -106,6 +107,20 @@ public interface XLSExporter {
 		 * @return this
 		 */
 		Builder configuration(XLSConfiguration configuration);
+
+		/**
+		 * Set the {@link PropertyXLSValueProviderRegistry} to use.
+		 * @param registry The registry to set
+		 * @return this
+		 */
+		Builder registry(PropertyXLSValueProviderRegistry registry);
+
+		/**
+		 * Set the {@link LocalizationContext} to use.
+		 * @param localizationContext The {@link LocalizationContext} to set
+		 * @return this
+		 */
+		Builder localizationContext(LocalizationContext localizationContext);
 
 		/**
 		 * Build the exporter.

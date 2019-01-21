@@ -28,7 +28,7 @@ public class XLSBooleanValue extends AbstractXLSValue<Boolean> {
 	private static final long serialVersionUID = -2420108034432668478L;
 
 	public XLSBooleanValue(Boolean value) {
-		super(value, null, null);
+		super(Boolean.class, value, null, null);
 	}
 
 	/*

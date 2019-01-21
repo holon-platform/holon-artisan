@@ -20,15 +20,17 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 
 /**
  * Numeric type {@link XLSValue}.
+ * 
+ * @param <N> Number type
  *
  * @since 1.0.0
  */
-public class XLSNumericValue extends AbstractXLSValue<Number> {
+public class XLSNumericValue<N extends Number> extends AbstractXLSValue<N> {
 
 	private static final long serialVersionUID = 5577482374496574033L;
 
-	public XLSNumericValue(Number value, String dataFormat) {
-		super(value, null, dataFormat);
+	public XLSNumericValue(Class<? extends N> valueType, N value, String dataFormat) {
+		super(valueType, value, null, dataFormat);
 	}
 
 	/*

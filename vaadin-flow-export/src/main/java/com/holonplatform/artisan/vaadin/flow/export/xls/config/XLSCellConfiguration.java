@@ -153,6 +153,12 @@ public interface XLSCellConfiguration extends Serializable {
 	 */
 	Builder cloneConfiguration();
 
+	@Override
+	int hashCode();
+
+	@Override
+	boolean equals(Object obj);
+
 	/**
 	 * Get a builder to create a new {@link XLSCellConfiguration}.
 	 * @return A {@link XLSCellConfiguration} builder

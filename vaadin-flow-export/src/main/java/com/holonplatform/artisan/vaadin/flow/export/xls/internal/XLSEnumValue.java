@@ -29,8 +29,8 @@ public class XLSEnumValue<E extends Enum<E>> extends AbstractXLSValue<E> {
 
 	private static final long serialVersionUID = 2474156464196065185L;
 
-	public XLSEnumValue(E value) {
-		super(value, null, null);
+	public XLSEnumValue(Class<E> valueType, E value) {
+		super(valueType, value, null, null);
 	}
 
 	/*

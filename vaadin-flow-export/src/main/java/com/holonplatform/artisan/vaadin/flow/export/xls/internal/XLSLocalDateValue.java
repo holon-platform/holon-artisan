@@ -31,7 +31,7 @@ public class XLSLocalDateValue extends AbstractXLSValue<LocalDate> {
 	private static final long serialVersionUID = 6658565822840794270L;
 
 	public XLSLocalDateValue(LocalDate value, String dataFormat) {
-		super(value, TemporalType.DATE, dataFormat);
+		super(LocalDate.class, value, TemporalType.DATE, dataFormat);
 	}
 
 	/*

@@ -19,8 +19,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -34,8 +32,6 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSLocalDateTim
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSLocalDateValue;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSLocalTimeValue;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSNumericValue;
-import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSOffsetDateTimeValue;
-import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSOffsetTimeValue;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.XLSStringValue;
 import com.holonplatform.core.temporal.TemporalType;
 
@@ -47,6 +43,12 @@ import com.holonplatform.core.temporal.TemporalType;
  * @since 1.0.0
  */
 public interface XLSValue<T> extends Serializable {
+
+	/**
+	 * Get the value type.
+	 * @return the value type
+	 */
+	Class<? extends T> getValueType();
 
 	/**
 	 * Get the value, if available.
@@ -94,21 +96,25 @@ public interface XLSValue<T> extends Serializable {
 
 	/**
 	 * Create a {@link Number} type value.
+	 * @param <N> Number type
+	 * @param valueType Value type (not null)
 	 * @param value The value (may be null)
 	 * @return The {@link XLSValue}
 	 */
-	static XLSValue<Number> numericValue(Number value) {
-		return new XLSNumericValue(value, null);
+	static <N extends Number> XLSValue<N> numericValue(Class<? extends N> valueType, N value) {
+		return new XLSNumericValue<>(valueType, value, null);
 	}
 
 	/**
 	 * Create a {@link Number} type value.
+	 * @param <N> Number type
+	 * @param valueType Value type (not null)
 	 * @param value The value (may be null)
 	 * @param dataFormat Optional data format
 	 * @return The {@link XLSValue}
 	 */
-	static XLSValue<Number> numericValue(Number value, String dataFormat) {
-		return new XLSNumericValue(value, dataFormat);
+	static <N extends Number> XLSValue<N> numericValue(Class<? extends N> valueType, N value, String dataFormat) {
+		return new XLSNumericValue<>(valueType, value, dataFormat);
 	}
 
 	/**
@@ -249,50 +255,13 @@ public interface XLSValue<T> extends Serializable {
 	}
 
 	/**
-	 * Create a {@link OffsetDateTime} type value.
-	 * @param value The value (may be null)
-	 * @return The {@link XLSValue}
-	 */
-	static XLSValue<OffsetDateTime> offsetDateTimeValue(OffsetDateTime value) {
-		return new XLSOffsetDateTimeValue(value, null);
-	}
-
-	/**
-	 * Create a {@link OffsetDateTime} type value.
-	 * @param value The value (may be null)
-	 * @param dataFormat Optional data format
-	 * @return The {@link XLSValue}
-	 */
-	static XLSValue<OffsetDateTime> offsetDateTimeValue(OffsetDateTime value, String dataFormat) {
-		return new XLSOffsetDateTimeValue(value, dataFormat);
-	}
-
-	/**
-	 * Create a {@link OffsetTime} type value.
-	 * @param value The value (may be null)
-	 * @return The {@link XLSValue}
-	 */
-	static XLSValue<OffsetTime> offsetTimeValue(OffsetTime value) {
-		return new XLSOffsetTimeValue(value, null);
-	}
-
-	/**
-	 * Create a {@link OffsetTime} type value.
-	 * @param value The value (may be null)
-	 * @param dataFormat Optional data format
-	 * @return The {@link XLSValue}
-	 */
-	static XLSValue<OffsetTime> offsetTimeValue(OffsetTime value, String dataFormat) {
-		return new XLSOffsetTimeValue(value, dataFormat);
-	}
-
-	/**
 	 * Create a Enum type value.
+	 * @param valueType Value type (not null)
 	 * @param value The value (may be null)
 	 * @return The {@link XLSValue}
 	 */
-	static <E extends Enum<E>> XLSValue<E> enumValue(E value) {
-		return new XLSEnumValue<>(value);
+	static <E extends Enum<E>> XLSValue<E> enumValue(Class<E> valueType, E value) {
+		return new XLSEnumValue<>(valueType, value);
 	}
 
 	/**

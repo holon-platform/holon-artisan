@@ -63,23 +63,42 @@ public class TestXLSValue {
 		assertTrue(v.getValue().isPresent());
 		assertEquals("test", v.getValue().orElse(null));
 
-		XLSValue.enumValue(TestEnum.ONE);
+		XLSValue.enumValue(TestEnum.class, TestEnum.ONE);
 
 	}
 
 	@Test
 	public void testEnumValue() {
 
-		XLSValue<TestEnum> v = XLSValue.enumValue(null);
+		XLSValue<TestEnum> v = XLSValue.enumValue(TestEnum.class, null);
 		assertNotNull(v);
 		assertEquals(XLSDataType.ENUM, v.getDataType());
+		assertEquals(TestEnum.class, v.getValueType());
 		assertFalse(v.getValue().isPresent());
 
-		v = XLSValue.enumValue(TestEnum.ONE);
+		v = XLSValue.enumValue(TestEnum.class, TestEnum.ONE);
 		assertNotNull(v);
 		assertEquals(XLSDataType.ENUM, v.getDataType());
 		assertTrue(v.getValue().isPresent());
 		assertEquals(TestEnum.ONE, v.getValue().orElse(null));
+
+	}
+
+	@Test
+	public void testNumericValue() {
+
+		XLSValue<Integer> v = XLSValue.numericValue(Integer.class, null);
+		assertNotNull(v);
+		assertEquals(XLSDataType.NUMERIC, v.getDataType());
+		assertEquals(Integer.class, v.getValueType());
+		assertFalse(v.getValue().isPresent());
+
+		v = XLSValue.numericValue(Integer.class, 1);
+		assertNotNull(v);
+		assertEquals(XLSDataType.NUMERIC, v.getDataType());
+		assertEquals(Integer.class, v.getValueType());
+		assertTrue(v.getValue().isPresent());
+		assertEquals(Integer.valueOf(1), v.getValue().orElse(null));
 
 	}
 

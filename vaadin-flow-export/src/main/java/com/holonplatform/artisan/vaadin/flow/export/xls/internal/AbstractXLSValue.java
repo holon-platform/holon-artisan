@@ -17,7 +17,9 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.util.Optional;
 
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.temporal.TemporalType;
 
 /**
@@ -31,21 +33,44 @@ public abstract class AbstractXLSValue<T> implements XLSValue<T> {
 
 	private static final long serialVersionUID = 548397409492562060L;
 
+	private final Class<? extends T> valueType;
 	private final T value;
 	private final TemporalType temporalType;
 	private final String dataFormat;
 
 	/**
 	 * Constructor.
+	 * @param valueType Value type
 	 * @param value The value
 	 * @param temporalType Temporal type
 	 * @param dataFormat Data format string
 	 */
-	public AbstractXLSValue(T value, TemporalType temporalType, String dataFormat) {
+	public AbstractXLSValue(Class<? extends T> valueType, T value, TemporalType temporalType, String dataFormat) {
 		super();
+		ObjectUtils.argumentNotNull(valueType, "Value type must be not null");
+		this.valueType = valueType;
 		this.value = value;
 		this.temporalType = temporalType;
 		this.dataFormat = dataFormat;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue#getValueType()
+	 */
+	@Override
+	public Class<? extends T> getValueType() {
+		return valueType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue#getDataType()
+	 */
+	@Override
+	public XLSDataType getDataType() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*

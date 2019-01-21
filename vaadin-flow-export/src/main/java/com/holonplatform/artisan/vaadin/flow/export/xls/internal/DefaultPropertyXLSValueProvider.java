@@ -18,8 +18,6 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,10 +54,10 @@ public class DefaultPropertyXLSValueProvider<T> implements PropertyXLSValueProvi
 			return XLSValue.booleanValue((Boolean) value);
 		}
 		if (TypeUtils.isNumber(property.getType())) {
-			return XLSValue.numericValue((Number) value);
+			return XLSValue.numericValue((Class<? extends Number>) property.getType(), (Number) value);
 		}
 		if (TypeUtils.isEnum(property.getType())) {
-			return XLSValue.enumValue((Enum) value);
+			return XLSValue.enumValue((Class<Enum>) property.getType(), (Enum) value);
 		}
 		if (TypeUtils.isCalendar(property.getType())) {
 			return XLSValue.calendarValue((Calendar) value, property.getTemporalType().orElse(TemporalType.DATE_TIME));
@@ -75,12 +73,6 @@ public class DefaultPropertyXLSValueProvider<T> implements PropertyXLSValueProvi
 		}
 		if (LocalTime.class.isAssignableFrom(property.getType())) {
 			return XLSValue.localTimeValue((LocalTime) value);
-		}
-		if (OffsetDateTime.class.isAssignableFrom(property.getType())) {
-			return XLSValue.offsetDateTimeValue((OffsetDateTime) value);
-		}
-		if (OffsetTime.class.isAssignableFrom(property.getType())) {
-			return XLSValue.offsetTimeValue((OffsetTime) value);
 		}
 
 		// TODO check arrays/collections

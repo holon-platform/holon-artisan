@@ -31,7 +31,7 @@ public class XLSCalendarValue extends AbstractXLSValue<Calendar> {
 	private static final long serialVersionUID = 6895352368718705843L;
 
 	public XLSCalendarValue(Calendar value, TemporalType temporalType, String dataFormat) {
-		super(value, temporalType, dataFormat);
+		super(Calendar.class, value, temporalType, dataFormat);
 	}
 
 	/*

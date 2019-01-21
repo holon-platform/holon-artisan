@@ -28,7 +28,7 @@ public class XLSFormulaValue extends AbstractXLSValue<String> {
 	private static final long serialVersionUID = -2488811245908391033L;
 
 	public XLSFormulaValue(String value) {
-		super(value, null, null);
+		super(String.class, value, null, null);
 	}
 
 	/*
