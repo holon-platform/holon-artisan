@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
+import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.i18n.LocalizationContext;
 import com.holonplatform.core.property.NumericProperty;
@@ -34,7 +35,7 @@ import com.vaadin.flow.data.provider.DataProvider;
 
 public class TestXLSExporter {
 
-	private static final NumericProperty<Long> ID = NumericProperty.longType("id");
+	private static final NumericProperty<Long> ID = NumericProperty.longType("id").message("The ID");
 	private static final StringProperty TEXT = StringProperty.create("text");
 	private static final NumericProperty<Integer> INTV = NumericProperty.integerType("intv");
 	private static final NumericProperty<Double> DBLV = NumericProperty.doubleType("dblv");
@@ -42,7 +43,11 @@ public class TestXLSExporter {
 	private static final PropertySet<?> SET = PropertySet.builderOf(ID, TEXT, INTV, DBLV).identifier(ID).build();
 
 	private static final DataProvider<PropertyBox, ?> DATASOURCE = DataProvider.ofItems(new PropertyBox[] {
-			PropertyBox.builder(SET).set(ID, 1L).set(TEXT, "text1").set(INTV, 123).set(DBLV, 123456.78d).build() });
+			PropertyBox.builder(SET).set(ID, 1L).set(TEXT, "text1").set(INTV, 123).set(DBLV, 123456.78d).build(),
+			PropertyBox.builder(SET).set(ID, 2L).set(INTV, 123).set(DBLV, 123456.78d).build(),
+			PropertyBox.builder(SET).set(ID, 3L).set(TEXT, "text3").set(DBLV, 123456.78567d).build(),
+			PropertyBox.builder(SET).set(ID, 4L).set(TEXT, "text4").set(INTV, 123).build(),
+			PropertyBox.builder(SET).set(ID, 5L).set(TEXT, "text5").set(INTV, 123456).set(DBLV, 123456.78d).build() });
 
 	private enum TestEnum {
 
@@ -58,8 +63,23 @@ public class TestXLSExporter {
 		PropertyXLSValueProviderRegistry registry = PropertyXLSValueProviderRegistry.create(true);
 
 		XLSExporter exporter = XLSExporter.builder(DATASOURCE, SET).localizationContext(lc).registry(registry).build();
+		export(exporter, "test_xls_exporter_1");
+	}
 
-		File file = File.createTempFile("test_xls_exporter_" + System.currentTimeMillis(), ".xlsx");
+	@Test
+	public void testExportDefaults() throws IOException {
+
+		LocalizationContext lc = LocalizationContext.builder().build();
+		PropertyXLSValueProviderRegistry registry = PropertyXLSValueProviderRegistry.create(true);
+		XLSConfiguration configuration = XLSConfiguration.builder().shrinkToFitByDefault(true).build();
+
+		XLSExporter exporter = XLSExporter.builder(DATASOURCE, SET).configuration(configuration).localizationContext(lc)
+				.registry(registry).build();
+		export(exporter, "test_xls_exporter_2");
+	}
+
+	private static void export(XLSExporter exporter, String fileName) throws IOException {
+		File file = File.createTempFile(fileName + "_" + System.currentTimeMillis(), ".xlsx");
 		try (OutputStream os = new FileOutputStream(file)) {
 			exporter.export(os);
 		}
