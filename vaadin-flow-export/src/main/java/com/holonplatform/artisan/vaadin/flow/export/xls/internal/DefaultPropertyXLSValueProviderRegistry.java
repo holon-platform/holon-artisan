@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Priority;
 
-import com.holonplatform.artisan.core.ArtisanLogger;
+import com.holonplatform.artisan.core.internal.ArtisanLogger;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.core.internal.Logger;

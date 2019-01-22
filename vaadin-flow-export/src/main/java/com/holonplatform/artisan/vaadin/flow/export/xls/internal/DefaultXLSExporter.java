@@ -46,7 +46,7 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import com.holonplatform.artisan.core.ArtisanLogger;
+import com.holonplatform.artisan.core.internal.ArtisanLogger;
 import com.holonplatform.artisan.vaadin.flow.export.ExportProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.ExportProgressState;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
