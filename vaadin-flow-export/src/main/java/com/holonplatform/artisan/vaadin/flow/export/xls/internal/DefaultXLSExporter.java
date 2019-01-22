@@ -255,6 +255,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Get the properties to export.
+	 * @param configuration Export configuration
+	 * @return The ordered properties to export
+	 */
 	protected List<Property<?>> getExportProperties(XLSConfiguration configuration) {
 		final List<Property<?>> properties = new LinkedList<>();
 		// check configuration
@@ -272,6 +277,14 @@ public class DefaultXLSExporter implements XLSExporter {
 		return properties;
 	}
 
+	/**
+	 * Create the title row
+	 * @param workbook Workbook reference
+	 * @param sheet Sheet reference
+	 * @param rowIndex The row index into which to place the title
+	 * @param configuration Export configuration
+	 * @return Whether the title was added
+	 */
 	protected boolean createTitleRow(Workbook workbook, Sheet sheet, int rowIndex, XLSConfiguration configuration) {
 		return configuration.getTitle().flatMap(t -> isValidMessage(t)).map(title -> {
 			final Row titleRow = sheet.createRow(rowIndex);
@@ -296,6 +309,14 @@ public class DefaultXLSExporter implements XLSExporter {
 		}).orElse(Boolean.FALSE);
 	}
 
+	/**
+	 * Create the export table header row.
+	 * @param workbook Workbook reference
+	 * @param sheet Sheet reference
+	 * @param rowIndex The row index into which to place the header
+	 * @param configuration Export configuration
+	 * @param properties The properties to export
+	 */
 	protected void createHeaderRow(Workbook workbook, Sheet sheet, int rowIndex, XLSConfiguration configuration,
 			List<Property<?>> properties) {
 		// configuration
@@ -333,6 +354,18 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Create the data rows using the data source.
+	 * @param workbook Workbook reference
+	 * @param sheet Sheet reference
+	 * @param lastRowIndex The last written row index
+	 * @param configuration Export configuration
+	 * @param properties Export properties
+	 * @param exportProgressCallback The progress callback
+	 * @param totalSteps Total export steps
+	 * @param lastStep Last completed step
+	 * @return The last data row index
+	 */
 	protected int createDataRows(Workbook workbook, Sheet sheet, int lastRowIndex, XLSConfiguration configuration,
 			List<Property<?>> properties, ExportProgressCallback exportProgressCallback, int totalSteps, int lastStep) {
 
@@ -361,6 +394,15 @@ public class DefaultXLSExporter implements XLSExporter {
 		return rowIndex;
 	}
 
+	/**
+	 * Export a single data row.
+	 * @param workbook Workbook reference
+	 * @param row The row reference
+	 * @param configuration Export configuration
+	 * @param properties Export properties
+	 * @param registry The {@link PropertyXLSValueProviderRegistry} to use
+	 * @param value The value to export
+	 */
 	protected void createDataRow(Workbook workbook, Row row, XLSConfiguration configuration,
 			List<Property<?>> properties, PropertyXLSValueProviderRegistry registry, PropertyBox value) {
 		for (int i = 0; i < properties.size(); i++) {
@@ -401,6 +443,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Get the default data format to use for a cell for given value.
+	 * @param xlsValue The exportable value
+	 * @param configuration Export configuration
+	 * @return The default data format, <code>null</code> if none
+	 */
 	protected String getDefaultDataFormat(XLSValue<?> xlsValue, XLSPropertyConfiguration configuration) {
 		if (XLSDataType.NUMERIC == xlsValue.getDataType()) {
 			if (TypeUtils.isIntegerNumber(xlsValue.getValueType())) {
@@ -434,6 +482,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		return null;
 	}
 
+	/**
+	 * Set the exportable value as a cell value.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 */
 	protected void setCellValue(Cell cell, XLSValue<?> xlsValue) {
 		boolean valueSetted = false;
 		switch (xlsValue.getDataType()) {
@@ -462,6 +515,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Set a boolean type value in given cell.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 */
 	protected boolean setBooleanValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
@@ -476,6 +535,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}).orElse(Boolean.FALSE);
 	}
 
+	/**
+	 * Set a numeric type value in given cell.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 */
 	protected boolean setNumericValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (!TypeUtils.isNumber(xlsValue.getValueType())) {
@@ -490,6 +555,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}).orElse(Boolean.FALSE);
 	}
 
+	/**
+	 * Set a date/time type value in given cell.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 */
 	protected boolean setDateValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (Date.class.isAssignableFrom(xlsValue.getValueType())) {
@@ -528,6 +599,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}).orElse(Boolean.FALSE);
 	}
 
+	/**
+	 * Set a enumeration type value in given cell.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 */
 	protected boolean setEnumValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (!TypeUtils.isEnum(xlsValue.getValueType())) {
@@ -543,6 +620,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}).orElse(Boolean.FALSE);
 	}
 
+	/**
+	 * Set a String type value in given cell.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 */
 	protected boolean setStringValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			cell.setCellType(CellType.STRING);
@@ -551,6 +634,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		}).orElse(Boolean.FALSE);
 	}
 
+	/**
+	 * Set a formula type value in given cell.
+	 * @param cell The cell for which to set the value
+	 * @param xlsValue The exportable value to set
+	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 */
 	protected boolean setFormulaValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			cell.setCellType(CellType.FORMULA);
@@ -580,6 +669,13 @@ public class DefaultXLSExporter implements XLSExporter {
 		return Localizable.of(value.name());
 	}
 
+	/**
+	 * Configure the cell style according to given export configuration and cell configuration.
+	 * @param workbook Workbook reference
+	 * @param style The cell style to configure
+	 * @param configuration The export configuration
+	 * @param cellConfiguration The cell configuration
+	 */
 	protected void configureCellStyle(Workbook workbook, CellStyle style, XLSConfiguration configuration,
 			XLSCellConfiguration cellConfiguration) {
 		// config
@@ -636,6 +732,14 @@ public class DefaultXLSExporter implements XLSExporter {
 		style.setFont(getOrCreateFont(workbook, configuration, cellConfiguration));
 	}
 
+	/**
+	 * Get the {@link Font} which corresponds to given export configuration and cell configuration, creating a new one
+	 * if not already available.
+	 * @param workbook Workbook reference
+	 * @param configuration Export configuration
+	 * @param cellConfiguration Cell configuration
+	 * @return The {@link Font}
+	 */
 	protected Font getOrCreateFont(Workbook workbook, XLSConfiguration configuration,
 			XLSCellConfiguration cellConfiguration) {
 
@@ -665,6 +769,16 @@ public class DefaultXLSExporter implements XLSExporter {
 
 	}
 
+	/**
+	 * Get the {@link CellStyle} which corresponds to given export configuration and cell configuration, creating a new
+	 * one if not already available.
+	 * @param workbook Workbook reference
+	 * @param property Export property
+	 * @param configuration Export configuration
+	 * @param cellConfiguration Cell configuration
+	 * @param dataFormat Optional data format to use
+	 * @return The {@link CellStyle}
+	 */
 	protected CellStyle getOrCreateStyle(Workbook workbook, Property<?> property, XLSConfiguration configuration,
 			XLSCellConfiguration cellConfiguration, String dataFormat) {
 		final StyleConfiguration styleConfiguration = new StyleConfiguration(cellConfiguration, dataFormat);
@@ -680,6 +794,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		});
 	}
 
+	/**
+	 * Update the export operation progress.
+	 * @param exportProgressCallback The callback to use
+	 * @param totalSteps Total steps
+	 * @param completedSteps Completed steps
+	 */
 	protected void updateExportProgress(ExportProgressCallback exportProgressCallback, int totalSteps,
 			int completedSteps) {
 		final ExportProgressState state = exportProgressCallback.onExportProgress(totalSteps, completedSteps);
@@ -688,10 +808,21 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Localize given message using the current {@link LocalizationContext}, if available.
+	 * @param message The message to localize
+	 * @return The localized message, or an empty String if the message was <code>null</code>
+	 */
 	protected String localize(Localizable message) {
 		return localize(message, "");
 	}
 
+	/**
+	 * Localize given message using the current {@link LocalizationContext}, if available.
+	 * @param message The message to localize
+	 * @param defaultText The default text to return if the message is <code>null</code>
+	 * @return The localized message, or the default text if the message was <code>null</code>
+	 */
 	protected String localize(Localizable message, String defaultText) {
 		if (message == null) {
 			return defaultText;
@@ -703,6 +834,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		return ctx.map(lc -> lc.getMessage(message, true)).orElse(defaultText);
 	}
 
+	/**
+	 * Checks if given message is localizable.
+	 * @param message The message to check
+	 * @return The message if valid, or an empty Optional if neither the message or the message code are available
+	 */
 	protected Optional<Localizable> isValidMessage(Localizable message) {
 		if (message != null && (message.getMessage() != null || message.getMessageCode() != null)) {
 			return Optional.of(message);
@@ -710,6 +846,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		return Optional.empty();
 	}
 
+	/**
+	 * Create a concrete {@link Workbook} according to given configuration, using the {@link XLSFileVersion} attribute.
+	 * @param configuration The export configuration
+	 * @return A new {@link Workbook} instance
+	 */
 	protected Workbook createWorkbook(XLSConfiguration configuration) {
 		if (XLSFileVersion.XLSX.equals(configuration.getFileVersion())) {
 			return new SXSSFWorkbook(10);
@@ -717,6 +858,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		return new HSSFWorkbook();
 	}
 
+	/**
+	 * Convert a {@link XLSCellAlignment} value into a {@link HorizontalAlignment} value.
+	 * @param alignment The value to convert
+	 * @return The converted value
+	 */
 	protected static HorizontalAlignment convert(XLSCellAlignment alignment) {
 		switch (alignment) {
 		case CENTER:
@@ -735,6 +881,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Convert a {@link XLSCellVerticalAlignment} value into a {@link VerticalAlignment} value.
+	 * @param alignment The value to convert
+	 * @return The converted value
+	 */
 	protected static VerticalAlignment convert(XLSCellVerticalAlignment alignment) {
 		switch (alignment) {
 		case CENTER:
@@ -751,6 +902,11 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 	}
 
+	/**
+	 * Convert a {@link XLSCellBorder} value into a {@link BorderStyle} value.
+	 * @param border The value to convert
+	 * @return The converted value
+	 */
 	protected static BorderStyle convert(XLSCellBorder border) {
 		switch (border) {
 		case DASHED:
@@ -843,6 +999,8 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 
 	}
+	
+	// ------- Support classes for caching purposes
 
 	private static class FontConfiguration implements Serializable {
 
@@ -907,6 +1065,8 @@ public class DefaultXLSExporter implements XLSExporter {
 
 	private static class StyleConfiguration implements Serializable {
 
+		private static final long serialVersionUID = 8361794117038406663L;
+		
 		private final XLSCellConfiguration configuration;
 		private final String dataFormat;
 
