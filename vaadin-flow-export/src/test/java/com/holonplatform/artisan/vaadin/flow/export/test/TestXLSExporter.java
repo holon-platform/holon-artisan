@@ -28,6 +28,7 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.i18n.LocalizationContext;
 import com.holonplatform.core.property.NumericProperty;
+import com.holonplatform.core.property.PathProperty;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.core.property.StringProperty;
@@ -35,26 +36,28 @@ import com.vaadin.flow.data.provider.DataProvider;
 
 public class TestXLSExporter {
 
-	private static final NumericProperty<Long> ID = NumericProperty.longType("id").message("The ID");
-	private static final StringProperty TEXT = StringProperty.create("text");
-	private static final NumericProperty<Integer> INTV = NumericProperty.integerType("intv");
-	private static final NumericProperty<Double> DBLV = NumericProperty.doubleType("dblv");
-
-	private static final PropertySet<?> SET = PropertySet.builderOf(ID, TEXT, INTV, DBLV).identifier(ID).build();
-
-	private static final DataProvider<PropertyBox, ?> DATASOURCE = DataProvider.ofItems(new PropertyBox[] {
-			PropertyBox.builder(SET).set(ID, 1L).set(TEXT, "text1").set(INTV, 123).set(DBLV, 123456.78d).build(),
-			PropertyBox.builder(SET).set(ID, 2L).set(INTV, 123).set(DBLV, 123456.78d).build(),
-			PropertyBox.builder(SET).set(ID, 3L).set(TEXT, "text3").set(DBLV, 123456.78567d).build(),
-			PropertyBox.builder(SET).set(ID, 4L).set(TEXT, "text4").set(INTV, 123).build(),
-			PropertyBox.builder(SET).set(ID, 5L).set(TEXT, "text5").set(INTV, 123456).set(DBLV, 123456.78d).build() });
-
 	private enum TestEnum {
 
 		@Caption("The One")
 		ONE, TWO;
 
 	}
+
+	private static final NumericProperty<Long> ID = NumericProperty.longType("id").message("The ID");
+	private static final StringProperty TEXT = StringProperty.create("text");
+	private static final NumericProperty<Integer> INTV = NumericProperty.integerType("intv");
+	private static final NumericProperty<Double> DBLV = NumericProperty.doubleType("dblv");
+	private static final PathProperty<TestEnum> ENMV = PathProperty.create("enmv", TestEnum.class);
+
+	private static final PropertySet<?> SET = PropertySet.builderOf(ID, TEXT, INTV, DBLV, ENMV).identifier(ID).build();
+
+	private static final DataProvider<PropertyBox, ?> DATASOURCE = DataProvider.ofItems(new PropertyBox[] {
+			PropertyBox.builder(SET).set(ID, 1L).set(TEXT, "text1").set(INTV, 123).set(DBLV, 123456.78d)
+					.set(ENMV, TestEnum.ONE).build(),
+			PropertyBox.builder(SET).set(ID, 2L).set(INTV, 123).set(DBLV, 123456.78d).set(ENMV, TestEnum.TWO).build(),
+			PropertyBox.builder(SET).set(ID, 3L).set(TEXT, "text3").set(DBLV, 123456.78567d).build(),
+			PropertyBox.builder(SET).set(ID, 4L).set(TEXT, "text4").set(INTV, 123).build(),
+			PropertyBox.builder(SET).set(ID, 5L).set(TEXT, "text5").set(INTV, 123456).set(DBLV, 123456.78d).build() });
 
 	@Test
 	public void testExport() throws IOException {

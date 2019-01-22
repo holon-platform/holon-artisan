@@ -248,6 +248,10 @@ public class DefaultXLSExporter implements XLSExporter {
 
 		} catch (Exception e) {
 			throw new ExportException("Export failed", e);
+		} finally {
+			// clean up
+			workbookFonts.clear();
+			workbookStyles.clear();
 		}
 	}
 
