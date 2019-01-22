@@ -13,23 +13,23 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export;
+package com.holonplatform.artisan.core;
 
 /**
- * Callback interface for export progress steps notification.
+ * Callback interface for operation progress steps notification.
  *
  * @since 1.0.0
  */
 @FunctionalInterface
-public interface ExportProgressCallback {
+public interface OperationProgressCallback {
 
 	/**
-	 * Invoked when the export progress changes.
+	 * Invoked when the operation progress changes.
 	 * @param totalSteps Total steps count
 	 * @param completedSteps Completed steps count
-	 * @return The export progress state: {@link ExportProgressState#PROCEED} to proceed with the data export or
-	 *         {@link ExportProgressState#ABORT} to abort it
+	 * @return The operation progress outcome: {@link OperationProgress#PROCEED} to proceed with the operation or
+	 *         {@link OperationProgress#ABORT} to abort it, if supported
 	 */
-	ExportProgressState onExportProgress(int totalSteps, int completedSteps);
+	OperationProgress onProgress(int totalSteps, int completedSteps);
 
 }

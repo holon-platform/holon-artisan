@@ -46,9 +46,9 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
+import com.holonplatform.artisan.core.OperationProgress;
+import com.holonplatform.artisan.core.OperationProgressCallback;
 import com.holonplatform.artisan.core.internal.ArtisanLogger;
-import com.holonplatform.artisan.vaadin.flow.export.ExportProgressCallback;
-import com.holonplatform.artisan.vaadin.flow.export.ExportProgressState;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
@@ -192,7 +192,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * com.holonplatform.artisan.vaadin.flow.export.ExportProgressCallback)
 	 */
 	@Override
-	public void export(OutputStream outputStream, ExportProgressCallback exportProgressCallback)
+	public void export(OutputStream outputStream, OperationProgressCallback exportProgressCallback)
 			throws ExportException {
 		ObjectUtils.argumentNotNull(outputStream, "The data output stream must be not null");
 		ObjectUtils.argumentNotNull(exportProgressCallback, "The export progres callback must be not null");
@@ -372,7 +372,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * @return The last data row index
 	 */
 	protected int createDataRows(Workbook workbook, Sheet sheet, int lastRowIndex, XLSConfiguration configuration,
-			List<Property<?>> properties, ExportProgressCallback exportProgressCallback, int totalSteps, int lastStep) {
+			List<Property<?>> properties, OperationProgressCallback exportProgressCallback, int totalSteps, int lastStep) {
 
 		final PropertyXLSValueProviderRegistry registry = getPropertyXLSValueProviderRegistry()
 				.orElseGet(() -> PropertyXLSValueProviderRegistry.get());
@@ -860,10 +860,10 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * @param totalSteps Total steps
 	 * @param completedSteps Completed steps
 	 */
-	protected void updateExportProgress(ExportProgressCallback exportProgressCallback, int totalSteps,
+	protected void updateExportProgress(OperationProgressCallback exportProgressCallback, int totalSteps,
 			int completedSteps) {
-		final ExportProgressState state = exportProgressCallback.onExportProgress(totalSteps, completedSteps);
-		if (ExportProgressState.ABORT.equals(state)) {
+		final OperationProgress state = exportProgressCallback.onProgress(totalSteps, completedSteps);
+		if (OperationProgress.ABORT.equals(state)) {
 			throw new InterruptedExportException("Export interrupted by external request");
 		}
 	}

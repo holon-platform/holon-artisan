@@ -13,24 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export;
+package com.holonplatform.artisan.core;
 
 /**
- * Export progress state.
- *
+ * Operation progress outcome.
+ * 
  * @since 1.0.0
  * 
- * @see ExportProgressCallback
+ * @see OperationProgress
  */
-public enum ExportProgressState {
+public enum OperationProgress {
 
 	/**
-	 * The data export should proceed.
+	 * The operation should proceed.
 	 */
 	PROCEED,
 
 	/**
-	 * The data export should abort.
+	 * The operation should abort.
 	 */
 	ABORT;
 

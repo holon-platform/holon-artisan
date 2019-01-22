@@ -18,8 +18,8 @@ package com.holonplatform.artisan.vaadin.flow.export.xls;
 import java.io.OutputStream;
 import java.util.function.Supplier;
 
-import com.holonplatform.artisan.vaadin.flow.export.ExportProgressCallback;
-import com.holonplatform.artisan.vaadin.flow.export.ExportProgressState;
+import com.holonplatform.artisan.core.OperationProgress;
+import com.holonplatform.artisan.core.OperationProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
@@ -52,7 +52,7 @@ public interface XLSExporter {
 	 * @throws ExportException If an error occurred
 	 */
 	default void export(OutputStream outputStream) throws ExportException {
-		export(outputStream, (total, completed) -> ExportProgressState.PROCEED);
+		export(outputStream, (total, completed) -> OperationProgress.PROCEED);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public interface XLSExporter {
 	 * @throws InterruptedExportException If the export was interrupted
 	 * @throws ExportException If an error occurred
 	 */
-	void export(OutputStream outputStream, ExportProgressCallback exportProgressCallback) throws ExportException;
+	void export(OutputStream outputStream, OperationProgressCallback exportProgressCallback) throws ExportException;
 
 	/**
 	 * Get a {@link XLSExporter} using given {@link DataProvider} as export data source.
