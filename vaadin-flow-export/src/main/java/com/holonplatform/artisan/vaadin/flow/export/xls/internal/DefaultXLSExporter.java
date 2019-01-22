@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -26,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,6 +45,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.ss.util.DateFormatConverter;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
@@ -76,11 +79,13 @@ import com.holonplatform.core.internal.utils.AnnotationUtils;
 import com.holonplatform.core.internal.utils.ConversionUtils;
 import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.internal.utils.TypeUtils;
+import com.holonplatform.core.presentation.StringValuePresenter;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.core.property.PropertyValueProvider;
 import com.holonplatform.core.property.VirtualProperty;
+import com.holonplatform.core.temporal.TemporalType;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
@@ -99,6 +104,9 @@ public class DefaultXLSExporter implements XLSExporter {
 	private static final XLSCellConfiguration DEFAULT_CELL_CONFIGURATION = XLSCellConfiguration.builder().build();
 	private static final XLSPropertyConfiguration DEFAULT_PROPERTY_CONFIGURATION = XLSPropertyConfiguration.builder()
 			.build();
+
+	private static final String DEFAULT_DATE_FORMAT_PATTERN = "dd/MM/yyyy";
+	private static final String DEFAULT_TIME_FORMAT_PATTERN = "hh:mm";
 
 	private final DataProvider<PropertyBox, ?> dataSource;
 	private final PropertySet<?> propertySet;
@@ -449,7 +457,8 @@ public class DefaultXLSExporter implements XLSExporter {
 			cell.setCellStyle(getOrCreateStyle(workbook, property, configuration,
 					configuration.getPropertyConfiguration(property).map(cfg -> cfg.getCellConfiguration())
 							.orElse(DEFAULT_CELL_CONFIGURATION),
-					xlsValue.getDataFormat().orElseGet(() -> getDefaultDataFormat(xlsValue, propertyConfiguration))));
+					xlsValue.getDataFormat()
+							.orElseGet(() -> getDefaultDataFormat(property, xlsValue, propertyConfiguration))));
 		}
 	}
 
@@ -504,41 +513,151 @@ public class DefaultXLSExporter implements XLSExporter {
 
 	/**
 	 * Get the default data format to use for a cell for given value.
+	 * @param property The property
 	 * @param xlsValue The exportable value
 	 * @param configuration Export configuration
 	 * @return The default data format, <code>null</code> if none
 	 */
-	protected String getDefaultDataFormat(XLSValue<?> xlsValue, XLSPropertyConfiguration configuration) {
+	protected String getDefaultDataFormat(Property<?> property, XLSValue<?> xlsValue,
+			XLSPropertyConfiguration configuration) {
 		if (XLSDataType.NUMERIC == xlsValue.getDataType()) {
+			// integers
 			if (TypeUtils.isIntegerNumber(xlsValue.getValueType())) {
-				switch (configuration.getNumberGroupSeparator()) {
-				case DISABLED:
-					return "0";
-				case ENABLED:
-					return "#,##0";
-				case DEFAULT:
-				default:
-					return null;
+				// check percentage
+				if (isPercentStyle(property, configuration)) {
+					return "0%";
 				}
+				if (isUseGroupSeparator(property, configuration)) {
+					return "#,##0";
+				}
+				return "0";
 			}
+			// decimals
 			if (TypeUtils.isDecimalNumber(xlsValue.getValueType())) {
+				// check percentage
+				if (isPercentStyle(property, configuration)) {
+					return "0.00%";
+				}
 				StringBuilder sb = new StringBuilder();
-				if (configuration.getNumberGroupSeparator() == XLSNumberGroupSeparator.ENABLED) {
+				if (isUseGroupSeparator(property, configuration)) {
 					sb.append("#,##0.");
 				} else {
 					sb.append("0.");
 				}
-				int decimals = configuration.getNumberDecimals().orElse(2);
-				if (decimals < 1) {
-					decimals = 2;
-				}
+				int decimals = getDecimalPositions(property, configuration).orElse(2);
 				for (int i = 0; i < decimals; i++) {
 					sb.append("0");
 				}
 				return sb.toString();
 			}
 		}
+		if (XLSDataType.DATE == xlsValue.getDataType()) {
+			// dates
+			if (TypeUtils.isDate(xlsValue.getValueType()) || TypeUtils.isCalendar(xlsValue.getValueType())) {
+				TemporalType tt = getTemporalType(property, xlsValue).orElse(TemporalType.DATE_TIME);
+				return getDateFormat(tt);
+			}
+			if (LocalDate.class.isAssignableFrom(xlsValue.getValueType())) {
+				return getDateFormat(TemporalType.DATE);
+			}
+			if (LocalDateTime.class.isAssignableFrom(xlsValue.getValueType())) {
+				return getDateFormat(TemporalType.DATE_TIME);
+			}
+			if (LocalTime.class.isAssignableFrom(xlsValue.getValueType())) {
+				return getDateFormat(TemporalType.TIME);
+			}
+		}
 		return null;
+	}
+
+	protected String getDateFormat(TemporalType temporalType) {
+		final Locale locale = getLocalizationContext().flatMap(lc -> lc.getLocale()).orElse(Locale.getDefault());
+		// check context
+		Optional<DateFormat> df = getLocalizationContext().filter(lc -> lc.isLocalized())
+				.map(lc -> lc.getDateFormat(temporalType));
+		if (df.isPresent()) {
+			return DateFormatConverter.convert(locale, df.get());
+		}
+		// defaults
+		String format = null;
+		switch (temporalType) {
+		case DATE:
+			format = DEFAULT_DATE_FORMAT_PATTERN;
+			break;
+		case DATE_TIME:
+			format = DEFAULT_DATE_FORMAT_PATTERN + " " + DEFAULT_TIME_FORMAT_PATTERN;
+			break;
+		case TIME:
+			format = DEFAULT_TIME_FORMAT_PATTERN;
+			break;
+		default:
+			break;
+		}
+		if (format != null) {
+			return DateFormatConverter.convert(locale, format);
+		}
+		return format;
+	}
+
+	/**
+	 * Get the temporal type to use for given value.
+	 * @param property The property
+	 * @param xlsValue The exportable value
+	 * @return Optional temporal type
+	 */
+	protected Optional<TemporalType> getTemporalType(Property<?> property, XLSValue<?> xlsValue) {
+		Optional<TemporalType> fromValue = xlsValue.getTemporalType();
+		if (fromValue.isPresent()) {
+			return fromValue;
+		}
+		return property.getTemporalType();
+	}
+
+	/**
+	 * Get whether to display a numeric value using percent style.
+	 * @param property The property
+	 * @param configuration The property configuration
+	 * @return Whether to display a numeric value using percent style
+	 */
+	protected boolean isPercentStyle(Property<?> property, XLSPropertyConfiguration configuration) {
+		if (property.getConfiguration().hasNotNullParameter(StringValuePresenter.PERCENT_STYLE)) {
+			return property.getConfiguration().getParameter(StringValuePresenter.PERCENT_STYLE).orElse(false);
+		}
+		return false;
+	}
+
+	/**
+	 * Get whether to use the group separator for numbers.
+	 * @param property The property
+	 * @param configuration The property configuration
+	 * @return Whether to use the group separator for numbers
+	 */
+	protected boolean isUseGroupSeparator(Property<?> property, XLSPropertyConfiguration configuration) {
+		if (XLSNumberGroupSeparator.DEFAULT == configuration.getNumberGroupSeparator()) {
+			// check property configuration
+			if (property.getConfiguration().hasNotNullParameter(StringValuePresenter.DISABLE_GROUPING)) {
+				return !property.getConfiguration().getParameter(StringValuePresenter.DISABLE_GROUPING)
+						.orElse(Boolean.TRUE);
+			}
+		}
+		return XLSNumberGroupSeparator.ENABLED == configuration.getNumberGroupSeparator();
+	}
+
+	/**
+	 * Get the decimal positions to display for numbers.
+	 * @param property The property
+	 * @param configuration The property configuration
+	 * @return Optional decimal positions
+	 */
+	protected Optional<Integer> getDecimalPositions(Property<?> property, XLSPropertyConfiguration configuration) {
+		Optional<Integer> fromConfig = configuration.getNumberDecimals().filter(d -> d >= 0);
+		if (fromConfig.isPresent()) {
+			return fromConfig;
+		}
+		if (property.getConfiguration().hasNotNullParameter(StringValuePresenter.DECIMAL_POSITIONS)) {
+			return property.getConfiguration().getParameter(StringValuePresenter.DECIMAL_POSITIONS).filter(d -> d >= 0);
+		}
+		return Optional.empty();
 	}
 
 	/**
