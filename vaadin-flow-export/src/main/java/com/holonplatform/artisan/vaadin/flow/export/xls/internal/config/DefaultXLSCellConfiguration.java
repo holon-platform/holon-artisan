@@ -33,7 +33,10 @@ public class DefaultXLSCellConfiguration implements XLSCellConfiguration {
 	private static final long serialVersionUID = 7156475483174456634L;
 
 	static final XLSCellConfiguration DEFAULT_HEADER_CONFIGURATION = XLSCellConfiguration.builder().bold(true)
-			.backgroundColor(XLSColor.GREY_25_PERCENT).borderBottom(XLSCellBorder.THIN).wrap(true).build();
+			.backgroundColor(XLSColor.LIGHT_CORNFLOWER_BLUE).borderBottom(XLSCellBorder.THIN).wrap(true).build();
+
+	static final XLSCellConfiguration DEFAULT_TOTAL_CONFIGURATION = XLSCellConfiguration.builder()
+			.backgroundColor(XLSColor.LIGHT_YELLOW).borderTop(XLSCellBorder.MEDIUM).build();
 
 	private boolean bold = false;
 	private boolean italic = false;

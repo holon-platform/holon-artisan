@@ -54,6 +54,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	private boolean wrapByDefault = false;
 	private boolean shrinkToFitByDefault = false;
 	private XLSCellConfiguration headerConfiguration = DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
+	private XLSCellConfiguration totalConfiguration = DefaultXLSCellConfiguration.DEFAULT_TOTAL_CONFIGURATION;
 
 	/*
 	 * (non-Javadoc)
@@ -85,6 +86,15 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	public boolean hasTotalFooter(Property<?> property) {
 		ObjectUtils.argumentNotNull(property, "Property must be not null");
 		return totalProperties.contains(property);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#getTotalFooterProperties()
+	 */
+	@Override
+	public Set<Property<?>> getTotalFooterProperties() {
+		return Collections.unmodifiableSet(totalProperties);
 	}
 
 	/*
@@ -166,6 +176,15 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	@Override
 	public XLSCellConfiguration getHeaderConfiguration() {
 		return headerConfiguration;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#getTotalConfiguration()
+	 */
+	@Override
+	public XLSCellConfiguration getTotalConfiguration() {
+		return totalConfiguration;
 	}
 
 	/**
@@ -269,6 +288,15 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 				: DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 	}
 
+	/**
+	 * Set the total cells configuration.
+	 * @param totalConfiguration the total cells configuration to set
+	 */
+	protected void setTotalConfiguration(XLSCellConfiguration totalConfiguration) {
+		this.totalConfiguration = (totalConfiguration != null) ? totalConfiguration
+				: DefaultXLSCellConfiguration.DEFAULT_TOTAL_CONFIGURATION;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#cloneConfiguration()
@@ -290,6 +318,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 		builder.wrapByDefault(isWrapByDefault());
 		builder.shrinkToFitByDefault(isShrinkToFitByDefault());
 		builder.headerConfiguration(getHeaderConfiguration());
+		builder.totalConfiguration(getTotalConfiguration());
 		return builder;
 	}
 
@@ -430,6 +459,17 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 		@Override
 		public Builder headerConfiguration(XLSCellConfiguration headerConfiguration) {
 			this.configuration.setHeaderConfiguration(headerConfiguration);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration.Builder#totalConfiguration(com.
+		 * holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration)
+		 */
+		@Override
+		public Builder totalConfiguration(XLSCellConfiguration totalConfiguration) {
+			this.configuration.setTotalConfiguration(totalConfiguration);
 			return this;
 		}
 

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSConfiguration;
 import com.holonplatform.core.i18n.Localizable;
@@ -50,6 +51,12 @@ public interface XLSConfiguration extends Serializable {
 	 * @return Whether to provide a <em>total</em> footer for given property
 	 */
 	boolean hasTotalFooter(Property<?> property);
+
+	/**
+	 * Get the properties for which to provide a <em>total</em> footer, with the sum of the values.
+	 * @return The properties for which to provide a <em>total</em> footer, empty if none
+	 */
+	Set<Property<?>> getTotalFooterProperties();
 
 	/**
 	 * Get the file version to use.
@@ -105,6 +112,12 @@ public interface XLSConfiguration extends Serializable {
 	 * @return the header cells configuration
 	 */
 	XLSCellConfiguration getHeaderConfiguration();
+
+	/**
+	 * Get the total cells configuration.
+	 * @return the total cells configuration
+	 */
+	XLSCellConfiguration getTotalConfiguration();
 
 	/**
 	 * Clone this configuration.
@@ -257,10 +270,17 @@ public interface XLSConfiguration extends Serializable {
 
 		/**
 		 * Set the header cells configuration.
-		 * @param neaderConfiguration the header cells configuration to set
+		 * @param headerConfiguration the header cells configuration to set
 		 * @return this
 		 */
-		Builder headerConfiguration(XLSCellConfiguration neaderConfiguration);
+		Builder headerConfiguration(XLSCellConfiguration headerConfiguration);
+
+		/**
+		 * Set the total cells configuration.
+		 * @param totalConfiguration the total cells configuration to set
+		 * @return this
+		 */
+		Builder totalConfiguration(XLSCellConfiguration totalConfiguration);
 
 		/**
 		 * Build the {@link XLSConfiguration}.

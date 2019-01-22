@@ -74,7 +74,8 @@ public class TestXLSExporter {
 
 		LocalizationContext lc = LocalizationContext.builder().build();
 		PropertyXLSValueProviderRegistry registry = PropertyXLSValueProviderRegistry.create(true);
-		XLSConfiguration configuration = XLSConfiguration.builder().shrinkToFitByDefault(true).build();
+		XLSConfiguration configuration = XLSConfiguration.builder().shrinkToFitByDefault(true)
+				.withTotalProperty(DBLV).withTotalProperty(ID).withTotalProperty(TEXT).build();
 
 		XLSExporter exporter = XLSExporter.builder(DATASOURCE, SET).configuration(configuration).localizationContext(lc)
 				.registry(registry).build();

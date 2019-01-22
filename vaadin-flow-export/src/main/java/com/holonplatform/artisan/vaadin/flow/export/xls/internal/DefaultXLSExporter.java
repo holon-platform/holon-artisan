@@ -42,6 +42,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
@@ -107,6 +108,7 @@ public class DefaultXLSExporter implements XLSExporter {
 
 	private final Map<FontConfiguration, Font> workbookFonts = new HashMap<>();
 	private final Map<StyleConfiguration, CellStyle> workbookStyles = new HashMap<>();
+	private final Map<Property<?>, CellType> cellTypes = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -197,6 +199,7 @@ public class DefaultXLSExporter implements XLSExporter {
 
 		workbookFonts.clear();
 		workbookStyles.clear();
+		cellTypes.clear();
 
 		LOGGER.debug(() -> "Start XLS export...");
 
@@ -239,7 +242,8 @@ public class DefaultXLSExporter implements XLSExporter {
 			// Totals
 			if (dataEndRowIndex > headerRowIndex) {
 				int dataStartRowIndex = headerRowIndex + 1;
-				// TODO
+				createTotalRow(workbook, sheet, dataEndRowIndex + 1, dataStartRowIndex, dataEndRowIndex, configuration,
+						properties);
 			}
 
 			// Write to stream
@@ -252,6 +256,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			// clean up
 			workbookFonts.clear();
 			workbookStyles.clear();
+			cellTypes.clear();
 		}
 	}
 
@@ -434,13 +439,65 @@ public class DefaultXLSExporter implements XLSExporter {
 				xlsv = XLSValue.stringValue((propertyValue == null) ? null : String.valueOf(propertyValue));
 			}
 			final XLSValue<?> xlsValue = xlsv;
-			setCellValue(cell, xlsValue);
+			CellType cellType = setCellValue(cell, xlsValue);
+			if (cellType != CellType.BLANK && !cellTypes.containsKey(property)) {
+				cellTypes.put(property, cellType);
+			}
 			// style
 			cell.setCellStyle(getOrCreateStyle(workbook, property, configuration,
 					configuration.getPropertyConfiguration(property).map(cfg -> cfg.getCellConfiguration())
 							.orElse(DEFAULT_CELL_CONFIGURATION),
 					xlsValue.getDataFormat().orElseGet(() -> getDefaultDataFormat(xlsValue, propertyConfiguration))));
 		}
+	}
+
+	protected void createTotalRow(Workbook workbook, Sheet sheet, int rowIndex, int dataStartRowIndex,
+			int dataEndRowIndex, XLSConfiguration configuration, List<Property<?>> properties) {
+		if (!configuration.getTotalFooterProperties().isEmpty()) {
+			final Row footerRow = sheet.createRow(rowIndex);
+
+			// style
+			final CellStyle totalStyle = workbook.createCellStyle();
+			configureCellStyle(workbook, totalStyle, configuration, configuration.getTotalConfiguration());
+
+			for (int i = 0; i < properties.size(); i++) {
+				final Property<?> property = properties.get(i);
+				if (configuration.hasTotalFooter(property) && isValidTotalProperty(property)) {
+					// set the total formula
+					final String label = CellReference.convertNumToColString(i);
+
+					StringBuilder sb = new StringBuilder();
+					sb.append("SUM(");
+					sb.append(label);
+					sb.append(dataStartRowIndex + 1);
+					sb.append(":");
+					sb.append(label);
+					sb.append(dataEndRowIndex + 1);
+					sb.append(")");
+
+					final Cell cell = footerRow.createCell(i);
+					cell.setCellType(CellType.FORMULA);
+					cell.setCellFormula(sb.toString());
+					cell.setCellStyle(totalStyle);
+
+				} else {
+					// empty total cell
+					final Cell cell = footerRow.createCell(i);
+					cell.setCellType(CellType.BLANK);
+					cell.setCellStyle(totalStyle);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Checks if a total footer can be provided for given property.
+	 * @param property The property
+	 * @return <code>true</code> if property cell type is numeric
+	 */
+	private boolean isValidTotalProperty(Property<?> property) {
+		final CellType cellType = cellTypes.get(property);
+		return (cellType != null && CellType.NUMERIC == cellType);
 	}
 
 	/**
@@ -486,9 +543,10 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * Set the exportable value as a cell value.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
+	 * @return The cell type
 	 */
-	protected void setCellValue(Cell cell, XLSValue<?> xlsValue) {
-		boolean valueSetted = false;
+	protected CellType setCellValue(Cell cell, XLSValue<?> xlsValue) {
+		Optional<CellType> valueSetted = Optional.empty();
 		switch (xlsValue.getDataType()) {
 		case BOOLEAN:
 			valueSetted = setBooleanValue(cell, xlsValue);
@@ -510,74 +568,76 @@ public class DefaultXLSExporter implements XLSExporter {
 			valueSetted = setStringValue(cell, xlsValue);
 			break;
 		}
-		if (!valueSetted) {
+		if (!valueSetted.isPresent()) {
 			cell.setCellType(CellType.BLANK);
+			return CellType.BLANK;
 		}
+		return valueSetted.get();
 	}
 
 	/**
 	 * Set a boolean type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
-	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 * @return The cell type if value was available and setted
 	 */
-	protected boolean setBooleanValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setBooleanValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
 				// fallback to string
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
-				return true;
+				return CellType.STRING;
 			}
 			cell.setCellType(CellType.BOOLEAN);
 			cell.setCellValue((Boolean) v);
-			return true;
-		}).orElse(Boolean.FALSE);
+			return CellType.BOOLEAN;
+		});
 	}
 
 	/**
 	 * Set a numeric type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
-	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 * @return The cell type if value was available and setted
 	 */
-	protected boolean setNumericValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setNumericValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (!TypeUtils.isNumber(xlsValue.getValueType())) {
 				// fallback to string
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
-				return true;
+				return CellType.STRING;
 			}
 			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(ConversionUtils.convertNumberToTargetClass((Number) v, Double.class));
-			return true;
-		}).orElse(Boolean.FALSE);
+			return CellType.NUMERIC;
+		});
 	}
 
 	/**
 	 * Set a date/time type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
-	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 * @return The cell type if value was available and setted
 	 */
-	protected boolean setDateValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setDateValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (Date.class.isAssignableFrom(xlsValue.getValueType())) {
 				cell.setCellValue((Date) v);
-				return true;
+				return CellType._NONE;
 			}
 			if (Calendar.class.isAssignableFrom(xlsValue.getValueType())) {
 				cell.setCellValue((Calendar) v);
-				return true;
+				return CellType._NONE;
 			}
 			if (LocalDate.class.isAssignableFrom(xlsValue.getValueType())) {
 				cell.setCellValue(ConversionUtils.fromLocalDate((LocalDate) v));
-				return true;
+				return CellType._NONE;
 			}
 			if (LocalDateTime.class.isAssignableFrom(xlsValue.getValueType())) {
 				cell.setCellValue(ConversionUtils.fromLocalDateTime((LocalDateTime) v));
-				return true;
+				return CellType._NONE;
 			}
 			if (LocalTime.class.isAssignableFrom(xlsValue.getValueType())) {
 				final LocalTime time = (LocalTime) v;
@@ -590,62 +650,62 @@ public class DefaultXLSExporter implements XLSExporter {
 				calendar.set(Calendar.MINUTE, time.getMinute());
 				calendar.set(Calendar.SECOND, time.getSecond());
 				cell.setCellValue(calendar.getTime());
-				return true;
+				return CellType._NONE;
 			}
 			// fallback to string
 			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(v));
-			return true;
-		}).orElse(Boolean.FALSE);
+			return CellType.STRING;
+		});
 	}
 
 	/**
 	 * Set a enumeration type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
-	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 * @return The cell type if value was available and setted
 	 */
-	protected boolean setEnumValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setEnumValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			if (!TypeUtils.isEnum(xlsValue.getValueType())) {
 				// fallback to string
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
-				return true;
+				return CellType.STRING;
 			}
 			Enum<?> ev = (Enum<?>) v;
 			cell.setCellType(CellType.STRING);
 			cell.setCellValue(localize(getEnumCaption(ev), ev.name()));
-			return true;
-		}).orElse(Boolean.FALSE);
+			return CellType.STRING;
+		});
 	}
 
 	/**
 	 * Set a String type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
-	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 * @return The cell type if value was available and setted
 	 */
-	protected boolean setStringValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setStringValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(v));
-			return true;
-		}).orElse(Boolean.FALSE);
+			return CellType.STRING;
+		});
 	}
 
 	/**
 	 * Set a formula type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
-	 * @return <code>true</code> if value was available and setted, <code>false</code> otherwise
+	 * @return The cell type if value was available and setted
 	 */
-	protected boolean setFormulaValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setFormulaValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
 			cell.setCellType(CellType.FORMULA);
 			cell.setCellFormula(String.valueOf(v));
-			return true;
-		}).orElse(Boolean.FALSE);
+			return CellType.FORMULA;
+		});
 	}
 
 	/**
@@ -999,7 +1059,7 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 
 	}
-	
+
 	// ------- Support classes for caching purposes
 
 	private static class FontConfiguration implements Serializable {
@@ -1066,7 +1126,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	private static class StyleConfiguration implements Serializable {
 
 		private static final long serialVersionUID = 8361794117038406663L;
-		
+
 		private final XLSCellConfiguration configuration;
 		private final String dataFormat;
 
