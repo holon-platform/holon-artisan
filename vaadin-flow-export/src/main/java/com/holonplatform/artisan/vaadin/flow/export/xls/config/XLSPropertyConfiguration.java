@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 import com.holonplatform.artisan.core.internal.DecodableMode;
+import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSPropertyConfiguration;
 import com.holonplatform.core.i18n.Localizable;
 
@@ -46,6 +47,26 @@ public interface XLSPropertyConfiguration extends Serializable {
 	 * @return the cell configuration
 	 */
 	XLSCellConfiguration getCellConfiguration();
+
+	/**
+	 * Get the boolean values export mode.
+	 * @return the boolean values export mode
+	 */
+	BooleanExportMode getBooleanExportMode();
+
+	/**
+	 * When the boolean export mode is {@link BooleanExportMode#TEXT}, get the text to use for the <code>true</code>
+	 * value.
+	 * @return The text to use to export the boolean <code>true</code> value
+	 */
+	Optional<String> getBooleanTextForTrue();
+
+	/**
+	 * When the boolean export mode is {@link BooleanExportMode#TEXT}, get the text to use for the <code>false</code>
+	 * value.
+	 * @return The text to use to export the boolean <code>false</code> value
+	 */
+	Optional<String> getBooleanTextForFalse();
 
 	/**
 	 * Get the group separator mode for numbers.
@@ -134,6 +155,29 @@ public interface XLSPropertyConfiguration extends Serializable {
 		 * @return this
 		 */
 		Builder decodableMode(DecodableMode decodableMode);
+
+		/**
+		 * Set the boolean values export mode.
+		 * @param booleanExportMode The boolean export mode
+		 * @return this
+		 */
+		Builder booleanExportMode(BooleanExportMode booleanExportMode);
+
+		/**
+		 * When the boolean export mode is {@link BooleanExportMode#TEXT}, set the text to use for the <code>true</code>
+		 * value.
+		 * @param booleanTextForTrue The text to use to export the boolean <code>true</code> value
+		 * @return this
+		 */
+		Builder booleanTextForTrue(String booleanTextForTrue);
+
+		/**
+		 * When the boolean export mode is {@link BooleanExportMode#TEXT}, set the text to use for the
+		 * <code>false</code> value.
+		 * @param booleanTextForFalse The text to use to export the boolean <code>false</code> value
+		 * @return this
+		 */
+		Builder booleanTextForFalse(String booleanTextForFalse);
 
 		/**
 		 * Build the {@link XLSPropertyConfiguration}.

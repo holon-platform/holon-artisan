@@ -22,6 +22,7 @@ import java.io.OutputStream;
 
 import org.junit.jupiter.api.Test;
 
+import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
@@ -77,6 +78,7 @@ public class TestXLSExporter {
 		LocalizationContext lc = LocalizationContext.builder().build();
 		PropertyXLSValueProviderRegistry registry = PropertyXLSValueProviderRegistry.create(true);
 		XLSConfiguration configuration = XLSConfiguration.builder().shrinkToFitByDefault(true)
+				.defaultBooleanExportMode(BooleanExportMode.TEXT)
 				.withTotalProperty(DBLV).withTotalProperty(ID).withTotalProperty(TEXT).build();
 
 		XLSExporter exporter = XLSExporter.builder(DATASOURCE, SET).configuration(configuration).localizationContext(lc)

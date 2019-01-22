@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSColor;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
@@ -53,6 +54,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	private XLSFontSize defaultFontSize = XLSFontSize.AUTOMATIC;
 	private boolean wrapByDefault = false;
 	private boolean shrinkToFitByDefault = false;
+	private BooleanExportMode defaultBooleanExportMode = BooleanExportMode.DEFAULT;
 	private XLSCellConfiguration headerConfiguration = DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 	private XLSCellConfiguration totalConfiguration = DefaultXLSCellConfiguration.DEFAULT_TOTAL_CONFIGURATION;
 
@@ -171,6 +173,15 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 
 	/*
 	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#getDefaultBooleanExportMode()
+	 */
+	@Override
+	public BooleanExportMode getDefaultBooleanExportMode() {
+		return defaultBooleanExportMode;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration#getHeaderConfiguration()
 	 */
 	@Override
@@ -280,6 +291,15 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	}
 
 	/**
+	 * Set the default boolean export mode.
+	 * @param defaultBooleanExportMode the default {@link BooleanExportMode} to set
+	 */
+	protected void setDefaultBooleanExportMode(BooleanExportMode defaultBooleanExportMode) {
+		this.defaultBooleanExportMode = (defaultBooleanExportMode != null) ? defaultBooleanExportMode
+				: BooleanExportMode.DEFAULT;
+	}
+
+	/**
 	 * Set the header cells configuration.
 	 * @param headerConfiguration the header cells configuration to set
 	 */
@@ -317,6 +337,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 		builder.defaultFontSize(getDefaultFontSize());
 		builder.wrapByDefault(isWrapByDefault());
 		builder.shrinkToFitByDefault(isShrinkToFitByDefault());
+		builder.defaultBooleanExportMode(getDefaultBooleanExportMode());
 		builder.headerConfiguration(getHeaderConfiguration());
 		builder.totalConfiguration(getTotalConfiguration());
 		return builder;
@@ -447,6 +468,18 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 		@Override
 		public Builder shrinkToFitByDefault(boolean shrinkToFitByDefault) {
 			this.configuration.setShrinkToFitByDefault(shrinkToFitByDefault);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration.Builder#defaultBooleanExportMode(com
+		 * .holonplatform.artisan.vaadin.flow.export.BooleanExportMode)
+		 */
+		@Override
+		public Builder defaultBooleanExportMode(BooleanExportMode defaultBooleanExportMode) {
+			this.configuration.setDefaultBooleanExportMode(defaultBooleanExportMode);
 			return this;
 		}
 

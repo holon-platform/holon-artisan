@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSConfiguration;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
@@ -106,6 +107,12 @@ public interface XLSConfiguration extends Serializable {
 	 * @return Whether the cells should be auto-sized by default
 	 */
 	boolean isShrinkToFitByDefault();
+
+	/**
+	 * Get the default boolean values export mode.
+	 * @return the default boolean values export mode
+	 */
+	BooleanExportMode getDefaultBooleanExportMode();
 
 	/**
 	 * Get the header cells configuration.
@@ -267,6 +274,13 @@ public interface XLSConfiguration extends Serializable {
 		 * @return this
 		 */
 		Builder shrinkToFitByDefault(boolean shrinkToFitByDefault);
+
+		/**
+		 * Set the default boolean export mode.
+		 * @param defaultBooleanExportMode the default {@link BooleanExportMode} to set
+		 * @return this
+		 */
+		Builder defaultBooleanExportMode(BooleanExportMode defaultBooleanExportMode);
 
 		/**
 		 * Set the header cells configuration.

@@ -49,6 +49,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import com.holonplatform.artisan.core.OperationProgress;
 import com.holonplatform.artisan.core.OperationProgressCallback;
 import com.holonplatform.artisan.core.internal.ArtisanLogger;
+import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
@@ -440,7 +441,7 @@ public class DefaultXLSExporter implements XLSExporter {
 				xlsv = XLSValue.stringValue((propertyValue == null) ? null : String.valueOf(propertyValue));
 			}
 			final XLSValue<?> xlsValue = xlsv;
-			CellType cellType = setCellValue(cell, xlsValue);
+			CellType cellType = setCellValue(cell, xlsValue, configuration, propertyConfiguration);
 			if (cellType != CellType.BLANK && !cellTypes.containsKey(property)) {
 				cellTypes.put(property, cellType);
 			}
@@ -544,13 +545,16 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * Set the exportable value as a cell value.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
+	 * @param configuration Export configuration
+	 * @param propertyConfiguration Export property configuration
 	 * @return The cell type
 	 */
-	protected CellType setCellValue(Cell cell, XLSValue<?> xlsValue) {
+	protected CellType setCellValue(Cell cell, XLSValue<?> xlsValue, XLSConfiguration configuration,
+			XLSPropertyConfiguration propertyConfiguration) {
 		Optional<CellType> valueSetted = Optional.empty();
 		switch (xlsValue.getDataType()) {
 		case BOOLEAN:
-			valueSetted = setBooleanValue(cell, xlsValue);
+			valueSetted = setBooleanValue(cell, xlsValue, configuration, propertyConfiguration);
 			break;
 		case DATE:
 			valueSetted = setDateValue(cell, xlsValue);
@@ -580,19 +584,39 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * Set a boolean type value in given cell.
 	 * @param cell The cell for which to set the value
 	 * @param xlsValue The exportable value to set
+	 * @param configuration Export configuration
+	 * @param propertyConfiguration Export property configuration
 	 * @return The cell type if value was available and setted
 	 */
-	protected Optional<CellType> setBooleanValue(Cell cell, XLSValue<?> xlsValue) {
+	protected Optional<CellType> setBooleanValue(Cell cell, XLSValue<?> xlsValue, XLSConfiguration configuration,
+			XLSPropertyConfiguration propertyConfiguration) {
 		if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
 			// fallback to string
 			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(xlsValue.getValue().orElse(null)));
 			return Optional.of(CellType.STRING);
 		}
-		Boolean booleanValue = xlsValue.getValue().map(v -> (Boolean) v).orElse(Boolean.FALSE);
-		cell.setCellType(CellType.BOOLEAN);
-		cell.setCellValue(booleanValue);
-		return Optional.of(CellType.BOOLEAN);
+		final boolean booleanValue = xlsValue.getValue().map(v -> (Boolean) v).orElse(Boolean.FALSE);
+
+		// check configuration
+		if (propertyConfiguration.getBooleanExportMode() == BooleanExportMode.DEFAULT
+				&& configuration.getDefaultBooleanExportMode() == BooleanExportMode.DEFAULT) {
+			cell.setCellType(CellType.BOOLEAN);
+			cell.setCellValue(booleanValue);
+			return Optional.of(CellType.BOOLEAN);
+		}
+
+		String text = String.valueOf(booleanValue);
+		if (booleanValue) {
+			text = propertyConfiguration.getBooleanTextForTrue().orElseGet(() -> localize(Localizable
+					.of(BooleanExportMode.DEFAULT_TRUE_TEXT, BooleanExportMode.DEFAULT_TRUE_TEXT_MESSAGE_CODE)));
+		} else {
+			text = propertyConfiguration.getBooleanTextForFalse().orElseGet(() -> localize(Localizable
+					.of(BooleanExportMode.DEFAULT_FALSE_TEXT, BooleanExportMode.DEFAULT_FALSE_TEXT_MESSAGE_CODE)));
+		}
+		cell.setCellType(CellType.STRING);
+		cell.setCellValue(text);
+		return Optional.of(CellType.STRING);
 	}
 
 	/**

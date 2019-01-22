@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.internal.config;
 import java.util.Optional;
 
 import com.holonplatform.artisan.core.internal.DecodableMode;
+import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSNumberGroupSeparator;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration;
@@ -38,6 +39,9 @@ public class DefaultXLSPropertyConfiguration implements XLSPropertyConfiguration
 	private XLSNumberGroupSeparator numberGroupSeparator = XLSNumberGroupSeparator.DEFAULT;
 	private Integer numberDecimals = null;
 	private DecodableMode decodableMode;
+	private BooleanExportMode booleanExportMode = BooleanExportMode.DEFAULT;
+	private String booleanTextForTrue = null;
+	private String booleanTextForFalse = null;
 
 	/*
 	 * (non-Javadoc)
@@ -93,31 +97,70 @@ public class DefaultXLSPropertyConfiguration implements XLSPropertyConfiguration
 		return Optional.ofNullable(decodableMode);
 	}
 
-	public void setHeader(Localizable header) {
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration#getBooleanExportMode()
+	 */
+	@Override
+	public BooleanExportMode getBooleanExportMode() {
+		return booleanExportMode;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration#getBooleanTextForTrue()
+	 */
+	@Override
+	public Optional<String> getBooleanTextForTrue() {
+		return Optional.ofNullable(booleanTextForTrue);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration#getBooleanTextForFalse()
+	 */
+	@Override
+	public Optional<String> getBooleanTextForFalse() {
+		return Optional.ofNullable(booleanTextForFalse);
+	}
+
+	protected void setHeader(Localizable header) {
 		this.header = header;
 	}
 
-	public void setHeaderConfiguration(XLSCellConfiguration headerConfiguration) {
+	protected void setHeaderConfiguration(XLSCellConfiguration headerConfiguration) {
 		this.headerConfiguration = (headerConfiguration != null) ? headerConfiguration
 				: DefaultXLSCellConfiguration.DEFAULT_HEADER_CONFIGURATION;
 	}
 
-	public void setCellConfiguration(XLSCellConfiguration cellConfiguration) {
+	protected void setCellConfiguration(XLSCellConfiguration cellConfiguration) {
 		this.cellConfiguration = (cellConfiguration != null) ? cellConfiguration
 				: XLSCellConfiguration.builder().build();
 	}
 
-	public void setNumberGroupSeparator(XLSNumberGroupSeparator numberGroupSeparator) {
+	protected void setNumberGroupSeparator(XLSNumberGroupSeparator numberGroupSeparator) {
 		this.numberGroupSeparator = (numberGroupSeparator != null) ? numberGroupSeparator
 				: XLSNumberGroupSeparator.DEFAULT;
 	}
 
-	public void setNumberDecimals(Integer numberDecimals) {
+	protected void setNumberDecimals(Integer numberDecimals) {
 		this.numberDecimals = numberDecimals;
 	}
 
-	public void setDecodableMode(DecodableMode decodableMode) {
+	protected void setDecodableMode(DecodableMode decodableMode) {
 		this.decodableMode = decodableMode;
+	}
+
+	protected void setBooleanExportMode(BooleanExportMode booleanExportMode) {
+		this.booleanExportMode = (booleanExportMode != null) ? booleanExportMode : BooleanExportMode.DEFAULT;
+	}
+
+	protected void setBooleanTextForTrue(String booleanTextForTrue) {
+		this.booleanTextForTrue = booleanTextForTrue;
+	}
+
+	protected void setBooleanTextForFalse(String booleanTextForFalse) {
+		this.booleanTextForFalse = booleanTextForFalse;
 	}
 
 	/*
@@ -133,6 +176,9 @@ public class DefaultXLSPropertyConfiguration implements XLSPropertyConfiguration
 		builder.numberGroupSeparator(getNumberGroupSeparator());
 		getNumberDecimals().ifPresent(d -> builder.numberDecimals(d));
 		getDecodableMode().ifPresent(m -> builder.decodableMode(m));
+		builder.booleanExportMode(getBooleanExportMode());
+		getBooleanTextForTrue().ifPresent(t -> builder.booleanTextForTrue(t));
+		getBooleanTextForFalse().ifPresent(t -> builder.booleanTextForFalse(t));
 		return builder;
 	}
 
@@ -208,6 +254,42 @@ public class DefaultXLSPropertyConfiguration implements XLSPropertyConfiguration
 		@Override
 		public Builder decodableMode(DecodableMode decodableMode) {
 			instance.setDecodableMode(decodableMode);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration.Builder#booleanExportMode(
+		 * com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode)
+		 */
+		@Override
+		public Builder booleanExportMode(BooleanExportMode booleanExportMode) {
+			instance.setBooleanExportMode(booleanExportMode);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration.Builder#booleanTextForTrue(
+		 * java.lang.String)
+		 */
+		@Override
+		public Builder booleanTextForTrue(String booleanTextForTrue) {
+			instance.setBooleanTextForTrue(booleanTextForTrue);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration.Builder#booleanTextForFalse(
+		 * java.lang.String)
+		 */
+		@Override
+		public Builder booleanTextForFalse(String booleanTextForFalse) {
+			instance.setBooleanTextForFalse(booleanTextForFalse);
 			return this;
 		}
 
