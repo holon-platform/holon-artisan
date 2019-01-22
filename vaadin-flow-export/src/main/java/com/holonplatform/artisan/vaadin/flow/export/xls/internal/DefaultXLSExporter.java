@@ -372,7 +372,8 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * @return The last data row index
 	 */
 	protected int createDataRows(Workbook workbook, Sheet sheet, int lastRowIndex, XLSConfiguration configuration,
-			List<Property<?>> properties, OperationProgressCallback exportProgressCallback, int totalSteps, int lastStep) {
+			List<Property<?>> properties, OperationProgressCallback exportProgressCallback, int totalSteps,
+			int lastStep) {
 
 		final PropertyXLSValueProviderRegistry registry = getPropertyXLSValueProviderRegistry()
 				.orElseGet(() -> PropertyXLSValueProviderRegistry.get());
@@ -582,17 +583,16 @@ public class DefaultXLSExporter implements XLSExporter {
 	 * @return The cell type if value was available and setted
 	 */
 	protected Optional<CellType> setBooleanValue(Cell cell, XLSValue<?> xlsValue) {
-		return xlsValue.getValue().map(v -> {
-			if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
-				// fallback to string
-				cell.setCellType(CellType.STRING);
-				cell.setCellValue(String.valueOf(v));
-				return CellType.STRING;
-			}
-			cell.setCellType(CellType.BOOLEAN);
-			cell.setCellValue((Boolean) v);
-			return CellType.BOOLEAN;
-		});
+		if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
+			// fallback to string
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(String.valueOf(xlsValue.getValue().orElse(null)));
+			return Optional.of(CellType.STRING);
+		}
+		Boolean booleanValue = xlsValue.getValue().map(v -> (Boolean) v).orElse(Boolean.FALSE);
+		cell.setCellType(CellType.BOOLEAN);
+		cell.setCellValue(booleanValue);
+		return Optional.of(CellType.BOOLEAN);
 	}
 
 	/**
