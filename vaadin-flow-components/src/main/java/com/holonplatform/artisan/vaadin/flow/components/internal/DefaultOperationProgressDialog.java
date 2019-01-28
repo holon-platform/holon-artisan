@@ -20,15 +20,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
-import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
+import com.holonplatform.artisan.core.internal.ArtisanLogger;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.core.operation.OperationProgress;
 import com.holonplatform.artisan.core.operation.OperationProgressCallback;
@@ -38,6 +36,7 @@ import com.holonplatform.auth.AuthContext;
 import com.holonplatform.core.Context;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.i18n.LocalizationContext;
+import com.holonplatform.core.internal.Logger;
 import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.PropertyRendererRegistry;
 import com.holonplatform.core.property.PropertyValuePresenterRegistry;
@@ -66,6 +65,8 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 	private static final long serialVersionUID = 4036015960558648086L;
 
+	protected static final Logger LOGGER = ArtisanLogger.create();
+
 	private static final int DEFAULT_POLLING_INTERVAL = 200;
 
 	private static final Localizable ABORT_BUTTON_TEXT = Localizable.of("Abort",
@@ -86,8 +87,6 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 	private final Operation<T> operation;
 
-	private final ExecutorService executor;
-
 	/**
 	 * Constructor.
 	 * @param operation The operation to execute
@@ -96,8 +95,6 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		super();
 		ObjectUtils.argumentNotNull(operation, "The operation must be not null");
 		this.operation = operation;
-
-		this.executor = Executors.newSingleThreadExecutor();
 
 		// id
 		setId("holon-artisan-operation-progress-dialog");
@@ -111,7 +108,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		this.progressBar = new ProgressBar();
 		this.progressBar.setWidth("100%");
 		this.progressBar.setMin(0);
-		this.progressBar.setIndeterminate(true);
+		this.progressBar.setIndeterminate(false);
 
 		this.toolbar = new HorizontalLayout();
 		this.toolbar.addClassName("toolbar");
@@ -121,6 +118,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		this.abortButton.setIcon(VaadinIcon.CLOSE.create());
 		this.abortButton.addClassName("abort");
 		this.abortButton.addClickListener(e -> onAbortRequested());
+		this.abortButton.setDisableOnClick(true);
 		this.abortButton.setVisible(false);
 
 		this.toolbar.add(this.abortButton);
@@ -211,7 +209,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 * @see com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog#execute()
 	 */
 	@Override
-	public T execute() throws InterruptedOperationException, OperationExecutionException {
+	public CompletionStage<T> execute() {
 		// configure text
 		getText().ifPresent(t -> message.setText(LocalizationProvider.localize(t).orElse("")));
 		// configure button
@@ -229,13 +227,6 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 			throw new IllegalStateException("No UI available");
 		}
 
-		// check push mode
-		final boolean pushDisabled = (ui.getPushConfiguration().getPushMode() == PushMode.DISABLED);
-		final int currentPollInterval = ui.getPollInterval();
-		if (pushDisabled && currentPollInterval < 0) {
-			ui.setPollInterval(DEFAULT_POLLING_INTERVAL);
-		}
-
 		// context resources
 		final Map<String, Object> contextResources = new HashMap<>();
 		LocalizationContext.getCurrent().ifPresent(c -> contextResources.put(LocalizationContext.CONTEXT_KEY, c));
@@ -245,44 +236,46 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 		getContextResourcesConfigurators().forEach(c -> c.accept(contextResources));
 
-		// execute
-		final Future<T> future = executor
-				.submit(new OperationRunner<>(ui, progressBar, operation, contextResources, () -> operationProgress));
-		try {
-			return future.get();
-		} catch (InterruptedOperationException ioe) {
-			// abort requested
-			throw ioe;
-		} catch (Exception e) {
-			// error
-			throw new OperationExecutionException(e);
-		} finally {
-			close();
+		final boolean usePolling = (ui.getPushConfiguration().getPushMode() == PushMode.DISABLED)
+				&& ui.getPollInterval() < 0;
 
-			if (pushDisabled && currentPollInterval < 0) {
-				ui.setPollInterval(-1);
-			}
-
-			executor.shutdown();
+		// setup
+		if (usePolling) {
+			UIUtils.access(ui, theUi -> {
+				theUi.setPollInterval(DEFAULT_POLLING_INTERVAL);
+			});
 		}
+
+		return CompletableFuture.supplyAsync(new OperationRunner<>(ui, this, usePolling, progressBar, operation,
+				contextResources, () -> operationProgress), Executors.newSingleThreadExecutor());
+
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog#interrupt()
+	 * @see
+	 * com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog#execute(java.util.function.Consumer)
 	 */
 	@Override
-	public void interrupt() {
-		try {
-			executor.shutdownNow();
-		} finally {
-			close();
-		}
+	public void execute(Consumer<T> thenExecute) {
+		ObjectUtils.argumentNotNull(thenExecute, "The Consumer must be not null");
+		final UI ui = getUI().orElseGet(() -> UI.getCurrent());
+		execute().thenAccept(result -> {
+			UIUtils.access(ui, theUi -> {
+				thenExecute.accept(result);
+			});
+		});
 	}
 
-	private final class OperationRunner<V> implements Callable<V>, OperationProgressCallback {
+	/**
+	 * Operation runner.
+	 * @param <V> Operation result type
+	 */
+	private final class OperationRunner<V> implements Supplier<V>, OperationProgressCallback {
 
 		private final UI ui;
+		private final Dialog dialog;
+		private final boolean usePolling;
 		private final ProgressBar progress;
 		private final Operation<V> task;
 		private final Map<String, Object> contextResources;
@@ -291,20 +284,25 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		/**
 		 * Constructor.
 		 * @param ui The UI reference
+		 * @param dialog The dialog
+		 * @param usePolling Whether to use UI polling
 		 * @param progress The progress bar to use to notify the operation progress
 		 * @param task The operation to execute
 		 * @param contextResources Optional context resources to bind to the thread scope
 		 * @param operationProgressSupplier The operation progress supplier
 		 */
-		public OperationRunner(UI ui, ProgressBar progress, Operation<V> task, Map<String, Object> contextResources,
-				Supplier<OperationProgress> operationProgressSupplier) {
+		public OperationRunner(UI ui, Dialog dialog, boolean usePolling, ProgressBar progress, Operation<V> task,
+				Map<String, Object> contextResources, Supplier<OperationProgress> operationProgressSupplier) {
 			super();
 			ObjectUtils.argumentNotNull(ui, "The UI must be not null");
+			ObjectUtils.argumentNotNull(dialog, "The Dialog must be not null");
 			ObjectUtils.argumentNotNull(progress, "The ProgressBar must be not null");
 			ObjectUtils.argumentNotNull(task, "The operation must be not null");
 			ObjectUtils.argumentNotNull(operationProgressSupplier, "The operation progress supplier must be not null");
 			ObjectUtils.argumentNotNull(contextResources, "Context resources map must be not null");
 			this.ui = ui;
+			this.dialog = dialog;
+			this.usePolling = usePolling;
 			this.progress = progress;
 			this.task = task;
 			this.operationProgressSupplier = operationProgressSupplier;
@@ -313,25 +311,37 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 		/*
 		 * (non-Javadoc)
-		 * @see java.util.concurrent.Callable#call()
+		 * @see java.util.function.Supplier#get()
 		 */
 		@Override
-		public V call() throws Exception {
+		public V get() {
 			// context resources
 			Context.get().threadScope().ifPresent(scope -> {
 				this.contextResources.entrySet().forEach(e -> {
 					scope.put(e.getKey(), e.getValue());
 				});
 			});
+
 			// execute
 			try {
-				return this.task.execute(this);
+				return this.task.execute(OperationRunner.this);
 			} finally {
+				// close dialog
+				UIUtils.access(this.ui, ui -> {
+					this.dialog.close();
+				});
+				// clean up resources
 				Context.get().threadScope().ifPresent(scope -> {
 					this.contextResources.keySet().forEach(k -> {
 						scope.remove(k);
 					});
 				});
+				// check polling
+				if (usePolling) {
+					UIUtils.access(ui, theUi -> {
+						theUi.setPollInterval(-1);
+					});
+				}
 			}
 		}
 
@@ -346,13 +356,16 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 			if (state != null && OperationProgress.ABORT == state) {
 				return state;
 			}
-			UIUtils.access(this.ui, () -> {
+			UIUtils.access(this.ui, ui -> {
 				if (totalSteps <= 0) {
 					// indeterminate
 					if (!this.progress.isIndeterminate()) {
 						this.progress.setIndeterminate(true);
 					}
 				} else {
+					if (this.progress.isIndeterminate()) {
+						this.progress.setIndeterminate(false);
+					}
 					double total = totalSteps;
 					// check total
 					if (this.progress.getMax() != total) {

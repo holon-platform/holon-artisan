@@ -15,12 +15,11 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components;
 
-import java.util.Optional;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 
-import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
-import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
-import com.holonplatform.artisan.vaadin.flow.components.builders.BaseOperationProgressDialogBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperationProgressDialogBuilder;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
@@ -37,31 +36,16 @@ public interface OperationProgressDialog<T> extends HasStyle, HasSize {
 	/**
 	 * Execute the operation and return the result. The dialog is opened just before the operation execution starts and
 	 * closed when the operation execution ends.
-	 * @return The operation result
-	 * @throws InterruptedOperationException If the operation was interrupted by the user
-	 * @throws OperationExecutionException If an error occurred during operation execution
+	 * @return A {@link CompletionStage} to handle the operation result
 	 */
-	T execute() throws InterruptedOperationException, OperationExecutionException;
+	CompletionStage<T> execute();
 
 	/**
-	 * Execute the operation and return the result or an empty Optional if the operation was interrupted by the user.
-	 * @return The operation result, or an empty Optional if the operation was interrupted by the user
-	 * @throws OperationExecutionException If an error occurred during operation execution
+	 * Execute the operation and then execute the given Consumer, providing the operation result.
+	 * @param thenExecute The Consumer to invoke with the operation result at the end of the operation execution (not
+	 *        null)
 	 */
-	default Optional<T> executeOrInterrupt() throws OperationExecutionException {
-		try {
-			return Optional.ofNullable(execute());
-		} catch (@SuppressWarnings("unused") InterruptedOperationException e) {
-			return Optional.empty();
-		}
-	}
-
-	/**
-	 * Interrupts the operation execution forcibly, closing the dialog.
-	 */
-	void interrupt();
-
-	// ------- builders
+	void execute(Consumer<T> thenExecute);
 
 	/**
 	 * Get a builder to create a {@link OperationProgressDialog} for given operation.
@@ -71,11 +55,6 @@ public interface OperationProgressDialog<T> extends HasStyle, HasSize {
 	 */
 	static <T> OperationProgressDialogBuilder<T> builder(Operation<T> operation) {
 		return new DefaultOperationProgressDialogBuilder<>(operation);
-	}
-
-	public interface OperationProgressDialogBuilder<T>
-			extends BaseOperationProgressDialogBuilder<T, OperationProgressDialogBuilder<T>> {
-
 	}
 
 }

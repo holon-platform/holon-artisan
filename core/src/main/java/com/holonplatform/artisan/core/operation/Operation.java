@@ -16,6 +16,7 @@
 package com.holonplatform.artisan.core.operation;
 
 import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
+import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 
 /**
  * Function which can be used to execute an operation and return the operation result, using a
@@ -33,8 +34,8 @@ public interface Operation<T> {
 	 * @param callback The callback which can be used to notify the operation progress
 	 * @return The operation result
 	 * @throws InterruptedOperationException If the operation was interrupted
-	 * @throws Exception If an error occurred
+	 * @throws OperationExecutionException If an error occurred
 	 */
-	T execute(OperationProgressCallback callback) throws InterruptedOperationException, Exception;
+	T execute(OperationProgressCallback callback) throws InterruptedOperationException, OperationExecutionException;
 
 }

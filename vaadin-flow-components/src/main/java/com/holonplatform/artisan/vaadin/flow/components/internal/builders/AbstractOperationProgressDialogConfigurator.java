@@ -19,8 +19,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.holonplatform.artisan.core.operation.Operation;
-import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
-import com.holonplatform.artisan.vaadin.flow.components.builders.BaseOperationProgressDialogBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultOperationProgressDialog;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator.BaseButtonConfigurator;
@@ -28,17 +27,17 @@ import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasSize
 import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasStyleConfigurator;
 
 /**
- * Abstract {@link BaseOperationProgressDialogBuilder} implementation.
+ * Abstract {@link OperationProgressDialogConfigurator} implementation.
  * 
- * @param <B> Concrete builder type
+ * @param <C> Concrete configurator type
  * @param <T> Operation result type
  *
  * @since 1.0.0
  */
-public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOperationProgressDialogBuilder<T, B>>
-		implements BaseOperationProgressDialogBuilder<T, B> {
+public abstract class AbstractOperationProgressDialogConfigurator<T, C extends OperationProgressDialogConfigurator<T, C>>
+		implements OperationProgressDialogConfigurator<T, C> {
 
-	private final DefaultOperationProgressDialog<T> instance;
+	protected final DefaultOperationProgressDialog<T> instance;
 
 	private final DefaultHasStyleConfigurator styleConfigurator;
 	private final DefaultHasSizeConfigurator sizeConfigurator;
@@ -47,14 +46,14 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * Constructor.
 	 * @param operation The operation to execute (not null)
 	 */
-	public AbstractOperationProgressDialogBuilder(Operation<T> operation) {
+	public AbstractOperationProgressDialogConfigurator(Operation<T> operation) {
 		super();
 		this.instance = new DefaultOperationProgressDialog<>(operation);
 		this.styleConfigurator = new DefaultHasStyleConfigurator(this.instance);
 		this.sizeConfigurator = new DefaultHasSizeConfigurator(this.instance);
 	}
 
-	protected abstract B getBuilder();
+	protected abstract C getBuilder();
 
 	/*
 	 * (non-Javadoc)
@@ -62,7 +61,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * String)
 	 */
 	@Override
-	public B id(String id) {
+	public C id(String id) {
 		this.instance.setId(id);
 		return getBuilder();
 	}
@@ -74,7 +73,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * lang.String)
 	 */
 	@Override
-	public B withThemeName(String themeName) {
+	public C withThemeName(String themeName) {
 		this.instance.getElement().getThemeList().add(themeName);
 		return getBuilder();
 	}
@@ -85,7 +84,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogConfigurator#abortable(boolean)
 	 */
 	@Override
-	public B abortable(boolean abortable) {
+	public C abortable(boolean abortable) {
 		this.instance.setAbortable(abortable);
 		return getBuilder();
 	}
@@ -96,7 +95,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * abortButtonConfigurator(java.util.function.Consumer)
 	 */
 	@Override
-	public B abortButtonConfigurator(Consumer<BaseButtonConfigurator> abortButtonConfigurator) {
+	public C abortButtonConfigurator(Consumer<BaseButtonConfigurator> abortButtonConfigurator) {
 		this.instance.setAbortConfigurator(abortButtonConfigurator);
 		return getBuilder();
 	}
@@ -107,7 +106,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * withContextResourcesConfigurator(java.util.function.Consumer)
 	 */
 	@Override
-	public B withContextResourcesConfigurator(Consumer<Map<String, Object>> contextResourcesConfigurator) {
+	public C withContextResourcesConfigurator(Consumer<Map<String, Object>> contextResourcesConfigurator) {
 		this.instance.addContextResourcesConfigurator(contextResourcesConfigurator);
 		return getBuilder();
 	}
@@ -117,7 +116,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
 	 */
 	@Override
-	public B width(String width) {
+	public C width(String width) {
 		this.sizeConfigurator.width(width);
 		return getBuilder();
 	}
@@ -127,7 +126,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#height(java.lang.String)
 	 */
 	@Override
-	public B height(String height) {
+	public C height(String height) {
 		this.sizeConfigurator.height(height);
 		return getBuilder();
 	}
@@ -137,7 +136,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.String[])
 	 */
 	@Override
-	public B styleNames(String... styleNames) {
+	public C styleNames(String... styleNames) {
 		this.styleConfigurator.styleNames(styleNames);
 		return getBuilder();
 	}
@@ -147,7 +146,7 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleName(java.lang.String)
 	 */
 	@Override
-	public B styleName(String styleName) {
+	public C styleName(String styleName) {
 		this.styleConfigurator.styleName(styleName);
 		return getBuilder();
 	}
@@ -158,18 +157,9 @@ public abstract class AbstractOperationProgressDialogBuilder<T, B extends BaseOp
 	 * Localizable)
 	 */
 	@Override
-	public B text(Localizable text) {
+	public C text(Localizable text) {
 		this.instance.setText(text);
 		return getBuilder();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.BaseOperationProgressDialogBuilder#build()
-	 */
-	@Override
-	public OperationProgressDialog<T> build() {
-		return instance;
 	}
 
 }

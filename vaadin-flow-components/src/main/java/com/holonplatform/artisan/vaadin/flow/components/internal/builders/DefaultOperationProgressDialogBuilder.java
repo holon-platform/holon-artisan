@@ -17,7 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
-import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog.OperationProgressDialogBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogBuilder;
 
 /**
  * Default {@link OperationProgressDialog} builder.
@@ -27,7 +27,7 @@ import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog.
  * @since 1.0.0
  */
 public class DefaultOperationProgressDialogBuilder<T>
-		extends AbstractOperationProgressDialogBuilder<T, OperationProgressDialogBuilder<T>>
+		extends AbstractOperationProgressDialogConfigurator<T, OperationProgressDialogBuilder<T>>
 		implements OperationProgressDialogBuilder<T> {
 
 	/**
@@ -46,6 +46,15 @@ public class DefaultOperationProgressDialogBuilder<T>
 	@Override
 	protected DefaultOperationProgressDialogBuilder<T> getBuilder() {
 		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.BaseOperationProgressDialogBuilder#build()
+	 */
+	@Override
+	public OperationProgressDialog<T> build() {
+		return instance;
 	}
 
 }

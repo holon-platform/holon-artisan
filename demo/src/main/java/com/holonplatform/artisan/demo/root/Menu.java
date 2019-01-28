@@ -1,6 +1,7 @@
 package com.holonplatform.artisan.demo.root;
 
 import com.holonplatform.artisan.demo.window.HomePage;
+import com.holonplatform.artisan.demo.window.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.window.WindowPage;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -31,6 +32,11 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		btnWindow.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		btnWindow.addClickListener(event -> getUI().get().navigate(WindowPage.class));
 		btnWindow.setWidth("100%");
+		
+		Button btnProgress = new Button("Operation progress dialog");
+		btnProgress.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btnProgress.addClickListener(event -> getUI().get().navigate(OperationProgressDialogPage.class));
+		btnProgress.setWidth("100%");
 
 		Image img = new Image("https://holon-platform.com/contrib/themes/Holon-theme/dist/img/pittogramma_platform.svg",
 				"Holon Java Platform");
@@ -48,6 +54,7 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		vl.add(lblArtisan);
 		vl.add(btnHome);
 		vl.add(btnWindow);
+		vl.add(btnProgress);
 
 		vl.setHorizontalComponentAlignment(Alignment.CENTER, img);
 		vl.setHorizontalComponentAlignment(Alignment.CENTER, lblArtisan);

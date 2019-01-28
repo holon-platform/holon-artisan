@@ -15,10 +15,9 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
-import java.util.Optional;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 
-import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
-import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 
 /**
@@ -29,8 +28,8 @@ import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
  *
  * @since 1.0.0
  */
-public interface BaseOperationProgressDialogBuilder<T, B extends BaseOperationProgressDialogBuilder<T, B>>
-		extends OperationProgressDialogConfigurator<T, B> {
+public interface OperationProgressDialogBuilder<T>
+		extends OperationProgressDialogConfigurator<T, OperationProgressDialogBuilder<T>> {
 
 	/**
 	 * Build the operation progress dialog.
@@ -41,22 +40,19 @@ public interface BaseOperationProgressDialogBuilder<T, B extends BaseOperationPr
 	/**
 	 * Build the dialog, execute the operation and return the result. The dialog is opened just before the operation
 	 * execution starts and closed when the operation execution ends.
-	 * @return The operation result
-	 * @throws InterruptedOperationException If the operation was interrupted by the user
-	 * @throws OperationExecutionException If an error occurred during operation execution
+	 * @return A {@link CompletionStage} to handle the operation result
 	 */
-	default T execute() throws InterruptedOperationException, OperationExecutionException {
+	default CompletionStage<T> execute() {
 		return build().execute();
 	}
 
 	/**
-	 * Build the dialog, execute the operation and return the result or an empty Optional if the operation was
-	 * interrupted by the user.
-	 * @return The operation result, or an empty Optional if the operation was interrupted by the user
-	 * @throws OperationExecutionException If an error occurred during operation execution
+	 * Build the dialog, execute the operation and then execute the given Consumer, providing the operation result.
+	 * @param thenExecute The Consumer to invoke with the operation result at the end of the operation execution (not
+	 *        null)
 	 */
-	default Optional<T> executeOrInterrupt() throws OperationExecutionException {
-		return build().executeOrInterrupt();
+	default void execute(Consumer<T> thenExecute) {
+		build().execute(thenExecute);
 	}
 
 }
