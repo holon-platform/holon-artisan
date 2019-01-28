@@ -18,6 +18,8 @@ package com.holonplatform.artisan.vaadin.flow.components.builders;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
+import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator.BaseButtonConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
@@ -62,6 +64,21 @@ public interface OperationProgressDialogConfigurator<T, C extends OperationProgr
 	 * @return this
 	 */
 	C abortButtonConfigurator(Consumer<BaseButtonConfigurator> abortButtonConfigurator);
+
+	/**
+	 * Set the {@link OperationExecutionException} exception handler.
+	 * @param operationExecutionExceptionHandler The {@link OperationExecutionException} handler to set (not null)
+	 * @return this
+	 */
+	C operationExecutionExceptionHandler(Consumer<OperationExecutionException> operationExecutionExceptionHandler);
+
+	/**
+	 * Set the {@link InterruptedOperationException} exception handler.
+	 * @param interruptedOperationExceptionHandler The {@link InterruptedOperationException} handler to set (not null)
+	 * @return this
+	 */
+	C interruptedOperationExceptionHandler(
+			Consumer<InterruptedOperationException> interruptedOperationExceptionHandler);
 
 	/**
 	 * Add a context resources configurator.

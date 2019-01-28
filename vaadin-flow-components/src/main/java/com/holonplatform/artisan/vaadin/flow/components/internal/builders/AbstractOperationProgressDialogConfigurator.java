@@ -18,6 +18,8 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
+import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultOperationProgressDialog;
@@ -97,6 +99,30 @@ public abstract class AbstractOperationProgressDialogConfigurator<T, C extends O
 	@Override
 	public C abortButtonConfigurator(Consumer<BaseButtonConfigurator> abortButtonConfigurator) {
 		this.instance.setAbortConfigurator(abortButtonConfigurator);
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogConfigurator#
+	 * operationExecutionExceptionHandler(java.util.function.Consumer)
+	 */
+	@Override
+	public C operationExecutionExceptionHandler(
+			Consumer<OperationExecutionException> operationExecutionExceptionHandler) {
+		this.instance.setOperationExecutionExceptionHandler(operationExecutionExceptionHandler);
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogConfigurator#
+	 * interruptedOperationExceptionHandler(java.util.function.Consumer)
+	 */
+	@Override
+	public C interruptedOperationExceptionHandler(
+			Consumer<InterruptedOperationException> interruptedOperationExceptionHandler) {
+		this.instance.setInterruptedOperationExceptionHandler(interruptedOperationExceptionHandler);
 		return getBuilder();
 	}
 

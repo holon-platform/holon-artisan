@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.demo.window;
 
+import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
@@ -50,6 +51,19 @@ public class OperationProgressDialogPage extends VerticalLayout {
 			throw new RuntimeException(e);
 		}
 	};
+	
+	private final static Operation<String> OPERATION3 = callback -> {
+		try {
+			callback.onProgress(3, 0);
+			Thread.sleep(2000);
+			callback.onProgress(3, 1);
+			
+			throw new OperationExecutionException("Test error");
+			
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	};
 
 	public OperationProgressDialogPage() {
 		super();
@@ -69,6 +83,12 @@ public class OperationProgressDialogPage extends VerticalLayout {
 		btn = new Button("Operation without progress steps");
 		btn.addClickListener(e -> {
 			OperationProgressDialog.builder(OPERATION2).text("Operation running...").execute();
+		});
+		add(btn);
+		
+		btn = new Button("Operation with exception");
+		btn.addClickListener(e -> {
+			OperationProgressDialog.builder(OPERATION3).text("Operation running...").execute(r -> Notification.show(r));
 		});
 		add(btn);
 	}
