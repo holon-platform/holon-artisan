@@ -28,7 +28,7 @@ public class OperationProgressDialogPage extends VerticalLayout {
 
 	private static final long serialVersionUID = -6654611442660393224L;
 
-	private final static Operation<String> OPERATION = callback -> {
+	private final static Operation<String> OPERATION1 = callback -> {
 		try {
 			callback.onProgress(3, 0);
 			Thread.sleep(2000);
@@ -43,18 +43,32 @@ public class OperationProgressDialogPage extends VerticalLayout {
 		}
 	};
 
+	private final static Runnable OPERATION2 = () -> {
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	};
+
 	public OperationProgressDialogPage() {
 		super();
 
 		Button btn = new Button("Operation progress steps");
 		btn.addClickListener(e -> {
-			OperationProgressDialog.builder(OPERATION).text("Operation running...").execute(r -> Notification.show(r));
+			OperationProgressDialog.builder(OPERATION1).text("Operation running...").execute(r -> Notification.show(r));
 		});
 		add(btn);
 
 		btn = new Button("Operation progress steps with abort");
 		btn.addClickListener(e -> {
-			OperationProgressDialog.builder(OPERATION).text("Operation running...").abortable(true).execute();
+			OperationProgressDialog.builder(OPERATION1).text("Operation running...").abortable(true).execute();
+		});
+		add(btn);
+
+		btn = new Button("Operation without progress steps");
+		btn.addClickListener(e -> {
+			OperationProgressDialog.builder(OPERATION2).text("Operation running...").execute();
 		});
 		add(btn);
 	}

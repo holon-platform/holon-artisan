@@ -15,12 +15,16 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
+import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperationProgressDialogBuilder;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
 
@@ -51,10 +55,50 @@ public interface OperationProgressDialog<T> extends HasStyle, HasSize {
 	 * Get a builder to create a {@link OperationProgressDialog} for given operation.
 	 * @param <T> Operation result type
 	 * @param operation The operation to execute (not null)
-	 * @return The {@link OperationProgressDialog} builder
+	 * @return A new {@link OperationProgressDialog} builder
 	 */
 	static <T> OperationProgressDialogBuilder<T> builder(Operation<T> operation) {
 		return new DefaultOperationProgressDialogBuilder<>(operation);
+	}
+
+	/**
+	 * Get a builder to create a {@link OperationProgressDialog} for given {@link Callable} operation, without progress
+	 * steps notification.
+	 * @param <T> Operation result type
+	 * @param operation The operation to execute (not null)
+	 * @return A new {@link OperationProgressDialog} builder
+	 */
+	static <T> OperationProgressDialogBuilder<T> builder(Callable<T> operation) {
+		ObjectUtils.argumentNotNull(operation, "Operation must be not null");
+		return builder(callback -> {
+			try {
+				callback.onProgress(0, 0);
+				return operation.call();
+			} catch (InterruptedOperationException ioe) {
+				throw ioe;
+			} catch (Exception e) {
+				throw new OperationExecutionException(e);
+			}
+		});
+	}
+
+	/**
+	 * Get a builder to create a {@link OperationProgressDialog} for given {@link Runnable} operation, without progress
+	 * steps notification.
+	 * <p>
+	 * A {@link Void} type {@link OperationProgressDialog} is created and <code>null</code> is always returned as
+	 * operation result.
+	 * </p>
+	 * @param operation The operation to execute (not null)
+	 * @return A new {@link OperationProgressDialog} builder
+	 */
+	static OperationProgressDialogBuilder<Void> builder(Runnable operation) {
+		ObjectUtils.argumentNotNull(operation, "Operation must be not null");
+		return builder(callback -> {
+			callback.onProgress(0, 0);
+			operation.run();
+			return null;
+		});
 	}
 
 }
