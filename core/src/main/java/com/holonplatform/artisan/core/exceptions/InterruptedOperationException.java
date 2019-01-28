@@ -13,23 +13,30 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.core;
+package com.holonplatform.artisan.core.exceptions;
 
 /**
- * Callback interface for operation progress steps notification.
+ * Exception to notify a <em>controlled</em> operation interruption.
  *
  * @since 1.0.0
  */
-@FunctionalInterface
-public interface OperationProgressCallback {
+public class InterruptedOperationException extends RuntimeException {
+
+	private static final long serialVersionUID = 6155405386145474783L;
 
 	/**
-	 * Invoked when the operation progress changes.
-	 * @param totalSteps Total steps count
-	 * @param completedSteps Completed steps count
-	 * @return The operation progress outcome: {@link OperationProgress#PROCEED} to proceed with the operation or
-	 *         {@link OperationProgress#ABORT} to abort it, if supported
+	 * Default constructor.
 	 */
-	OperationProgress onProgress(int totalSteps, int completedSteps);
+	public InterruptedOperationException() {
+		super();
+	}
+
+	/**
+	 * Constructor with message.
+	 * @param message The message
+	 */
+	public InterruptedOperationException(String message) {
+		super(message);
+	}
 
 }

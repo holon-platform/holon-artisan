@@ -20,10 +20,10 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.holonplatform.artisan.core.OperationProgress;
-import com.holonplatform.artisan.core.OperationProgressCallback;
+import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
+import com.holonplatform.artisan.core.operation.OperationProgress;
+import com.holonplatform.artisan.core.operation.OperationProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
-import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.DefaultXLSExporter;
 import com.holonplatform.core.i18n.Localizable;
@@ -50,7 +50,7 @@ public interface XLSExporter {
 	/**
 	 * Export the data to the provided {@link OutputStream}.
 	 * @param outputStream The {@link OutputStream} to use to write the exported data (not null)
-	 * @throws InterruptedExportException If the export was interrupted
+	 * @throws InterruptedOperationException If the export was interrupted
 	 * @throws ExportException If an error occurred
 	 */
 	default void export(OutputStream outputStream) throws ExportException {
@@ -61,7 +61,7 @@ public interface XLSExporter {
 	 * Export the data to the provided {@link OutputStream}.
 	 * @param outputStream The {@link OutputStream} to use to write the exported data (not null)
 	 * @param exportProgressCallback The callback function to invoke when the export progress changes (not null)
-	 * @throws InterruptedExportException If the export was interrupted
+	 * @throws InterruptedOperationException If the export was interrupted
 	 * @throws ExportException If an error occurred
 	 */
 	void export(OutputStream outputStream, OperationProgressCallback exportProgressCallback) throws ExportException;

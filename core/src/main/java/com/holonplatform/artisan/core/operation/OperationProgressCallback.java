@@ -13,23 +13,23 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.export.exceptions;
+package com.holonplatform.artisan.core.operation;
 
 /**
- * Exception to notify the data export was interrupted.
+ * Callback interface for operation progress steps notification.
  *
  * @since 1.0.0
  */
-public class InterruptedExportException extends RuntimeException {
-
-	private static final long serialVersionUID = 6155405386145474783L;
+@FunctionalInterface
+public interface OperationProgressCallback {
 
 	/**
-	 * Constructor with error message
-	 * @param message Error message
+	 * Invoked when the operation progress changes.
+	 * @param totalSteps Total steps count
+	 * @param completedSteps Completed steps count
+	 * @return The operation progress outcome: {@link OperationProgress#PROCEED} to proceed with the operation or
+	 *         {@link OperationProgress#ABORT} to abort it, if supported
 	 */
-	public InterruptedExportException(String message) {
-		super(message);
-	}
+	OperationProgress onProgress(int totalSteps, int completedSteps);
 
 }

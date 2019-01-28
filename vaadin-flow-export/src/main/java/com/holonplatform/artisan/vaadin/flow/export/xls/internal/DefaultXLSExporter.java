@@ -50,12 +50,12 @@ import org.apache.poi.ss.util.DateFormatConverter;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
-import com.holonplatform.artisan.core.OperationProgress;
-import com.holonplatform.artisan.core.OperationProgressCallback;
+import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
 import com.holonplatform.artisan.core.internal.ArtisanLogger;
+import com.holonplatform.artisan.core.operation.OperationProgress;
+import com.holonplatform.artisan.core.operation.OperationProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
-import com.holonplatform.artisan.vaadin.flow.export.exceptions.InterruptedExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
@@ -1028,7 +1028,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			int completedSteps) {
 		final OperationProgress state = exportProgressCallback.onProgress(totalSteps, completedSteps);
 		if (OperationProgress.ABORT.equals(state)) {
-			throw new InterruptedExportException("Export interrupted by external request");
+			throw new InterruptedOperationException("Export interrupted by external request");
 		}
 	}
 

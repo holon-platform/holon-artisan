@@ -18,11 +18,20 @@
 	<url>https://holon-platform.com</url>
 
 	<dependencies>
+
+		<!-- Artisan core -->
+		<dependency>
+			<groupId>com.holon-platform.artisan</groupId>
+			<artifactId>holon-artisan-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- Holon Vaadin flow -->
 		<dependency>
 			<groupId>com.holon-platform.vaadin</groupId>
 			<artifactId>holon-vaadin-flow</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<build>
