@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -111,6 +112,8 @@ public class DefaultXLSExporter implements XLSExporter {
 	private final DataProvider<PropertyBox, ?> dataSource;
 	private final PropertySet<?> propertySet;
 
+	private Function<Property<?>, Optional<String>> columnHeaderProvider;
+
 	private XLSConfiguration configuration;
 	private PropertyXLSValueProviderRegistry propertyXLSValueProviderRegistry;
 	private LocalizationContext localizationContext;
@@ -138,6 +141,14 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected void setConfiguration(XLSConfiguration configuration) {
 		this.configuration = configuration;
+	}
+
+	/**
+	 * Set the column header provider.
+	 * @param columnHeaderProvider the column header provider to set
+	 */
+	protected void setColumnHeaderProvider(Function<Property<?>, Optional<String>> columnHeaderProvider) {
+		this.columnHeaderProvider = columnHeaderProvider;
 	}
 
 	/**
@@ -189,10 +200,19 @@ public class DefaultXLSExporter implements XLSExporter {
 	}
 
 	/**
-	 * @return the localizationContext
+	 * Get the {@link LocalizationContext} to use.
+	 * @return the localization context to use, if available
 	 */
 	protected Optional<LocalizationContext> getLocalizationContext() {
 		return Optional.ofNullable(localizationContext);
+	}
+
+	/**
+	 * Get the column header provider.
+	 * @return the column header provider function, if available
+	 */
+	protected Optional<Function<Property<?>, Optional<String>>> getColumnHeaderProvider() {
+		return Optional.ofNullable(columnHeaderProvider);
 	}
 
 	/*
@@ -362,9 +382,10 @@ public class DefaultXLSExporter implements XLSExporter {
 						return headerStyle;
 					}).orElse(defaultHeaderStyle));
 			// value
-			cell.setCellValue(localize(
-					configuration.getPropertyConfiguration(property).flatMap(cfg -> cfg.getHeader()).orElse(property),
-					property.getName()));
+			final String header = getColumnHeaderProvider().flatMap(chp -> chp.apply(property))
+					.orElseGet(() -> localize(configuration.getPropertyConfiguration(property)
+							.flatMap(cfg -> cfg.getHeader()).orElse(property), property.getName()));
+			cell.setCellValue(header);
 		}
 	}
 
@@ -1166,6 +1187,18 @@ public class DefaultXLSExporter implements XLSExporter {
 		@Override
 		public Builder configuration(XLSConfiguration configuration) {
 			this.exporter.setConfiguration(configuration);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter.Builder#columnHeaderProvider(java.util.function.
+		 * Function)
+		 */
+		@Override
+		public Builder columnHeaderProvider(Function<Property<?>, Optional<String>> columnHeaderProvider) {
+			this.exporter.setColumnHeaderProvider(columnHeaderProvider);
 			return this;
 		}
 

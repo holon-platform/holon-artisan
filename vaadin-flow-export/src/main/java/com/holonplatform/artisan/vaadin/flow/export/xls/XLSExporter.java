@@ -16,6 +16,8 @@
 package com.holonplatform.artisan.vaadin.flow.export.xls;
 
 import java.io.OutputStream;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.core.OperationProgress;
@@ -107,6 +109,13 @@ public interface XLSExporter {
 		 * @return this
 		 */
 		Builder configuration(XLSConfiguration configuration);
+
+		/**
+		 * Set the function to use to obtain the header text for a property.
+		 * @param columnHeaderProvider The column header provider function.
+		 * @return this
+		 */
+		Builder columnHeaderProvider(Function<Property<?>, Optional<String>> columnHeaderProvider);
 
 		/**
 		 * Set the {@link PropertyXLSValueProviderRegistry} to use.
