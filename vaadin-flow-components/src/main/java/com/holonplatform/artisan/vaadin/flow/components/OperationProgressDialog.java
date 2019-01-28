@@ -19,6 +19,9 @@ import java.util.Optional;
 
 import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
+import com.holonplatform.artisan.core.operation.Operation;
+import com.holonplatform.artisan.vaadin.flow.components.builders.BaseOperationProgressDialogBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperationProgressDialogBuilder;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
 
@@ -57,5 +60,22 @@ public interface OperationProgressDialog<T> extends HasStyle, HasSize {
 	 * Interrupts the operation execution forcibly, closing the dialog.
 	 */
 	void interrupt();
+
+	// ------- builders
+
+	/**
+	 * Get a builder to create a {@link OperationProgressDialog} for given operation.
+	 * @param <T> Operation result type
+	 * @param operation The operation to execute (not null)
+	 * @return The {@link OperationProgressDialog} builder
+	 */
+	static <T> OperationProgressDialogBuilder<T> builder(Operation<T> operation) {
+		return new DefaultOperationProgressDialogBuilder<>(operation);
+	}
+
+	public interface OperationProgressDialogBuilder<T>
+			extends BaseOperationProgressDialogBuilder<T, OperationProgressDialogBuilder<T>> {
+
+	}
 
 }

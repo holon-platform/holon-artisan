@@ -15,6 +15,10 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -30,8 +34,13 @@ import com.holonplatform.artisan.core.operation.OperationProgress;
 import com.holonplatform.artisan.core.operation.OperationProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.UIUtils;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
+import com.holonplatform.auth.AuthContext;
+import com.holonplatform.core.Context;
 import com.holonplatform.core.i18n.Localizable;
+import com.holonplatform.core.i18n.LocalizationContext;
 import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.core.property.PropertyRendererRegistry;
+import com.holonplatform.core.property.PropertyValuePresenterRegistry;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator.BaseButtonConfigurator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
@@ -70,6 +79,8 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 	private Localizable text;
 	private Consumer<BaseButtonConfigurator> abortConfigurator;
+
+	private List<Consumer<Map<String, Object>>> contextResourcesConfigurators = new LinkedList<>();
 
 	private volatile OperationProgress operationProgress = OperationProgress.PROCEED;
 
@@ -156,6 +167,15 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	}
 
 	/**
+	 * Add a context resources configurator.
+	 * @param contextResourcesConfigurator the context resources configurator to add
+	 */
+	public void addContextResourcesConfigurator(Consumer<Map<String, Object>> contextResourcesConfigurator) {
+		ObjectUtils.argumentNotNull(contextResourcesConfigurator, "Context resources configurator must be not null");
+		this.contextResourcesConfigurators.add(contextResourcesConfigurator);
+	}
+
+	/**
 	 * Get the text to display, if any.
 	 * @return the optional text
 	 */
@@ -169,6 +189,14 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 */
 	protected Optional<Consumer<BaseButtonConfigurator>> getAbortConfigurator() {
 		return Optional.ofNullable(abortConfigurator);
+	}
+
+	/**
+	 * Get the context resources configurator, if available.
+	 * @return Optional context resources configurator
+	 */
+	protected List<Consumer<Map<String, Object>>> getContextResourcesConfigurators() {
+		return contextResourcesConfigurators;
 	}
 
 	/**
@@ -190,23 +218,36 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		final BaseButtonConfigurator configurator = ButtonConfigurator.configure(this.abortButton);
 		configurator.text(ABORT_BUTTON_TEXT);
 		getAbortConfigurator().ifPresent(c -> c.accept(configurator));
+
 		// open the dialog
 		open();
+
 		// UI
 		final UI ui = getUI().orElseGet(() -> UI.getCurrent());
 		if (ui == null) {
 			close();
 			throw new IllegalStateException("No UI available");
 		}
+
 		// check push mode
 		final boolean pushDisabled = (ui.getPushConfiguration().getPushMode() == PushMode.DISABLED);
 		final int currentPollInterval = ui.getPollInterval();
 		if (pushDisabled && currentPollInterval < 0) {
 			ui.setPollInterval(DEFAULT_POLLING_INTERVAL);
 		}
+
+		// context resources
+		final Map<String, Object> contextResources = new HashMap<>();
+		LocalizationContext.getCurrent().ifPresent(c -> contextResources.put(LocalizationContext.CONTEXT_KEY, c));
+		AuthContext.getCurrent().ifPresent(c -> contextResources.put(AuthContext.CONTEXT_KEY, c));
+		contextResources.put(PropertyValuePresenterRegistry.CONTEXT_KEY, PropertyValuePresenterRegistry.get());
+		contextResources.put(PropertyRendererRegistry.CONTEXT_KEY, PropertyRendererRegistry.get());
+
+		getContextResourcesConfigurators().forEach(c -> c.accept(contextResources));
+
 		// execute
 		final Future<T> future = executor
-				.submit(new OperationRunner<>(ui, progressBar, operation, () -> operationProgress));
+				.submit(new OperationRunner<>(ui, progressBar, operation, contextResources, () -> operationProgress));
 		try {
 			return future.get();
 		} catch (InterruptedOperationException ioe) {
@@ -244,6 +285,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		private final UI ui;
 		private final ProgressBar progress;
 		private final Operation<V> task;
+		private final Map<String, Object> contextResources;
 		private final Supplier<OperationProgress> operationProgressSupplier;
 
 		/**
@@ -251,19 +293,22 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		 * @param ui The UI reference
 		 * @param progress The progress bar to use to notify the operation progress
 		 * @param task The operation to execute
+		 * @param contextResources Optional context resources to bind to the thread scope
 		 * @param operationProgressSupplier The operation progress supplier
 		 */
-		public OperationRunner(UI ui, ProgressBar progress, Operation<V> task,
+		public OperationRunner(UI ui, ProgressBar progress, Operation<V> task, Map<String, Object> contextResources,
 				Supplier<OperationProgress> operationProgressSupplier) {
 			super();
 			ObjectUtils.argumentNotNull(ui, "The UI must be not null");
 			ObjectUtils.argumentNotNull(progress, "The ProgressBar must be not null");
 			ObjectUtils.argumentNotNull(task, "The operation must be not null");
 			ObjectUtils.argumentNotNull(operationProgressSupplier, "The operation progress supplier must be not null");
+			ObjectUtils.argumentNotNull(contextResources, "Context resources map must be not null");
 			this.ui = ui;
 			this.progress = progress;
 			this.task = task;
 			this.operationProgressSupplier = operationProgressSupplier;
+			this.contextResources = contextResources;
 		}
 
 		/*
@@ -272,7 +317,22 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 		 */
 		@Override
 		public V call() throws Exception {
-			return this.task.execute(this);
+			// context resources
+			Context.get().threadScope().ifPresent(scope -> {
+				this.contextResources.entrySet().forEach(e -> {
+					scope.put(e.getKey(), e.getValue());
+				});
+			});
+			// execute
+			try {
+				return this.task.execute(this);
+			} finally {
+				Context.get().threadScope().ifPresent(scope -> {
+					this.contextResources.keySet().forEach(k -> {
+						scope.remove(k);
+					});
+				});
+			}
 		}
 
 		/*
