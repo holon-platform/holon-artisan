@@ -1,8 +1,8 @@
 package com.holonplatform.artisan.demo.root;
 
-import com.holonplatform.artisan.demo.window.HomePage;
-import com.holonplatform.artisan.demo.window.OperationProgressDialogPage;
-import com.holonplatform.artisan.demo.window.WindowPage;
+import com.holonplatform.artisan.demo.components.HomePage;
+import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
+import com.holonplatform.artisan.demo.components.WindowPage;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Image;

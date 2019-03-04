@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.demo.window;
+package com.holonplatform.artisan.demo.components;
 
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
