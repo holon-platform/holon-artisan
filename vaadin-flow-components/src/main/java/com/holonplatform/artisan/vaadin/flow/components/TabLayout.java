@@ -145,9 +145,10 @@ public interface TabLayout extends HasComponent {
 		 * <p>
 		 * This method is invoked by the tabs container each time the bound tab is selected.
 		 * </p>
+		 * @param tab The tab for which to provide the content
 		 * @return The tab content {@link Component}
 		 */
-		Component getContent();
+		Component getContent(Tab tab);
 
 	}
 
@@ -221,25 +222,6 @@ public interface TabLayout extends HasComponent {
 		 * @return whether this tab is the selected tab
 		 */
 		boolean isSelected();
-
-		/**
-		 * Get the content if this tab, if available.
-		 * @return Optional tab content
-		 */
-		Optional<Component> getContent();
-
-		/**
-		 * Sets the flex grow property for the content of this tab. The flex grow property specifies what amount of the
-		 * available space inside the parent layout the component should take up.
-		 * @param contentFlexGrow the proportion of the available space the tab content should take up
-		 */
-		void setContentFlexGrow(double contentFlexGrow);
-
-		/**
-		 * Get the flex grow property for the content of this tab.
-		 * @return The content flex grow, <code>-1</code> if not setted
-		 */
-		double getContentFlexGrow();
 
 	}
 

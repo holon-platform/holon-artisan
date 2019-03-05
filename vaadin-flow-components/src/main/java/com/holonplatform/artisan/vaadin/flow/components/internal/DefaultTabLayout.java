@@ -41,11 +41,13 @@ public class DefaultTabLayout implements TabLayout {
 
 	private final Tabs tabsComponent;
 
-	private final List<Tab> tabs = new LinkedList<>();
+	private final List<DefaultTab> tabs = new LinkedList<>();
 
 	private final TabsContent<?> layout;
 
 	private boolean built = false;
+
+	private boolean fireSelectionChangeEvent = true;
 
 	/**
 	 * Constructor.
@@ -205,7 +207,9 @@ public class DefaultTabLayout implements TabLayout {
 	public Registration addSelectedTabChangeListener(SelectedTabChangeListener listener) {
 		ObjectUtils.argumentNotNull(listener, "Listener must be not null");
 		final com.vaadin.flow.shared.Registration r = getTabsComponent().addSelectedChangeListener(event -> {
-			listener.onSelectedTabChange(new DefaultSelectedTabChangeEvent(this, event.isFromClient()));
+			if (fireSelectionChangeEvent) {
+				listener.onSelectedTabChange(new DefaultSelectedTabChangeEvent(this, event.isFromClient()));
+			}
 		});
 		return () -> r.remove();
 	}
@@ -218,12 +222,41 @@ public class DefaultTabLayout implements TabLayout {
 	public void build(int selectTabIndex) {
 		this.built = true;
 		// reset selection
-		getTabsComponent().setSelectedIndex(-1);
-		// select tab
-		int index = (selectTabIndex > -1) ? selectTabIndex : 0;
-		if (index > -1 && index < tabs.size()) {
-			setSelectedTabIndex(index);
+		try {
+			fireSelectionChangeEvent = false;
+			getTabsComponent().setSelectedIndex(-1);
+		} finally {
+			fireSelectionChangeEvent = true;
 		}
+		// select tab
+		if (selectTabIndex < 0 || selectTabIndex >= tabs.size()) {
+			setSelectedTabIndex(getFirstSelectableTabIndex());
+		} else {
+			setSelectedTabIndex(selectTabIndex);
+		}
+	}
+
+	/**
+	 * Get the index of the first selectable (enabled and visible) tab, if available.
+	 * @return the index of the first selectable tab, or <code>-1</code> if none
+	 */
+	private int getFirstSelectableTabIndex() {
+		for (int i = 0; i < tabs.size(); i++) {
+			final Tab tab = tabs.get(i);
+			if (tab.isEnabled() && tab.isVisible()) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Get the given tab index is selectable (valid and the tab is enabled and visible).
+	 * @param index Tab index
+	 * @return whether the given tab index is selectable
+	 */
+	private boolean isSelectableTabIndex(int index) {
+		return getTabAt(index).filter(t -> t.isEnabled() && t.isVisible()).isPresent();
 	}
 
 	/**
@@ -243,6 +276,18 @@ public class DefaultTabLayout implements TabLayout {
 	}
 
 	/**
+	 * Get the tab at given index, if available.
+	 * @param index The tab index
+	 * @return Optional tab
+	 */
+	protected Optional<DefaultTab> getTabAtIndex(int index) {
+		if (index >= 0 && index < tabs.size()) {
+			return Optional.ofNullable(tabs.get(index));
+		}
+		return Optional.empty();
+	}
+
+	/**
 	 * Should be invoked when selected tab changes.
 	 * @param index Selected index, <code>-1</code> if none
 	 */
@@ -254,7 +299,7 @@ public class DefaultTabLayout implements TabLayout {
 			}
 			if (index > -1) {
 				// get current content
-				getTabAt(index).filter(t -> t.isEnabled() && t.isVisible()).ifPresent(t -> {
+				getTabAtIndex(index).filter(t -> t.isEnabled() && t.isVisible()).ifPresent(t -> {
 					t.getContent().ifPresent(c -> {
 						// add content
 						layout.getFlexComponent().add(c);
@@ -262,6 +307,8 @@ public class DefaultTabLayout implements TabLayout {
 						if (t.getContentFlexGrow() > -1) {
 							layout.getFlexComponent().setFlexGrow(t.getContentFlexGrow(), c);
 						}
+						// check selection consumer
+						t.getTabSelectedConsumer().ifPresent(tsc -> tsc.accept(t));
 					});
 				});
 			}
@@ -298,10 +345,10 @@ public class DefaultTabLayout implements TabLayout {
 		int tabIndex = getTabsComponent().indexOf(tab);
 		if (tabIndex > -1 && getTabsComponent().getSelectedIndex() == tabIndex) {
 			int newIndex = getTabsComponent().getSelectedIndex() - 1;
-			if (newIndex >= 0) {
+			if (newIndex >= 0 && isSelectableTabIndex(newIndex)) {
 				getTabsComponent().setSelectedIndex(newIndex);
 			} else {
-				getTabsComponent().setSelectedIndex(-1);
+				getTabsComponent().setSelectedIndex(getFirstSelectableTabIndex());
 			}
 		}
 	}

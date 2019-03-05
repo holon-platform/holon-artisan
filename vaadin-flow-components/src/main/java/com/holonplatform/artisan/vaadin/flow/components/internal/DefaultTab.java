@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
@@ -41,6 +42,8 @@ public class DefaultTab implements Tab, HasSize {
 
 	private double contentFlexGrow = -1;
 
+	private Consumer<Tab> tabSelectedConsumer;
+
 	private BiConsumer<com.vaadin.flow.component.tabs.Tab, Boolean> tabEnableChangeCallback;
 	private BiConsumer<com.vaadin.flow.component.tabs.Tab, Boolean> tabVisibleChangeCallback;
 
@@ -55,6 +58,14 @@ public class DefaultTab implements Tab, HasSize {
 		ObjectUtils.argumentNotNull(content, "Tab content be not null");
 		this.tab = tab;
 		this.content = content;
+	}
+
+	/**
+	 * Get the tab content, if available.
+	 * @return Optional tab content
+	 */
+	Optional<Component> getContent() {
+		return Optional.ofNullable(content.getContent(this));
 	}
 
 	/**
@@ -167,31 +178,20 @@ public class DefaultTab implements Tab, HasSize {
 		return getTab().isSelected();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab#getContent()
+	/**
+	 * Set the tab content flex grow ratio.
+	 * @param contentFlexGrow The tab content flex grow
 	 */
-	@Override
-	public Optional<Component> getContent() {
-		return Optional.ofNullable(content.getContent());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab#setContentFlexGrow(double)
-	 */
-	@Override
 	public void setContentFlexGrow(double contentFlexGrow) {
 		if (contentFlexGrow >= -1) {
 			this.contentFlexGrow = contentFlexGrow;
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab#getContentFlexGrow()
+	/**
+	 * Get the tab content flex grow ratio.
+	 * @return The tab content flex grow
 	 */
-	@Override
 	public double getContentFlexGrow() {
 		return contentFlexGrow;
 	}
@@ -219,6 +219,22 @@ public class DefaultTab implements Tab, HasSize {
 	 */
 	public void addTabComponent(Component... components) {
 		getTab().add(components);
+	}
+
+	/**
+	 * Get the tab selection consumer, if available.
+	 * @return Optional tab selection consumer
+	 */
+	public Optional<Consumer<Tab>> getTabSelectedConsumer() {
+		return Optional.ofNullable(tabSelectedConsumer);
+	}
+
+	/**
+	 * Set the tab selection consumer.
+	 * @param tabSelectedConsumer the tab selection consumer to set
+	 */
+	public void setTabSelectedConsumer(Consumer<Tab> tabSelectedConsumer) {
+		this.tabSelectedConsumer = tabSelectedConsumer;
 	}
 
 	/*

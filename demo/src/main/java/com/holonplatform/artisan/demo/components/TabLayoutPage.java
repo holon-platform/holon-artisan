@@ -29,6 +29,13 @@ public class TabLayoutPage extends VerticalLayout {
 		super();
 		add(new RouterLink("Standard tabs", Tabs1Page.class));
 		add(new RouterLink("Tabs flex grow and selection", Tabs2Page.class));
+		add(new RouterLink("Full size tabs", Tabs3Page.class));
+		add(new RouterLink("Disabled tabs", Tabs4Page.class));
+		add(new RouterLink("Hidden tabs", Tabs5Page.class));
+		add(new RouterLink("Show/hide tabs", Tabs6Page.class));
+		add(new RouterLink("Tab icons", Tabs7Page.class));
+		add(new RouterLink("Tab content provider", Tabs8Page.class));
+		add(new RouterLink("Tab content selection", Tabs9Page.class));
 	}
 
 }

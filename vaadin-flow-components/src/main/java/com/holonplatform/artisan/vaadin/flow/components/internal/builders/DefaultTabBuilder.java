@@ -15,6 +15,9 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.function.Consumer;
+
+import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
 import com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder.TabBuilder;
@@ -125,7 +128,7 @@ public class DefaultTabBuilder implements TabBuilder {
 	 * com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder.TabBuilder#contentFlexGrow(double)
 	 */
 	@Override
-	public TabBuilder contentFlexGrow(double flexGrow) {
+	public TabBuilder flexGrow(double flexGrow) {
 		instance.setContentFlexGrow(flexGrow);
 		return this;
 	}
@@ -137,6 +140,18 @@ public class DefaultTabBuilder implements TabBuilder {
 	@Override
 	public TabBuilder selected() {
 		parentBuilder.setSelectTab(instance);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder.TabBuilder#onTabSelected(java.util.function
+	 * .Consumer)
+	 */
+	@Override
+	public TabBuilder onTabSelected(Consumer<Tab> onTabSelected) {
+		instance.setTabSelectedConsumer(onTabSelected);
 		return this;
 	}
 

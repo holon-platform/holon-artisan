@@ -4,6 +4,7 @@ import com.holonplatform.artisan.demo.components.HomePage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Image;
@@ -68,6 +69,18 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		vl.add(btn);
 
 		add(vl);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.vaadin.flow.router.RouterLayout#showRouterLayoutContent(com.vaadin.flow.component.HasElement)
+	 */
+	@Override
+	public void showRouterLayoutContent(HasElement content) {
+		if (content != null) {
+			getElement().appendChild(content.getElement());
+			setFlexGrow(1, content);
+		}
 	}
 
 }

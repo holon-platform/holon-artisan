@@ -15,8 +15,11 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
+import java.util.function.Consumer;
+
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.SelectedTabChangeListener;
+import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
 import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.vaadin.flow.components.HasComponent;
@@ -60,7 +63,7 @@ public interface TabsBuilder
 	 * @return A builder to configure the tab
 	 */
 	default TabBuilder withTab(Component component) {
-		return withTab((TabContent) () -> component);
+		return withTab(tab -> component);
 	}
 
 	/**
@@ -74,7 +77,7 @@ public interface TabsBuilder
 	 */
 	default TabBuilder withTab(HasComponent component) {
 		ObjectUtils.argumentNotNull(component, "The component provider must be not null");
-		return withTab((TabContent) () -> component.getComponent());
+		return withTab(tab -> component.getComponent());
 	}
 
 	/**
@@ -134,34 +137,32 @@ public interface TabsBuilder
 		TabBuilder visible(boolean visible);
 
 		/**
+		 * Set the flex grow property for the tab content. This is relative to the parent tab layout.
+		 * @param flexGrow the proportion of the available space the content should take up
+		 * @return this
+		 */
+		TabBuilder flexGrow(double flexGrow);
+
+		/**
 		 * Sets the flex grow property of this tab. The flex grow property specifies what amount of the available space
 		 * inside the layout the component should take up, proportionally to the other components.
-		 * <p>
-		 * For example, if all components have a flex grow property value set to 1, the remaining space in the layout
-		 * will be distributed equally to all components inside the layout. If you set a flex grow property of one
-		 * component to 2, that component will take twice the available space as the other components, and so on.
-		 * </p>
-		 * <p>
-		 * Setting to flex grow property value 0 disables the expansion of the component. Negative values are not
-		 * allowed.
-		 * </p>
 		 * @param flexGrow the proportion of the available space the tab should take up
 		 * @return this
 		 */
 		TabBuilder tabFlexGrow(double flexGrow);
 
 		/**
-		 * Set the flex grow property for the tab content. This is relative to the parent tab layout.
-		 * @param flexGrow the proportion of the available space the content should take up
-		 * @return this
-		 */
-		TabBuilder contentFlexGrow(double flexGrow);
-
-		/**
 		 * Set this tab as the selected tab.
 		 * @return this
 		 */
 		TabBuilder selected();
+
+		/**
+		 * Set a consumer to be invoked each time this tab is selected.
+		 * @param onTabSelected The tab selection consumer
+		 * @return this
+		 */
+		TabBuilder onTabSelected(Consumer<Tab> onTabSelected);
 
 		/**
 		 * Add the tab.
