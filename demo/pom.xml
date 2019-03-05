@@ -29,6 +29,11 @@
 			<artifactId>holon-artisan-vaadin-flow-components</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.holon-platform.artisan</groupId>
+			<artifactId>holon-artisan-vaadin-flow-export</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<!-- Logback -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

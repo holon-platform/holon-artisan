@@ -1055,7 +1055,12 @@ public class DefaultXLSExporter implements XLSExporter {
 		if (!ctx.isPresent()) {
 			ctx = LocalizationContext.getCurrent();
 		}
-		return ctx.map(lc -> lc.getMessage(message, true)).orElse(defaultText);
+		return ctx.map(lc -> lc.getMessage(message, true)).orElseGet(() -> {
+			if (message.getMessage() != null && !message.getMessage().trim().equals("")) {
+				return message.getMessage();
+			}
+			return defaultText;
+		});
 	}
 
 	/**
