@@ -29,12 +29,14 @@ import java.io.OutputStream;
 
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.demo.root.Menu;
+import com.holonplatform.artisan.demo.servlet.FileDownloadServlet;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -70,7 +72,7 @@ public class ExportPage extends VerticalLayout {
 					.configuration(XLSConfiguration.builder().title("Export title").build()) // TODO config from UI
 					.build();
 
-			final File file = File.createTempFile("export", null);
+			final File file = File.createTempFile("export", ".xlsx");
 
 			OperationProgressDialog.builder(callback -> {
 				try (OutputStream out = new FileOutputStream(file)) {
@@ -80,8 +82,11 @@ public class ExportPage extends VerticalLayout {
 				}
 				return file.getName();
 			}).abortable(true).text("Exporting...").execute(fileName -> {
-				// TODO download file
-				Notification.show("Exported: " + fileName);
+				// download file
+				UI.getCurrent().getPage().executeJavaScript(
+						"window.open('" + FileDownloadServlet.build("http://localhost:8080").fileName(fileName)
+								.fileType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+								.removeAfterDowload().build() + "','_blank');");
 			});
 
 		} catch (IOException e) {

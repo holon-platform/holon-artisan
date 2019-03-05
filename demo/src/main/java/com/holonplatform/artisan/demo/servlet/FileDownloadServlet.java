@@ -19,6 +19,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,10 +30,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @WebServlet("/download")
 public class FileDownloadServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+
+	public static final String PARAMETER_FILE_NAME = "fn";
+	public static final String PARAMETER_FILE_PATH = "fp";
+	public static final String PARAMETER_FILE_REMOVE = "rm";
+	public static final String PARAMETER_FILE_MIME_TYPE = "ct";
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileDownloadServlet.class);
 
 	private static final String DEFAULT_CONTENT_TYPE = "application/octet-stream";
 
@@ -40,35 +54,29 @@ public class FileDownloadServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		// file name
-		final String fileName = request.getParameter("fn");
-		if (fileName == null || fileName.trim().equals("")) {
+		final String fileName = getRequestParameter(request, PARAMETER_FILE_NAME).orElse(null);
+		if (fileName == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file name");
 			return;
 		}
 
-		// file path
-		String filePath = request.getParameter("fp");
-		if (filePath == null || filePath.trim().equals("")) {
-			// defaults to temp
-			filePath = System.getProperty("java.io.tmpdir");
-		}
+		// file path (defaults to temp)
+		final String filePath = getRequestParameter(request, PARAMETER_FILE_PATH)
+				.orElseGet(() -> System.getProperty("java.io.tmpdir"));
 
 		// remove after download
-		boolean removeAfterDownload = false;
-		String remove = request.getParameter("rm");
-		if (remove != null && remove.trim().equalsIgnoreCase("true")) {
-			removeAfterDownload = true;
-		}
+		final boolean removeAfterDownload = getRequestParameter(request, PARAMETER_FILE_REMOVE)
+				.map(v -> v.equalsIgnoreCase("true")).orElse(false);
 
 		// content type
-		String contentType = request.getParameter("ct");
-		if (contentType == null || contentType.trim().equals("")) {
-			contentType = DEFAULT_CONTENT_TYPE;
-		}
+		final String contentType = getRequestParameter(request, PARAMETER_FILE_MIME_TYPE).orElse(DEFAULT_CONTENT_TYPE);
 
-		final File file = new File(filePath + fileName);
+		final String fileCompletePath = filePath + fileName;
+
+		// check file exists
+		final File file = new File(fileCompletePath);
 		if (!file.exists()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "File not found [" + filePath + fileName + "]");
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "File not found [" + fileCompletePath + "]");
 			return;
 		}
 
@@ -92,9 +100,111 @@ public class FileDownloadServlet extends HttpServlet {
 				try {
 					file.delete();
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error("Failed to remove file [" + fileCompletePath + "] after download", e);
 				}
 			}
+		}
+
+	}
+
+	private static Optional<String> getRequestParameter(HttpServletRequest request, String name) {
+		if (name != null) {
+			String value = request.getParameter(name);
+			if (value != null && !value.trim().equals("")) {
+				try {
+					return Optional.ofNullable(URLDecoder.decode(value.trim(), "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					LOGGER.error("Failed to decode servlet request parameter [" + name + "]", e);
+				}
+			}
+		}
+		return Optional.empty();
+	}
+
+	private static String encodeRequestParameter(String value) {
+		if (value == null) {
+			return "";
+		}
+		try {
+			return URLEncoder.encode(value, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOGGER.error("Failed to encode servlet request parameter [" + value + "]", e);
+			return value;
+		}
+	}
+
+	public static Builder build(String servletBasePath) {
+		return new DefaultBuilder(servletBasePath);
+	}
+
+	public interface Builder {
+
+		Builder fileName(String fileName);
+
+		Builder filePath(String filePath);
+
+		Builder fileType(String mimeType);
+
+		Builder removeAfterDowload();
+
+		String build();
+
+	}
+
+	private static class DefaultBuilder implements Builder {
+
+		private final StringBuilder sb;
+		private boolean firstParameter = true;
+
+		public DefaultBuilder(String servletBasePath) {
+			super();
+			if (servletBasePath == null) {
+				throw new IllegalArgumentException("Servlet base path must be not null");
+			}
+			sb = new StringBuilder();
+			sb.append(servletBasePath);
+			if (!servletBasePath.endsWith("/")) {
+				sb.append("/");
+			}
+			sb.append("download");
+		}
+
+		private Builder addRequestParameter(String name, String value) {
+			if (firstParameter) {
+				sb.append("?");
+				firstParameter = false;
+			} else {
+				sb.append("&");
+			}
+			sb.append(name);
+			sb.append("=");
+			sb.append(encodeRequestParameter(value));
+			return this;
+		}
+
+		@Override
+		public Builder fileName(String fileName) {
+			return addRequestParameter(PARAMETER_FILE_NAME, fileName);
+		}
+
+		@Override
+		public Builder filePath(String filePath) {
+			return addRequestParameter(PARAMETER_FILE_PATH, filePath);
+		}
+
+		@Override
+		public Builder fileType(String mimeType) {
+			return addRequestParameter(PARAMETER_FILE_MIME_TYPE, mimeType);
+		}
+
+		@Override
+		public Builder removeAfterDowload() {
+			return addRequestParameter(PARAMETER_FILE_REMOVE, "true");
+		}
+
+		@Override
+		public String build() {
+			return sb.toString();
 		}
 
 	}
