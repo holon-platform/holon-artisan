@@ -144,6 +144,12 @@ public interface TabsBuilder
 		TabBuilder flexGrow(double flexGrow);
 
 		/**
+		 * Set to wrap the tab content in a <em>scrollable</em> (i.e. with overflow auto) element.
+		 * @return this
+		 */
+		TabBuilder scrollable();
+
+		/**
 		 * Sets the flex grow property of this tab. The flex grow property specifies what amount of the available space
 		 * inside the layout the component should take up, proportionally to the other components.
 		 * @param flexGrow the proportion of the available space the tab should take up

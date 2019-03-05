@@ -40,6 +40,8 @@ public class Tabs9Page extends Div {
 
 	public Tabs9Page() {
 		super();
+		setSizeFull();
+		
 		listing1 = Components.listing.properties(PRODUCT).items(ITEM1, ITEM2, ITEM3).fullSize().frozen(true).build();
 		listing2 = Components.listing.properties(PRODUCT).items(ITEM4, ITEM5).fullSize().frozen(true).build();
 

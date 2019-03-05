@@ -36,6 +36,7 @@ public class TabLayoutPage extends VerticalLayout {
 		add(new RouterLink("Tab icons", Tabs7Page.class));
 		add(new RouterLink("Tab content provider", Tabs8Page.class));
 		add(new RouterLink("Tab content selection", Tabs9Page.class));
+		add(new RouterLink("Scrollable tab content", Tabs10Page.class));
 	}
 
 }

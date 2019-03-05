@@ -26,6 +26,7 @@ import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.dom.Element;
 
 /**
@@ -43,6 +44,8 @@ public class DefaultTab implements Tab, HasSize {
 	private double contentFlexGrow = -1;
 
 	private Consumer<Tab> tabSelectedConsumer;
+
+	private boolean scrollable = false;
 
 	private BiConsumer<com.vaadin.flow.component.tabs.Tab, Boolean> tabEnableChangeCallback;
 	private BiConsumer<com.vaadin.flow.component.tabs.Tab, Boolean> tabVisibleChangeCallback;
@@ -65,7 +68,15 @@ public class DefaultTab implements Tab, HasSize {
 	 * @return Optional tab content
 	 */
 	Optional<Component> getContent() {
-		return Optional.ofNullable(content.getContent(this));
+		final Component c = content.getContent(this);
+		if (c != null && isScrollable()) {
+			final Div wrapper = new Div();
+			wrapper.setSizeFull();
+			wrapper.getStyle().set("overflow", "auto");
+			wrapper.add(c);
+			return Optional.of(wrapper);
+		}
+		return Optional.ofNullable(c);
 	}
 
 	/**
@@ -235,6 +246,25 @@ public class DefaultTab implements Tab, HasSize {
 	 */
 	public void setTabSelectedConsumer(Consumer<Tab> tabSelectedConsumer) {
 		this.tabSelectedConsumer = tabSelectedConsumer;
+	}
+
+	/**
+	 * Get whether to wrap the tab content in a <em>scrollable</em> (i.e. with overflow auto) element.
+	 * @return whether the tab is scrollable
+	 */
+	public boolean isScrollable() {
+		return scrollable;
+	}
+
+	/**
+	 * Set whether to wrap the tab content in a <em>scrollable</em> (i.e. with overflow auto) element.
+	 * @param scrollable whether the tab is scrollable
+	 */
+	public void setScrollable(boolean scrollable) {
+		this.scrollable = scrollable;
+		if (scrollable) {
+			setContentFlexGrow(1);
+		}
 	}
 
 	/*

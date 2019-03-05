@@ -17,6 +17,7 @@ public class MainLayout extends Div implements RouterLayout {
 	public MainLayout() {
 		super();
 		setSizeFull();
+		getStyle().set("overflow", "hidden");
 	}
 
 }

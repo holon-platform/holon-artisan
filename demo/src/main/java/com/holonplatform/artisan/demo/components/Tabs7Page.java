@@ -37,6 +37,7 @@ public class Tabs7Page extends Div {
 
 	public Tabs7Page() {
 		super();
+		setSizeFull();
 		add(TabLayout.builder().fullSize()
 				// tab 1
 				.withTab(Components.listing.properties(PRODUCT).items(ITEM1, ITEM2, ITEM3).fullSize().build())

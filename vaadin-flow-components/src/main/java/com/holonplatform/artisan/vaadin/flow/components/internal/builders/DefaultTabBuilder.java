@@ -114,6 +114,16 @@ public class DefaultTabBuilder implements TabBuilder {
 
 	/*
 	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder.TabBuilder#scrollable()
+	 */
+	@Override
+	public TabBuilder scrollable() {
+		instance.setScrollable(true);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder.TabBuilder#tabFlexGrow(double)
 	 */
 	@Override
