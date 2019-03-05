@@ -2,6 +2,7 @@ package com.holonplatform.artisan.demo.root;
 
 import com.holonplatform.artisan.demo.components.HomePage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
+import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -23,20 +24,10 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		setSizeFull();
 		setSpacing(false);
 
-		Button btnHome = new Button("Home");
-		btnHome.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
-		btnHome.addClickListener(event -> getUI().get().navigate(HomePage.class));
-		btnHome.setWidth("100%");
-
-		Button btnWindow = new Button("Window");
-		btnWindow.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		btnWindow.addClickListener(event -> getUI().get().navigate(WindowPage.class));
-		btnWindow.setWidth("100%");
-		
-		Button btnProgress = new Button("Operation progress dialog");
-		btnProgress.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		btnProgress.addClickListener(event -> getUI().get().navigate(OperationProgressDialogPage.class));
-		btnProgress.setWidth("100%");
+		final VerticalLayout vl = new VerticalLayout();
+		vl.setWidth("280px");
+		vl.setHeight("100%");
+		vl.getStyle().set("background-color", "black");
 
 		Image img = new Image("https://holon-platform.com/contrib/themes/Holon-theme/dist/img/pittogramma_platform.svg",
 				"Holon Java Platform");
@@ -46,18 +37,35 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		lblArtisan.getElement().setProperty("innerHTML", "Artisan Demo");
 		lblArtisan.getStyle().set("color", "white").set("font-size", "xx-large");
 
-		VerticalLayout vl = new VerticalLayout();
-		vl.setWidth("280px");
-		vl.setHeight("100%");
-		vl.getStyle().set("background-color", "black");
 		vl.add(img);
 		vl.add(lblArtisan);
-		vl.add(btnHome);
-		vl.add(btnWindow);
-		vl.add(btnProgress);
 
 		vl.setHorizontalComponentAlignment(Alignment.CENTER, img);
 		vl.setHorizontalComponentAlignment(Alignment.CENTER, lblArtisan);
+
+		Button btn = new Button("Home");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
+		btn.addClickListener(event -> getUI().get().navigate(HomePage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
+
+		btn = new Button("Window");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btn.addClickListener(event -> getUI().get().navigate(WindowPage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
+
+		btn = new Button("Operation progress dialog");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btn.addClickListener(event -> getUI().get().navigate(OperationProgressDialogPage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
+
+		btn = new Button("Tabs");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btn.addClickListener(event -> getUI().get().navigate(TabLayoutPage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
 
 		add(vl);
 	}

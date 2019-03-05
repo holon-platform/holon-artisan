@@ -65,7 +65,7 @@ public class DefaultTabLayout implements TabLayout {
 			this.tabsComponent.setOrientation(orientation);
 		}
 		this.tabsComponent.addSelectedChangeListener(event -> {
-			onTabSelectionChange(event.getSource().getSelectedTab(), event.getSource().getSelectedIndex());
+			onTabSelectionChange(event.getSource().getSelectedIndex());
 		});
 		this.layout.getFlexComponent().add(this.tabsComponent);
 	}
@@ -217,6 +217,9 @@ public class DefaultTabLayout implements TabLayout {
 	 */
 	public void build(int selectTabIndex) {
 		this.built = true;
+		// reset selection
+		getTabsComponent().setSelectedIndex(-1);
+		// select tab
 		int index = (selectTabIndex > -1) ? selectTabIndex : 0;
 		if (index > -1 && index < tabs.size()) {
 			setSelectedTabIndex(index);
@@ -241,10 +244,9 @@ public class DefaultTabLayout implements TabLayout {
 
 	/**
 	 * Should be invoked when selected tab changes.
-	 * @param tab Selected tab, <code>null</code> if none
 	 * @param index Selected index, <code>-1</code> if none
 	 */
-	protected void onTabSelectionChange(com.vaadin.flow.component.tabs.Tab tab, int index) {
+	protected void onTabSelectionChange(int index) {
 		if (built) {
 			// remove current content
 			if (layout.getFlexComponent().getComponentCount() > 1) {

@@ -108,22 +108,14 @@ public interface TabLayout extends HasComponent {
 	// -------
 
 	/**
-	 * Get a builder to create a vertical {@link TabLayout}.
+	 * Get a builder to create a {@link TabLayout}.
 	 * <p>
-	 * Alias for {@link #vertical()}.
+	 * Alias for {@link #horizontal()}.
 	 * </p>
 	 * @return A new {@link TabsBuilder}
 	 */
 	static TabsBuilder builder() {
-		return vertical();
-	}
-
-	/**
-	 * Get a builder to create a vertical {@link TabLayout}.
-	 * @return A new vertical {@link TabsBuilder}
-	 */
-	static TabsBuilder vertical() {
-		return new VerticalTabsBuilder();
+		return horizontal();
 	}
 
 	/**
@@ -132,6 +124,14 @@ public interface TabLayout extends HasComponent {
 	 */
 	static TabsBuilder horizontal() {
 		return new HorizontalTabsBuilder();
+	}
+
+	/**
+	 * Get a builder to create a vertical {@link TabLayout}.
+	 * @return A new vertical {@link TabsBuilder}
+	 */
+	static TabsBuilder vertical() {
+		return new VerticalTabsBuilder();
 	}
 
 	/**

@@ -17,7 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
 import com.holonplatform.vaadin.flow.components.Components;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
 
 /**
@@ -25,10 +25,10 @@ import com.vaadin.flow.component.tabs.Tabs.Orientation;
  *
  * @since 1.0.0
  */
-public class VerticalTabsBuilder extends AbstractTabsBuilder<VerticalLayout> {
+public class VerticalTabsBuilder extends AbstractTabsBuilder<HorizontalLayout> {
 
 	public VerticalTabsBuilder() {
-		super(Components.vl().withoutMargin().withoutPadding().withoutSpacing().fullWidth().build(),
+		super(Components.hl().withoutMargin().withoutPadding().withoutSpacing().fullWidth().build(),
 				Orientation.VERTICAL);
 	}
 

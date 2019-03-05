@@ -13,23 +13,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
+package com.holonplatform.artisan.demo.components;
 
+import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
 import com.holonplatform.vaadin.flow.components.Components;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tabs.Orientation;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.router.Route;
 
-/**
- * Horizontal {@link TabLayout} builder.
- *
- * @since 1.0.0
- */
-public class HorizontalTabsBuilder extends AbstractTabsBuilder<VerticalLayout> {
+@Route(value = "tabs1", layout = Menu.class)
+public class Tabs1Page extends Div {
 
-	public HorizontalTabsBuilder() {
-		super(Components.vl().withoutMargin().withoutPadding().withoutSpacing().fullWidth().build(),
-				Orientation.HORIZONTAL);
+	private static final long serialVersionUID = 1L;
+
+	public Tabs1Page() {
+		super();
+		add(TabLayout.builder().fullWidth()
+				// tab 1
+				.withTab(Components.label().text("Tab one").build()).label("Tab 1").add()
+				// tab 1
+				.withTab(Components.label().text("Tab two").build()).label("Tab 2").add()
+				// selected
+				.build().getComponent());
 	}
 
 }
