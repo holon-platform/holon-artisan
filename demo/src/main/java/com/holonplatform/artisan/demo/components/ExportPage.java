@@ -83,8 +83,8 @@ public class ExportPage extends VerticalLayout {
 				return file.getName();
 			}).abortable(true).text("Exporting...").execute(fileName -> {
 				// download file
-				UI.getCurrent().getPage().executeJavaScript(
-						"window.open('" + FileDownloadServlet.build("http://localhost:8080").fileName(fileName)
+				UI.getCurrent().getPage()
+						.executeJavaScript("window.open('" + FileDownloadServlet.build().fileName(fileName)
 								.fileType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 								.removeAfterDowload().build() + "','_blank');");
 			});

@@ -133,6 +133,10 @@ public class FileDownloadServlet extends HttpServlet {
 		}
 	}
 
+	public static Builder build() {
+		return build("/");
+	}
+
 	public static Builder build(String servletBasePath) {
 		return new DefaultBuilder(servletBasePath);
 	}
