@@ -16,12 +16,9 @@
 package com.holonplatform.artisan.demo.components;
 
 import static com.holonplatform.artisan.demo.model.Product.ID;
-import static com.holonplatform.artisan.demo.model.Product.ITEM1;
-import static com.holonplatform.artisan.demo.model.Product.ITEM2;
-import static com.holonplatform.artisan.demo.model.Product.ITEM3;
-import static com.holonplatform.artisan.demo.model.Product.ITEM4;
-import static com.holonplatform.artisan.demo.model.Product.ITEM5;
 import static com.holonplatform.artisan.demo.model.Product.PRODUCT;
+import static com.holonplatform.artisan.demo.model.Product.TARGET;
+import static com.holonplatform.artisan.demo.model.Product.UNIT_PRICE;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,12 +26,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.demo.servlet.FileDownloadServlet;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
+import com.holonplatform.core.datastore.Datastore;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
@@ -52,7 +52,8 @@ public class ExportPage extends VerticalLayout {
 
 	private final PropertyListing listing;
 
-	public ExportPage() {
+	@Autowired
+	public ExportPage(Datastore datastore) {
 		super();
 		setSizeFull();
 
@@ -61,7 +62,8 @@ public class ExportPage extends VerticalLayout {
 		top.add(Components.button().text("Export").onClick(e -> export()).build());
 		add(top);
 
-		listing = Components.listing.properties(PRODUCT).items(ITEM1, ITEM2, ITEM3, ITEM4, ITEM5).fullSize()
+		listing = Components.listing.properties(PRODUCT).dataSource(datastore, TARGET)
+				.withQueryFilter(UNIT_PRICE.goe(20d)).fullSize()
 				.withComponentColumn(item -> Components.button().text("(" + item.getValue(ID) + ")").build())
 				.displayAsFirst().flexGrow(0).width("90px").add().build();
 		add(listing.getComponent());

@@ -16,10 +16,12 @@
 package com.holonplatform.artisan.demo.model;
 
 import com.holonplatform.core.Validator;
+import com.holonplatform.core.datastore.DataTarget;
 import com.holonplatform.core.property.BooleanProperty;
 import com.holonplatform.core.property.NumericProperty;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
+import com.holonplatform.core.property.PropertyValueConverter;
 import com.holonplatform.core.property.StringProperty;
 
 public interface Product {
@@ -43,11 +45,14 @@ public interface Product {
 			.withValidator(Validator.notNegative());
 
 	public static final BooleanProperty WITHDRAWN = BooleanProperty.create("withdrawn") // Withdrawn
-			.message("Withdrawn").messageCode("product.withdrawn");
+			.message("Withdrawn").messageCode("product.withdrawn")
+			.converter(PropertyValueConverter.numericBoolean(Integer.class));
 
 	// Product property set with the ID property as identifier property
 	public static final PropertySet<?> PRODUCT = PropertySet.builderOf(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN)
 			.identifier(ID).build();
+	
+	public static final DataTarget<?> TARGET = DataTarget.named("products");
 
 	// example items
 

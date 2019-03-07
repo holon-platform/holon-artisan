@@ -18,11 +18,19 @@
 	<url>https://holon-platform.com</url>
 
 	<dependencies>
+
 		<!-- Holon Vaadin Flow starter -->
 		<dependency>
 			<groupId>com.holon-platform.vaadin</groupId>
 			<artifactId>holon-starter-vaadin-flow</artifactId>
 		</dependency>
+
+		<!-- JDBC Datastore with HikariCP starter -->
+		<dependency>
+			<groupId>com.holon-platform.jdbc</groupId>
+			<artifactId>holon-starter-jdbc-datastore-hikaricp</artifactId>
+		</dependency>
+
 		<!-- Holon Artisan Vaadin Flow -->
 		<dependency>
 			<groupId>com.holon-platform.artisan</groupId>
@@ -34,12 +42,21 @@
 			<artifactId>holon-artisan-vaadin-flow-export</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
 		<!-- Logback -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- H2 database -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
