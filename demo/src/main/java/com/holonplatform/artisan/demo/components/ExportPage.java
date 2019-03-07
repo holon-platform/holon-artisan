@@ -107,6 +107,7 @@ public class ExportPage extends VerticalLayout {
 		try {
 			final XLSExporter exporter = XLSExporter.builder(listing.getDataProvider(), getExportProperties())
 					.columnHeaderProvider(p -> listing.getColumnHeader(p))
+					//.querySortsProvider(querySortsProvider) // TODO from listing
 					// .localizationContext(LocalizationContext.require())
 					.registry(PropertyXLSValueProviderRegistry.get())
 					// .configuration(XLSConfiguration.builder().title("Export title").build()) // TODO config from UI

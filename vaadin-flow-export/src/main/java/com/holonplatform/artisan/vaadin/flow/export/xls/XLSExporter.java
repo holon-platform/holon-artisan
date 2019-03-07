@@ -16,6 +16,7 @@
 package com.holonplatform.artisan.vaadin.flow.export.xls;
 
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -32,6 +33,7 @@ import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
 import com.vaadin.flow.data.provider.DataProvider;
+import com.vaadin.flow.data.provider.QuerySortOrder;
 
 /**
  * XLS format data exporter.
@@ -130,6 +132,13 @@ public interface XLSExporter {
 		 * @return this
 		 */
 		Builder localizationContext(LocalizationContext localizationContext);
+
+		/**
+		 * Set an additional query sorts provider.
+		 * @param querySortsProvider The query sorts provider to set
+		 * @return this
+		 */
+		Builder querySortsProvider(Supplier<List<QuerySortOrder>> querySortsProvider);
 
 		/**
 		 * Build the exporter.

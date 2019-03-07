@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -90,6 +91,7 @@ import com.holonplatform.core.temporal.TemporalType;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.provider.QuerySortOrder;
 
 /**
  * Default {@link XLSExporter} implementation.
@@ -117,6 +119,8 @@ public class DefaultXLSExporter implements XLSExporter {
 	private XLSConfiguration configuration;
 	private PropertyXLSValueProviderRegistry propertyXLSValueProviderRegistry;
 	private LocalizationContext localizationContext;
+
+	private Supplier<List<QuerySortOrder>> querySortsProvider;
 
 	private final Map<FontConfiguration, Font> workbookFonts = new HashMap<>();
 	private final Map<StyleConfiguration, CellStyle> workbookStyles = new HashMap<>();
@@ -165,6 +169,22 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected void setLocalizationContext(LocalizationContext localizationContext) {
 		this.localizationContext = localizationContext;
+	}
+
+	/**
+	 * Get the additional query sorts provider, if available
+	 * @return Optional query sorts provider
+	 */
+	protected Optional<Supplier<List<QuerySortOrder>>> getQuerySortsProvider() {
+		return Optional.ofNullable(querySortsProvider);
+	}
+
+	/**
+	 * Set the additional query sorts provider.
+	 * @param querySortsProvider the query sorts provider to set
+	 */
+	protected void setQuerySortsProvider(Supplier<List<QuerySortOrder>> querySortsProvider) {
+		this.querySortsProvider = querySortsProvider;
 	}
 
 	/**
@@ -413,9 +433,11 @@ public class DefaultXLSExporter implements XLSExporter {
 
 		int offset = 0;
 		List<PropertyBox> results = Collections.emptyList();
+
+		final List<QuerySortOrder> sorts = getQuerySortsProvider().map(s -> s.get()).orElse(Collections.emptyList());
+
 		do {
-			results = getDataProvider()
-					.fetch(new Query<>(offset, DEFAULT_BATCH_SIZE, Collections.emptyList(), null, null))
+			results = getDataProvider().fetch(new Query<>(offset, DEFAULT_BATCH_SIZE, sorts, null, null))
 					.collect(Collectors.toList());
 			for (PropertyBox result : results) {
 				rowIndex++;
@@ -1227,6 +1249,18 @@ public class DefaultXLSExporter implements XLSExporter {
 		@Override
 		public Builder localizationContext(LocalizationContext localizationContext) {
 			this.exporter.setLocalizationContext(localizationContext);
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter.Builder#querySortsProvider(java.util.function.
+		 * Supplier)
+		 */
+		@Override
+		public Builder querySortsProvider(Supplier<List<QuerySortOrder>> querySortsProvider) {
+			this.exporter.setQuerySortsProvider(querySortsProvider);
 			return this;
 		}
 
