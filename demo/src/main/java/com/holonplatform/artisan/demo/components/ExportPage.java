@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.demo.components;
 
+import static com.holonplatform.artisan.demo.model.Product.ID;
 import static com.holonplatform.artisan.demo.model.Product.ITEM1;
 import static com.holonplatform.artisan.demo.model.Product.ITEM2;
 import static com.holonplatform.artisan.demo.model.Product.ITEM3;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.stream.Collectors;
 
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.demo.root.Menu;
@@ -33,9 +35,10 @@ import com.holonplatform.artisan.demo.servlet.FileDownloadServlet;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
-import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSConfiguration;
+import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -58,18 +61,26 @@ public class ExportPage extends VerticalLayout {
 		top.add(Components.button().text("Export").onClick(e -> export()).build());
 		add(top);
 
-		listing = Components.listing.properties(PRODUCT).items(ITEM1, ITEM2, ITEM3, ITEM4, ITEM5).fullSize().build();
+		listing = Components.listing.properties(PRODUCT).items(ITEM1, ITEM2, ITEM3, ITEM4, ITEM5).fullSize()
+				.withComponentColumn(item -> Components.button().text("(" + item.getValue(ID) + ")").build())
+				.displayAsFirst().flexGrow(0).width("90px").add().build();
 		add(listing.getComponent());
 		setFlexGrow(1, listing.getComponent());
 	}
 
+	private PropertySet<?> getExportProperties() {
+		return PropertySet.of(listing.getVisibleColumns().stream()
+				.filter(p -> !HasElement.class.isAssignableFrom(p.getType())).collect(Collectors.toList()));
+		// return PRODUCT;
+	}
+
 	private void export() {
 		try {
-			final XLSExporter exporter = XLSExporter.builder(listing.getDataProvider(), PRODUCT)
+			final XLSExporter exporter = XLSExporter.builder(listing.getDataProvider(), getExportProperties())
 					.columnHeaderProvider(p -> listing.getColumnHeader(p))
 					// .localizationContext(LocalizationContext.require())
 					.registry(PropertyXLSValueProviderRegistry.get())
-					.configuration(XLSConfiguration.builder().title("Export title").build()) // TODO config from UI
+					// .configuration(XLSConfiguration.builder().title("Export title").build()) // TODO config from UI
 					.build();
 
 			final File file = File.createTempFile("export", ".xlsx");
