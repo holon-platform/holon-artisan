@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.demo.components;
 
+import static com.holonplatform.artisan.demo.model.Product.CATEGORY;
+import static com.holonplatform.artisan.demo.model.Product.DESCRIPTION;
 import static com.holonplatform.artisan.demo.model.Product.ID;
 import static com.holonplatform.artisan.demo.model.Product.PRODUCT;
 import static com.holonplatform.artisan.demo.model.Product.TARGET;
@@ -37,6 +39,7 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
 import com.holonplatform.core.datastore.Datastore;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.vaadin.flow.components.Components;
+import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
@@ -59,15 +62,39 @@ public class ExportPage extends VerticalLayout {
 
 		final HorizontalLayout top = new HorizontalLayout();
 		top.setWidth("100%");
+
 		top.add(Components.button().text("Export").onClick(e -> export()).build());
+
+		final Input<String> fltCategory = Input.singleSelect(String.class).items(
+				datastore.query(TARGET).filter(CATEGORY.isNotNull()).sort(CATEGORY.asc()).distinct().list(CATEGORY))
+				.placeholder("Category").build();
+		top.add(fltCategory.getComponent());
+
 		add(top);
 
 		listing = Components.listing.properties(PRODUCT).dataSource(datastore, TARGET)
-				.withQueryFilter(UNIT_PRICE.goe(20d)).fullSize()
+				// fixed filter
+				.withQueryFilter(UNIT_PRICE.goe(20d))
+				// dynamic filters
+				.withQueryConfigurationProvider(() -> {
+					if (!fltCategory.isEmpty()) {
+						return CATEGORY.eq(fltCategory.getValue());
+					}
+					return null;
+				})
+				// sorts
+				.withQuerySort(ID.asc()).withDefaultQuerySort(DESCRIPTION.asc())
+				// size full
+				.fullSize()
+				// atios column
 				.withComponentColumn(item -> Components.button().text("(" + item.getValue(ID) + ")").build())
-				.displayAsFirst().flexGrow(0).width("90px").add().build();
+				.displayAsFirst().flexGrow(0).width("90px").add()
+				//
+				.build();
 		add(listing.getComponent());
 		setFlexGrow(1, listing.getComponent());
+
+		fltCategory.addValueChangeListener(e -> listing.refresh());
 	}
 
 	private PropertySet<?> getExportProperties() {
