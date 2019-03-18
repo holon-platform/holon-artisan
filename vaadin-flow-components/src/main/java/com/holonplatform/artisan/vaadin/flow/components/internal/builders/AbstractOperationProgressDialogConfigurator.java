@@ -159,6 +159,46 @@ public abstract class AbstractOperationProgressDialogConfigurator<T, C extends O
 
 	/*
 	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
+	 */
+	@Override
+	public C minWidth(String minWidth) {
+		this.sizeConfigurator.minWidth(minWidth);
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
+	 */
+	@Override
+	public C maxWidth(String maxWidth) {
+		this.sizeConfigurator.maxWidth(maxWidth);
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
+	 */
+	@Override
+	public C minHeight(String minHeight) {
+		this.sizeConfigurator.minHeight(minHeight);
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
+	 */
+	@Override
+	public C maxHeight(String maxHeight) {
+		this.sizeConfigurator.maxHeight(maxHeight);
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.String[])
 	 */
 	@Override

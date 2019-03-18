@@ -71,6 +71,46 @@ public class DefaultTabBuilder implements TabBuilder {
 
 	/*
 	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
+	 */
+	@Override
+	public TabBuilder minWidth(String minWidth) {
+		instance.setMinWidth(minWidth);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
+	 */
+	@Override
+	public TabBuilder maxWidth(String maxWidth) {
+		instance.setMaxWidth(maxWidth);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
+	 */
+	@Override
+	public TabBuilder minHeight(String minHeight) {
+		instance.setMinHeight(minHeight);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
+	 */
+	@Override
+	public TabBuilder maxHeight(String maxHeight) {
+		instance.setMaxHeight(maxHeight);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasEnabledConfigurator#enabled(boolean)
 	 */
 	@Override

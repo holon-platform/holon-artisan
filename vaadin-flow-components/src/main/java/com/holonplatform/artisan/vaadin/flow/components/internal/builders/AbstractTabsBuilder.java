@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.function.Consumer;
+
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.SelectedTabChangeListener;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
@@ -37,6 +39,7 @@ import com.vaadin.flow.component.orderedlayout.ThemableLayout;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.dom.DomEventListener;
+import com.vaadin.flow.dom.Element;
 
 /**
  * Default {@link TabsBuilder} implementation.
@@ -169,6 +172,18 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent<L>
 
 	/*
 	 * (non-Javadoc)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#elementConfiguration(java.util.function.
+	 * Consumer)
+	 */
+	@Override
+	public TabsBuilder elementConfiguration(Consumer<Element> element) {
+		this.componentConfigurator.elementConfiguration(element);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
 	 */
 	@Override
@@ -184,6 +199,46 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent<L>
 	@Override
 	public TabsBuilder height(String height) {
 		this.sizeConfigurator.height(height);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
+	 */
+	@Override
+	public TabsBuilder minWidth(String minWidth) {
+		this.sizeConfigurator.minWidth(minWidth);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
+	 */
+	@Override
+	public TabsBuilder maxWidth(String maxWidth) {
+		this.sizeConfigurator.maxWidth(maxWidth);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
+	 */
+	@Override
+	public TabsBuilder minHeight(String minHeight) {
+		this.sizeConfigurator.minHeight(minHeight);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
+	 */
+	@Override
+	public TabsBuilder maxHeight(String maxHeight) {
+		this.sizeConfigurator.maxHeight(maxHeight);
 		return this;
 	}
 

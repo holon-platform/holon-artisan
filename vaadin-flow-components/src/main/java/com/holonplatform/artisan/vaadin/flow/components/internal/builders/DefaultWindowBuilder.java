@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.function.Consumer;
+
 import com.holonplatform.artisan.vaadin.flow.components.Window;
 import com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultWindow;
@@ -30,6 +32,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.dom.DomEventListener;
+import com.vaadin.flow.dom.Element;
 
 /**
  * Default {@link WindowBuilder} implementation.
@@ -131,6 +134,18 @@ public class DefaultWindowBuilder implements WindowBuilder {
 
 	/*
 	 * (non-Javadoc)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#elementConfiguration(java.util.function.
+	 * Consumer)
+	 */
+	@Override
+	public WindowBuilder elementConfiguration(Consumer<Element> element) {
+		this.componentConfigurator.elementConfiguration(element);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
 	 */
 	@Override
@@ -146,6 +161,46 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	@Override
 	public WindowBuilder height(String height) {
 		this.sizeConfigurator.height(height);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
+	 */
+	@Override
+	public WindowBuilder minWidth(String minWidth) {
+		this.sizeConfigurator.minWidth(minWidth);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
+	 */
+	@Override
+	public WindowBuilder maxWidth(String maxWidth) {
+		this.sizeConfigurator.maxWidth(maxWidth);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
+	 */
+	@Override
+	public WindowBuilder minHeight(String minHeight) {
+		this.sizeConfigurator.minHeight(minHeight);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
+	 */
+	@Override
+	public WindowBuilder maxHeight(String maxHeight) {
+		this.sizeConfigurator.maxHeight(maxHeight);
 		return this;
 	}
 
