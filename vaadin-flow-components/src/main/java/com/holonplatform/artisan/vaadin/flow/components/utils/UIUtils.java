@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow;
+package com.holonplatform.artisan.vaadin.flow.components.utils;
 
 import java.io.Serializable;
 import java.util.concurrent.Future;
