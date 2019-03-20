@@ -68,8 +68,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
 				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
-		this.inputBuilder = NumberInputBuilder.create((Class<T>) property.getType())
-				// .clearButtonVisible(true) // TODO
+		this.inputBuilder = NumberInputBuilder.create((Class<T>) property.getType()).clearButtonVisible(true)
 				.label(property);
 	}
 
@@ -244,6 +243,26 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> autocomplete(Autocomplete autocomplete) {
 		inputBuilder.autocomplete(autocomplete);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.NumberInputConfigurator#autoselect(boolean)
+	 */
+	@Override
+	public NumberInputFilterBuilder<T> autoselect(boolean autoselect) {
+		inputBuilder.autoselect(autoselect);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.vaadin.flow.components.builders.NumberInputConfigurator#clearButtonVisible(boolean)
+	 */
+	@Override
+	public NumberInputFilterBuilder<T> clearButtonVisible(boolean clearButtonVisible) {
+		inputBuilder.clearButtonVisible(clearButtonVisible);
 		return this;
 	}
 
