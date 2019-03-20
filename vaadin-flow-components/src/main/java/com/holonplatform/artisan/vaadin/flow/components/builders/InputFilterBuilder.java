@@ -28,7 +28,7 @@ import com.holonplatform.vaadin.flow.components.builders.InputConfigurator;
  * 
  * @since 1.0.0
  */
-public interface InputFilterBuilder<T, E extends ValueChangeEvent<T>, B extends OperatorInputFilterBuilder<T, E, B>>
+public interface InputFilterBuilder<T, E extends ValueChangeEvent<T>, B extends InputFilterBuilder<T, E, B>>
 		extends InputConfigurator<T, E, B> {
 
 	/*

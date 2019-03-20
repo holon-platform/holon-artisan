@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.holonplatform.artisan.vaadin.flow.components.builders.BooleanInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
@@ -145,6 +146,15 @@ public interface InputFilter<T> extends Input<T> {
 	 */
 	static <T extends Number> NumberInputFilterBuilder<T> number(Property<T> property) {
 		return NumberInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create a <code>boolean</code> type {@link InputFilter}.
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link BooleanInputFilterBuilder}
+	 */
+	static BooleanInputFilterBuilder boolean_(Property<Boolean> property) {
+		return BooleanInputFilterBuilder.create(property);
 	}
 
 	// ------- renderer

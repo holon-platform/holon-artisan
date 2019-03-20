@@ -18,6 +18,7 @@ package com.holonplatform.artisan.demo.components;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
+import com.holonplatform.core.property.BooleanProperty;
 import com.holonplatform.core.property.NumericProperty;
 import com.holonplatform.core.property.StringProperty;
 import com.holonplatform.core.query.QueryFilter;
@@ -37,6 +38,8 @@ public class InputFilterPage extends VerticalLayout {
 	private static final StringProperty STR2 = StringProperty.create("str2").message("String value 2");
 	private static final NumericProperty<Integer> ITG = NumericProperty.integerType("itg").message("Integer value");
 	private static final NumericProperty<Double> DBL = NumericProperty.doubleType("dbl").message("Double value");
+	private static final BooleanProperty BLN = BooleanProperty.create("bln").message("Boolean value");
+	private static final BooleanProperty BLN2 = BooleanProperty.create("bln2").message("Boolean value 2");
 
 	public InputFilterPage() {
 		super();
@@ -47,7 +50,9 @@ public class InputFilterPage extends VerticalLayout {
 				true));
 		add(buildRow(InputFilter.number(ITG).build()));
 		add(buildRow(InputFilter.number(DBL).defaultOperator(InputFilterOperator.GREATER_OR_EQUAL).build()));
-
+		add(buildRow(InputFilter.boolean_(BLN).build()));
+		add(buildRow(InputFilter.boolean_(BLN2).emptyValueCaption("Any value").trueValueCaption("It's true")
+				.falseValueCaption("It's false").build(), true));
 	}
 
 	private static Component buildRow(InputFilter<?> i) {
