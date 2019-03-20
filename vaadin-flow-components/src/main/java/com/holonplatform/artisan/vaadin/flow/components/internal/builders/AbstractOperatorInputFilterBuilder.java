@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
@@ -46,6 +47,8 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	private final List<InputFilterOperator> operators;
 
 	private final FilterOperatorSelect operatorSelect;
+
+	private Consumer<FilterOperatorSelectConfigurator> filterOperatorSelectConfiguration;
 
 	public AbstractOperatorInputFilterBuilder(Property<? super T> property, InputFilterOperator... operators) {
 		super();
@@ -106,6 +109,17 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 
 	/*
 	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder#
+	 * filterOperatorSelectConfiguration(java.util.function.Consumer)
+	 */
+	@Override
+	public B filterOperatorSelectConfiguration(Consumer<FilterOperatorSelectConfigurator> configuration) {
+		this.filterOperatorSelectConfiguration = configuration;
+		return getBuilder();
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see
 	 * com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder#operatorSelectionAllowed(
 	 * boolean)
@@ -136,12 +150,28 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 */
 	@Override
 	public InputFilter<T> build() {
-		final InputFilterAdapterBuilder<T> builder = InputFilter.builder(buildInput(getOperatorSelect()),
+
+		if (filterOperatorSelectConfiguration != null) {
+			filterOperatorSelectConfiguration.accept(new DefaultFilterOperatorSelectConfigurator(getOperatorSelect()));
+		}
+
+		final Input<T> input = buildInput(getOperatorSelect());
+
+		final InputFilterAdapterBuilder<T> builder = InputFilter.builder(input,
 				new DefaultOperatorQueryFilterProvider<>(getProperty(), getOperatorSupplier(),
 						getIgnoreCaseSupplier()));
 
 		if (getOperatorSelect().isVisible()) {
+			// reset callback
 			builder.resetCallback(() -> getOperatorSelect().clear());
+			// operator change
+			if (operators.contains(InputFilterOperator.EMPTY) || operators.contains(InputFilterOperator.NOT_EMPTY)) {
+				getOperatorSelect().addValueChangeListener(e -> {
+					final InputFilterOperator operator = e.getValue();
+					input.setReadOnly((operator != null
+							&& (operator == InputFilterOperator.EMPTY || operator == InputFilterOperator.NOT_EMPTY)));
+				});
+			}
 		}
 
 		return builder.build();

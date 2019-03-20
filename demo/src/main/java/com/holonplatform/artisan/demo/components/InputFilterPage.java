@@ -32,18 +32,32 @@ public class InputFilterPage extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
 
 	private static final StringProperty STR = StringProperty.create("str").message("String value");
+	private static final StringProperty STR2 = StringProperty.create("str2").message("String value 2");
 
 	public InputFilterPage() {
 		super();
 
 		add(buildRow(InputFilter.string(STR).build()));
+		add(buildRow(
+				InputFilter.string(STR2).maxLength(3).filterOperatorSelectConfiguration(c -> c.maxWidth("5em")).build(),
+				true));
 
 	}
 
 	private static Component buildRow(InputFilter<?> i) {
+		return buildRow(i, false);
+	}
+
+	private static Component buildRow(InputFilter<?> i, boolean full) {
 		final HorizontalLayout hl = new HorizontalLayout();
+		if (full) {
+			hl.setWidthFull();
+		}
 		hl.setAlignItems(Alignment.BASELINE);
 		hl.add(i.getComponent());
+		if (full) {
+			hl.setFlexGrow(1, i.getComponent());
+		}
 		hl.add(new Button("Get filter", e -> {
 			final QueryFilter f = i.getFilter().orElse(null);
 			Notification.show("Filter: [" + ((f == null) ? "NONE" : f) + "]");

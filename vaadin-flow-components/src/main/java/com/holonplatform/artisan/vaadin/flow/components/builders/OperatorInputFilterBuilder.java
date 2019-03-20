@@ -15,10 +15,14 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
+import java.util.function.Consumer;
+
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
-import com.holonplatform.vaadin.flow.components.builders.InputConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
 
 /**
  * {@link InputFilter} with operator selection support base builder.
@@ -30,16 +34,14 @@ import com.holonplatform.vaadin.flow.components.builders.InputConfigurator;
  * @since 1.0.0
  */
 public interface OperatorInputFilterBuilder<T, E extends ValueChangeEvent<T>, B extends OperatorInputFilterBuilder<T, E, B>>
-		extends InputConfigurator<T, E, B> {
+		extends InputFilterBuilder<T, E, B> {
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.InputConfigurator#required()
+	/**
+	 * Configure the filter operator select using a {@link FilterOperatorSelectConfigurator}.
+	 * @param configuration The {@link FilterOperatorSelectConfigurator} consumer (not null)
+	 * @return this
 	 */
-	@Override
-	default B required() {
-		return required(true);
-	}
+	B filterOperatorSelectConfiguration(Consumer<FilterOperatorSelectConfigurator> configuration);
 
 	/**
 	 * Set whether the operator selection is allowed.
@@ -59,9 +61,12 @@ public interface OperatorInputFilterBuilder<T, E extends ValueChangeEvent<T>, B 
 	B defaultOperator(InputFilterOperator operator);
 
 	/**
-	 * Build and returns the {@link InputFilter} instance.
-	 * @return The {@link InputFilter} instance
+	 * Filter operator select configurator.
 	 */
-	InputFilter<T> build();
+	public interface FilterOperatorSelectConfigurator extends ComponentConfigurator<FilterOperatorSelectConfigurator>,
+			HasSizeConfigurator<FilterOperatorSelectConfigurator>,
+			HasStyleConfigurator<FilterOperatorSelectConfigurator> {
+
+	}
 
 }
