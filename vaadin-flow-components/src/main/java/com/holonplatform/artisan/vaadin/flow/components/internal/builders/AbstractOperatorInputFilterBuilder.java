@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
-import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultOperatorQueryFilterProvider;
 import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
@@ -136,7 +136,7 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 */
 	@Override
 	public InputFilter<T> build() {
-		final InputFilterBuilder<T> builder = InputFilter.builder(buildInput(getOperatorSelect()),
+		final InputFilterAdapterBuilder<T> builder = InputFilter.builder(buildInput(getOperatorSelect()),
 				new DefaultOperatorQueryFilterProvider<>(getProperty(), getOperatorSupplier(),
 						getIgnoreCaseSupplier()));
 

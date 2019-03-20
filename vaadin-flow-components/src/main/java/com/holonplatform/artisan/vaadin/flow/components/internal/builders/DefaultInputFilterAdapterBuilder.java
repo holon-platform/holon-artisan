@@ -18,19 +18,19 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
-import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
 
 /**
- * Default {@link InputFilterBuilder} implementation.
+ * Default {@link InputFilterAdapterBuilder} implementation.
  *
  * @param <T> Value type
  *
  * @since 1.0.0
  */
-public class DefaultInputFilterBuilder<T> implements InputFilterBuilder<T> {
+public class DefaultInputFilterAdapterBuilder<T> implements InputFilterAdapterBuilder<T> {
 
 	private static final long serialVersionUID = -4280481499103713048L;
 
@@ -42,7 +42,7 @@ public class DefaultInputFilterBuilder<T> implements InputFilterBuilder<T> {
 	 * @param filterProvider The function to provide a {@link QueryFilter} according to the Input value, or
 	 *        <code>null</code> if none (not null)
 	 */
-	public DefaultInputFilterBuilder(Input<T> input, Function<T, QueryFilter> filterProvider) {
+	public DefaultInputFilterAdapterBuilder(Input<T> input, Function<T, QueryFilter> filterProvider) {
 		super();
 		this.inputFilter = new InputFilterAdapter<>(input, filterProvider);
 	}
@@ -53,7 +53,7 @@ public class DefaultInputFilterBuilder<T> implements InputFilterBuilder<T> {
 	 * com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterBuilder#resetCallback(java.lang.Runnable)
 	 */
 	@Override
-	public InputFilterBuilder<T> resetCallback(Runnable resetCallback) {
+	public InputFilterAdapterBuilder<T> resetCallback(Runnable resetCallback) {
 		inputFilter.setResetCallback(resetCallback);
 		return this;
 	}

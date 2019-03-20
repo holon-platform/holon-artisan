@@ -26,14 +26,14 @@ import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
  *
  * @since 1.0.0
  */
-public interface InputFilterBuilder<T> extends Serializable {
+public interface InputFilterAdapterBuilder<T> extends Serializable {
 
 	/**
 	 * Set the callback to invoke when {@link InputFilter#reset()} is performed.
 	 * @param resetCallback the reset callback to set
 	 * @return this
 	 */
-	InputFilterBuilder<T> resetCallback(Runnable resetCallback);
+	InputFilterAdapterBuilder<T> resetCallback(Runnable resetCallback);
 
 	/**
 	 * Build the {@link InputFilter} instance.

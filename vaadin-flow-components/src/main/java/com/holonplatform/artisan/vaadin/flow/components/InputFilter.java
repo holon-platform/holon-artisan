@@ -18,10 +18,10 @@ package com.holonplatform.artisan.vaadin.flow.components;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
-import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultInputFilterAdapterBuilder;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
@@ -121,10 +121,10 @@ public interface InputFilter<T> extends Input<T> {
 	 * @param input The {@link Input} component (not null)
 	 * @param filterProvider The function to provide a {@link QueryFilter} according to the {@link Input} value, or
 	 *        <code>null</code> if none (not null)
-	 * @return A new {@link InputFilterBuilder}
+	 * @return A new {@link InputFilterAdapterBuilder}
 	 */
-	static <T> InputFilterBuilder<T> builder(Input<T> input, Function<T, QueryFilter> filterProvider) {
-		return new DefaultInputFilterBuilder<>(input, filterProvider);
+	static <T> InputFilterAdapterBuilder<T> builder(Input<T> input, Function<T, QueryFilter> filterProvider) {
+		return new DefaultInputFilterAdapterBuilder<>(input, filterProvider);
 	}
 
 	/**
