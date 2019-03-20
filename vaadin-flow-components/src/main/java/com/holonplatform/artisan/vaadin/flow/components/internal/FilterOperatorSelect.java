@@ -44,7 +44,7 @@ public class FilterOperatorSelect extends Select<InputFilterOperator> {
 		addClassName("h-filter-operator-select");
 
 		// default width
-		setMaxWidth("4.2em");
+		setWidth("4.2em");
 
 		// labels
 		setItemLabelGenerator(operator -> operator.getSymbol());

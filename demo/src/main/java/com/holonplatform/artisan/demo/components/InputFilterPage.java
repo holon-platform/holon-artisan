@@ -39,7 +39,7 @@ public class InputFilterPage extends VerticalLayout {
 
 		add(buildRow(InputFilter.string(STR).build()));
 		add(buildRow(
-				InputFilter.string(STR2).maxLength(3).filterOperatorSelectConfiguration(c -> c.maxWidth("5em")).build(),
+				InputFilter.string(STR2).maxLength(3).filterOperatorSelectConfiguration(c -> c.width("5em")).build(),
 				true));
 
 	}
