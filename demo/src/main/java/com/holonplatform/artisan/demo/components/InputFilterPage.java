@@ -18,8 +18,12 @@ package com.holonplatform.artisan.demo.components;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumFilterMode;
+import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.property.BooleanProperty;
 import com.holonplatform.core.property.NumericProperty;
+import com.holonplatform.core.property.PathProperty;
 import com.holonplatform.core.property.StringProperty;
 import com.holonplatform.core.query.QueryFilter;
 import com.vaadin.flow.component.Component;
@@ -34,12 +38,29 @@ public class InputFilterPage extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
 
+	private enum MyEnum {
+
+		@Caption("The first value")
+		FIRST,
+
+		@Caption("The second value")
+		SECOND,
+
+		THIRD;
+
+	}
+
 	private static final StringProperty STR = StringProperty.create("str").message("String value");
 	private static final StringProperty STR2 = StringProperty.create("str2").message("String value 2");
 	private static final NumericProperty<Integer> ITG = NumericProperty.integerType("itg").message("Integer value");
 	private static final NumericProperty<Double> DBL = NumericProperty.doubleType("dbl").message("Double value");
 	private static final BooleanProperty BLN = BooleanProperty.create("bln").message("Boolean value");
 	private static final BooleanProperty BLN2 = BooleanProperty.create("bln2").message("Boolean value 2");
+	private static final PathProperty<MyEnum> ENM = PathProperty.create("enm", MyEnum.class)
+			.message("Enumeration value");
+	private static final PathProperty<MyEnum> ENM2 = PathProperty.create("enm2", MyEnum.class)
+			.message("Enumeration value 2")
+			.withConfiguration(EnumInputFilterBuilder.PROPERTY_ENUM_FILTER_MODE, EnumFilterMode.MULTI_OPTION);
 
 	public InputFilterPage() {
 		super();
@@ -53,6 +74,10 @@ public class InputFilterPage extends VerticalLayout {
 		add(buildRow(InputFilter.boolean_(BLN).build()));
 		add(buildRow(InputFilter.boolean_(BLN2).emptyValueCaption("Any value").trueValueCaption("It's true")
 				.falseValueCaption("It's false").build(), true));
+		add(buildRow(InputFilter.enumSingleSelect(ENM).build()));
+		add(buildRow(InputFilter.enumSingleOption(ENM).label("Enumeration (single option)").build()));
+		add(buildRow(InputFilter.enumMultiOption(ENM).label("Enumeration (multiple options)").build()));
+		add(buildRow(InputFilter.enumeration(ENM2)));
 	}
 
 	private static Component buildRow(InputFilter<?> i) {

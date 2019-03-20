@@ -16,6 +16,7 @@
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultBooleanInputFilterBuilder;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;

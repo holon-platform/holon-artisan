@@ -117,14 +117,12 @@ public class DefaultStringInputFilterBuilder extends
 
 			ignoreCaseTrue.addClickListener(e -> {
 				boolean checked = e.getSource().isChecked();
-				ignoreCaseTrue.setChecked(!checked);
-				ignoreCaseFalse.setChecked(checked);
+				ignoreCaseFalse.setChecked(!checked);
 			});
 
 			ignoreCaseFalse.addClickListener(e -> {
 				boolean checked = e.getSource().isChecked();
-				ignoreCaseFalse.setChecked(!checked);
-				ignoreCaseTrue.setChecked(checked);
+				ignoreCaseTrue.setChecked(!checked);
 			});
 
 			ctxMenu.setTarget(input.getComponent());

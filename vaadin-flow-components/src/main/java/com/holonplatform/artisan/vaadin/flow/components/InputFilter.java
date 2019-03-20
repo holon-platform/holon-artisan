@@ -19,10 +19,16 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.builders.BooleanInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumFilterMode;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumMultiOptionInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleOptionInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleSelectInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
+import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterConverterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultInputFilterAdapterBuilder;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
@@ -115,6 +121,19 @@ public interface InputFilter<T> extends Input<T> {
 		return from(Input.from(field, converter), filterProvider);
 	}
 
+	/**
+	 * Create a new {@link InputFilter} from another {@link InputFilter} with a different value type, using given
+	 * {@link Converter} to perform value conversions.
+	 * @param <T> New value type
+	 * @param <V> Original value type
+	 * @param input Actual {@link InputFilter} (not null)
+	 * @param converter Value converter (not null)
+	 * @return A new {@link InputFilter} of the converted value type
+	 */
+	static <T, V> InputFilter<T> from(InputFilter<V> input, Converter<V, T> converter) {
+		return new InputFilterConverterAdapter<>(input, converter);
+	}
+
 	// ------- builders
 
 	/**
@@ -155,6 +174,59 @@ public interface InputFilter<T> extends Input<T> {
 	 */
 	static BooleanInputFilterBuilder boolean_(Property<Boolean> property) {
 		return BooleanInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create an enumeration type {@link InputFilter}, using a single select as input component.
+	 * @param <T> Enumeratin type
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link EnumSingleSelectInputFilterBuilder}
+	 */
+	static <T extends Enum<T>> EnumSingleSelectInputFilterBuilder<T> enumSingleSelect(Property<T> property) {
+		return EnumInputFilterBuilder.singleSelect(property);
+	}
+
+	/**
+	 * Get a builder to create an enumeration type {@link InputFilter}, using a radio button group as input component.
+	 * @param <T> Enumeratin type
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link EnumSingleOptionInputFilterBuilder}
+	 */
+	static <T extends Enum<T>> EnumSingleOptionInputFilterBuilder<T> enumSingleOption(Property<T> property) {
+		return EnumInputFilterBuilder.singleOption(property);
+	}
+
+	/**
+	 * Get a builder to create an enumeration type {@link InputFilter}, using a checkbox group as input component.
+	 * @param <T> Enumeratin type
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link EnumMultiOptionInputFilterBuilder}
+	 */
+	static <T extends Enum<T>> EnumMultiOptionInputFilterBuilder<T> enumMultiOption(Property<T> property) {
+		return EnumInputFilterBuilder.multiOption(property);
+	}
+
+	/**
+	 * Create an enumeration type {@link InputFilter} using given property and given rendering mode.
+	 * @param <T> Enumeration type
+	 * @param property The property to use as filter expression (not null)
+	 * @param mode The rendering mode
+	 * @return A new {@link InputFilter}
+	 */
+	static <T extends Enum<T>> InputFilter<T> enumeration(Property<T> property, EnumFilterMode mode) {
+		return EnumInputFilterBuilder.create(property, mode);
+	}
+
+	/**
+	 * Create an enumeration type {@link InputFilter} using given property and the rendering mode specified in property
+	 * configuration using {@link EnumInputFilterBuilder#PROPERTY_ENUM_FILTER_MODE}. If the configuration value is not
+	 * available, the {@link EnumFilterMode#SINGLE_SELECT} is used by default.
+	 * @param <T> Enumeration type
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link InputFilter}
+	 */
+	static <T extends Enum<T>> InputFilter<T> enumeration(Property<T> property) {
+		return EnumInputFilterBuilder.create(property);
 	}
 
 	// ------- renderer
