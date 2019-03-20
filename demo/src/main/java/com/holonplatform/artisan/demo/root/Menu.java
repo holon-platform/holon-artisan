@@ -2,6 +2,7 @@ package com.holonplatform.artisan.demo.root;
 
 import com.holonplatform.artisan.demo.components.ExportPage;
 import com.holonplatform.artisan.demo.components.HomePage;
+import com.holonplatform.artisan.demo.components.InputFilterPage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
@@ -68,10 +69,16 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		btn.addClickListener(event -> getUI().get().navigate(TabLayoutPage.class));
 		btn.setWidth("100%");
 		vl.add(btn);
-		
+
 		btn = new Button("Export");
 		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		btn.addClickListener(event -> getUI().get().navigate(ExportPage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
+
+		btn = new Button("Input filters");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btn.addClickListener(event -> getUI().get().navigate(InputFilterPage.class));
 		btn.setWidth("100%");
 		vl.add(btn);
 

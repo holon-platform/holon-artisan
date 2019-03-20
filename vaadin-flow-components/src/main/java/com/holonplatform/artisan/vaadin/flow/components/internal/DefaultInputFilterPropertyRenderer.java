@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal;
 import javax.annotation.Priority;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;

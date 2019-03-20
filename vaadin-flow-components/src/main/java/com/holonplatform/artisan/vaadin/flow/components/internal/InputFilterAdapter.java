@@ -39,6 +39,8 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 	private final Input<T> input;
 	private final Function<T, QueryFilter> filterProvider;
 
+	private Runnable resetCallback;
+
 	/**
 	 * Constructor.
 	 * @param input The {@link Input} to adapt (not null)
@@ -67,6 +69,33 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 	 */
 	protected Function<T, QueryFilter> getFilterProvider() {
 		return filterProvider;
+	}
+
+	/**
+	 * Get the callback to invoke when a {@link #reset()} is performed.
+	 * @return the reset callback, if available
+	 */
+	public Optional<Runnable> getResetCallback() {
+		return Optional.ofNullable(resetCallback);
+	}
+
+	/**
+	 * Set the callback to invoke when a {@link #reset()} is performed.
+	 * @param resetCallback the reset callback to set
+	 */
+	public void setResetCallback(Runnable resetCallback) {
+		this.resetCallback = resetCallback;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.InputFilter#reset()
+	 */
+	@Override
+	public void reset() {
+		InputFilter.super.reset();
+		// callback
+		getResetCallback().ifPresent(c -> c.run());
 	}
 
 	/*
