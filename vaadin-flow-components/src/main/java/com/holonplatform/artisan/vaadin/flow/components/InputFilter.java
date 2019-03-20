@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultInputFilterAdapterBuilder;
@@ -134,6 +135,16 @@ public interface InputFilter<T> extends Input<T> {
 	 */
 	static StringInputFilterBuilder string(Property<String> property) {
 		return StringInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create a numeric type {@link InputFilter}.
+	 * @param <T> Number type
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link NumberInputFilterBuilder}
+	 */
+	static <T extends Number> NumberInputFilterBuilder<T> number(Property<T> property) {
+		return NumberInputFilterBuilder.create(property);
 	}
 
 	// ------- renderer

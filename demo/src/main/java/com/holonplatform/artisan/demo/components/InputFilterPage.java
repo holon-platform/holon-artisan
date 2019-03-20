@@ -17,6 +17,8 @@ package com.holonplatform.artisan.demo.components;
 
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
+import com.holonplatform.core.property.NumericProperty;
 import com.holonplatform.core.property.StringProperty;
 import com.holonplatform.core.query.QueryFilter;
 import com.vaadin.flow.component.Component;
@@ -33,6 +35,8 @@ public class InputFilterPage extends VerticalLayout {
 
 	private static final StringProperty STR = StringProperty.create("str").message("String value");
 	private static final StringProperty STR2 = StringProperty.create("str2").message("String value 2");
+	private static final NumericProperty<Integer> ITG = NumericProperty.integerType("itg").message("Integer value");
+	private static final NumericProperty<Double> DBL = NumericProperty.doubleType("dbl").message("Double value");
 
 	public InputFilterPage() {
 		super();
@@ -41,6 +45,8 @@ public class InputFilterPage extends VerticalLayout {
 		add(buildRow(
 				InputFilter.string(STR2).maxLength(3).filterOperatorSelectConfiguration(c -> c.width("5em")).build(),
 				true));
+		add(buildRow(InputFilter.number(ITG).build()));
+		add(buildRow(InputFilter.number(DBL).defaultOperator(InputFilterOperator.GREATER_OR_EQUAL).build()));
 
 	}
 
