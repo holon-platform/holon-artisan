@@ -9,6 +9,7 @@ import com.holonplatform.artisan.demo.components.WindowPage;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,6 +21,8 @@ import com.vaadin.flow.router.RouterLayout;
 public class Menu extends HorizontalLayout implements RouterLayout {
 
 	private static final long serialVersionUID = 1L;
+
+	private final Div viewport = new Div();
 
 	public Menu() {
 		super();
@@ -83,6 +86,11 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		vl.add(btn);
 
 		add(vl);
+		
+		viewport.setSizeFull();
+		viewport.getStyle().set("overflow-y", "auto");
+		add(viewport);
+		setFlexGrow(1, viewport);
 	}
 
 	/*
@@ -92,8 +100,7 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 	@Override
 	public void showRouterLayoutContent(HasElement content) {
 		if (content != null) {
-			getElement().appendChild(content.getElement());
-			setFlexGrow(1, content);
+			viewport.getElement().appendChild(content.getElement());
 		}
 	}
 

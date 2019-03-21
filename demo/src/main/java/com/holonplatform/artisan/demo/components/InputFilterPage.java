@@ -17,9 +17,8 @@ package com.holonplatform.artisan.demo.components;
 
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilter.EnumFilterMode;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
-import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumFilterMode;
 import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.property.BooleanProperty;
 import com.holonplatform.core.property.NumericProperty;
@@ -60,7 +59,7 @@ public class InputFilterPage extends VerticalLayout {
 			.message("Enumeration value");
 	private static final PathProperty<MyEnum> ENM2 = PathProperty.create("enm2", MyEnum.class)
 			.message("Enumeration value 2")
-			.withConfiguration(EnumInputFilterBuilder.PROPERTY_ENUM_FILTER_MODE, EnumFilterMode.MULTI_OPTION);
+			.withConfiguration(InputFilter.PROPERTY_ENUM_FILTER_MODE, EnumFilterMode.MULTI_OPTION);
 
 	public InputFilterPage() {
 		super();
@@ -77,7 +76,9 @@ public class InputFilterPage extends VerticalLayout {
 		add(buildRow(InputFilter.enumSingleSelect(ENM).build()));
 		add(buildRow(InputFilter.enumSingleOption(ENM).label("Enumeration (single option)").build()));
 		add(buildRow(InputFilter.enumMultiOption(ENM).label("Enumeration (multiple options)").build()));
-		add(buildRow(InputFilter.enumeration(ENM2)));
+		add(buildRow(InputFilter.enumeration(ENM, EnumFilterMode.SINGLE_SELECT)
+				.label("Enumeration mode (single option)").build(), true));
+		add(buildRow(InputFilter.enumeration(ENM2).label("My enumeration label").build()));
 	}
 
 	private static Component buildRow(InputFilter<?> i) {

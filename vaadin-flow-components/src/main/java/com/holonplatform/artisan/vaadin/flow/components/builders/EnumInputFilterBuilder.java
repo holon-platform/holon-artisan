@@ -18,12 +18,11 @@ package com.holonplatform.artisan.vaadin.flow.components.builders;
 import java.util.Set;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilter.EnumFilterMode;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultEnumMultiOptionInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultEnumSingleOptionInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultEnumSingleSelectInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
-import com.holonplatform.core.config.ConfigProperty;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultGenericEnumInputFilterBuilder;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.builders.DeferrableLocalizationConfigurator;
@@ -81,46 +80,6 @@ public interface EnumInputFilterBuilder<T extends Enum<T>, V, B extends EnumInpu
 		return dataSource(DataProvider.ofItems(items));
 	}
 
-	// -------
-
-	/**
-	 * Enumeration {@link InputFilter} rendering modes.
-	 */
-	public enum EnumFilterMode {
-
-		/**
-		 * The enumeration {@link InputFilter} is rendered using a <em>select</em>.
-		 * <p>
-		 * A single value can be selected.
-		 * </p>
-		 */
-		SINGLE_SELECT,
-
-		/**
-		 * The enumeration {@link InputFilter} is rendered using a <em>radio button group</em>.
-		 * <p>
-		 * A single value can be selected.
-		 * </p>
-		 */
-		SINGLE_OPTION,
-
-		/**
-		 * The enumeration {@link InputFilter} is rendered using a <em>checkbox group</em>.
-		 * <p>
-		 * Multiple values can be selected.
-		 * </p>
-		 */
-		MULTI_OPTION;
-
-	}
-
-	/**
-	 * A configuration value which can be used in {@link Property} configuration to specify the default
-	 * {@link EnumFilterMode}.
-	 */
-	public static final ConfigProperty<EnumFilterMode> PROPERTY_ENUM_FILTER_MODE = ConfigProperty.create(
-			"com.holonplatform.artisan.vaadin.flow.components.input.filter.enum.filter.mode", EnumFilterMode.class);
-
 	/**
 	 * Enumeration type {@link InputFilter} builder using a single select as input component.
 	 *
@@ -160,6 +119,18 @@ public interface EnumInputFilterBuilder<T extends Enum<T>, V, B extends EnumInpu
 
 	}
 
+	/**
+	 * Generic Enumeration type {@link InputFilter} builder.
+	 * 
+	 * @param <T> Enumeration type
+	 *
+	 * @since 1.0.0
+	 */
+	public interface GenericEnumInputFilterBuilder<T extends Enum<T>>
+			extends EnumInputFilterBuilder<T, T, GenericEnumInputFilterBuilder<T>> {
+
+	}
+
 	// ------- statics
 
 	/**
@@ -196,36 +167,42 @@ public interface EnumInputFilterBuilder<T extends Enum<T>, V, B extends EnumInpu
 	}
 
 	/**
-	 * Create an enumeration type {@link InputFilter} using given property and given rendering mode.
+	 * Get a generic builder to create an enumeration type {@link InputFilter}, using given property and given rendering
+	 * mode.
+	 * <p>
+	 * For specific builders according to rendering mode, use:
+	 * <ul>
+	 * <li>{@link #singleSelect(Property)}</li>
+	 * <li>{@link #singleOption(Property)}</li>
+	 * <li>{@link #multiOption(Property)}</li>
+	 * </ul>
 	 * @param <T> Enumeration type
 	 * @param property The property to use as filter expression (not null)
-	 * @param mode The rendering mode
-	 * @return A new {@link InputFilter}
+	 * @param mode The rendering mode (not null)
+	 * @return A new {@link GenericEnumInputFilterBuilder}
 	 */
-	static <T extends Enum<T>> InputFilter<T> create(Property<T> property, EnumFilterMode mode) {
-		ObjectUtils.argumentNotNull(mode, "Enum filter mode must be not null");
-		switch (mode) {
-		case MULTI_OPTION:
-			return ComponentUtils.asSingleValueInputFilter(multiOption(property).build());
-		case SINGLE_OPTION:
-			return singleOption(property).build();
-		case SINGLE_SELECT:
-		default:
-			return singleSelect(property).build();
-		}
+	static <T extends Enum<T>> GenericEnumInputFilterBuilder<T> create(Property<T> property, EnumFilterMode mode) {
+		return new DefaultGenericEnumInputFilterBuilder<>(property, mode);
 	}
 
 	/**
-	 * Create an enumeration type {@link InputFilter} using given property and the rendering mode specified in property
-	 * configuration using {@link #PROPERTY_ENUM_FILTER_MODE}. If the configuration value is not available, the
-	 * {@link EnumFilterMode#SINGLE_SELECT} is used by default.
+	 * Get a generic builder to create an enumeration type {@link InputFilter}, using given property and the rendering
+	 * mode specified in property configuration using {@link InputFilter#PROPERTY_ENUM_FILTER_MODE}. If the configuration value is
+	 * not available, the {@link EnumFilterMode#SINGLE_SELECT} is used by default.
+	 * <p>
+	 * For specific builders according to rendering mode, use:
+	 * <ul>
+	 * <li>{@link #singleSelect(Property)}</li>
+	 * <li>{@link #singleOption(Property)}</li>
+	 * <li>{@link #multiOption(Property)}</li>
+	 * </ul>
 	 * @param <T> Enumeration type
 	 * @param property The property to use as filter expression (not null)
-	 * @return A new {@link InputFilter}
+	 * @return A new {@link GenericEnumInputFilterBuilder}
 	 */
-	static <T extends Enum<T>> InputFilter<T> create(Property<T> property) {
-		return create(property,
-				property.getConfiguration().getParameter(PROPERTY_ENUM_FILTER_MODE, EnumFilterMode.SINGLE_SELECT));
+	static <T extends Enum<T>> GenericEnumInputFilterBuilder<T> create(Property<T> property) {
+		return create(property, property.getConfiguration().getParameter(InputFilter.PROPERTY_ENUM_FILTER_MODE,
+				EnumFilterMode.SINGLE_SELECT));
 	}
 
 }
