@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
-import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
 import com.holonplatform.artisan.vaadin.flow.components.internal.OperatorInputFilterAdapter;
 import com.holonplatform.core.property.Property;
@@ -33,16 +33,16 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
 
 /**
- * Base {@link OperatorInputFilterBuilder} implementation.
+ * Base {@link OperatorInputFilterConfigurator} implementation.
  *
  * @param <T> Value type
  * @param <B> Concrete builder type
  * 
  * @since 1.0.0
  */
-public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorInputFilterBuilder<T, ValueChangeEvent<T>, B>>
+public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, B>>
 		extends AbstractLocalizableComponentConfigurator<OperatorInputFilterAdapter<T>, B>
-		implements OperatorInputFilterBuilder<T, ValueChangeEvent<T>, B> {
+		implements OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, B> {
 
 	private Consumer<FilterOperatorSelectConfigurator> filterOperatorSelectConfiguration;
 

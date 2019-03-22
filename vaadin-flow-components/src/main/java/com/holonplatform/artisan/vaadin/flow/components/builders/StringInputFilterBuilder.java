@@ -28,7 +28,7 @@ import com.holonplatform.vaadin.flow.components.builders.StringInputConfigurator
  * @since 1.0.0
  */
 public interface StringInputFilterBuilder
-		extends OperatorInputFilterBuilder<String, ValueChangeEvent<String>, StringInputFilterBuilder>,
+		extends OperatorInputFilterConfigurator<String, ValueChangeEvent<String>, StringInputFilterBuilder>,
 		StringInputConfigurator<StringInputFilterBuilder> {
 
 	public static final Localizable IGNORE_CASE_TRUE_MENU_ITEM = Localizable.of("Ignore case",

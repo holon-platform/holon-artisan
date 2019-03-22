@@ -29,7 +29,7 @@ import com.holonplatform.vaadin.flow.components.builders.NumberInputConfigurator
  * @since 1.0.0
  */
 public interface NumberInputFilterBuilder<T extends Number>
-		extends OperatorInputFilterBuilder<T, ValueChangeEvent<T>, NumberInputFilterBuilder<T>>,
+		extends OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, NumberInputFilterBuilder<T>>,
 		NumberInputConfigurator<T, NumberInputFilterBuilder<T>> {
 
 	/**

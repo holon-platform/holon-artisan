@@ -34,7 +34,7 @@ import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
  * 
  * @since 1.0.0
  */
-public interface OperatorInputFilterBuilder<T, E extends ValueChangeEvent<T>, B extends OperatorInputFilterBuilder<T, E, B>>
+public interface OperatorInputFilterConfigurator<T, E extends ValueChangeEvent<T>, B extends OperatorInputFilterConfigurator<T, E, B>>
 		extends DeferrableLocalizationConfigurator<B>, InputFilterBuilder<T, E, B> {
 
 	/**

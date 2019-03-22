@@ -17,7 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.function.Consumer;
 
-import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder.FilterOperatorSelectConfigurator;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorSelectConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
