@@ -67,7 +67,8 @@ public class DefaultStringInputFilterBuilder extends
 	public DefaultStringInputFilterBuilder(Property<String> property) {
 		super(property, InputFilterOperator.CONTAINS, InputFilterOperator.STARTS_WITH, InputFilterOperator.EQUAL,
 				InputFilterOperator.NOT_EQUAL, InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
-		this.inputBuilder = StringInputBuilder.create().clearButtonVisible(true);
+		this.inputBuilder = StringInputBuilder.create().emptyValuesAsNull(true).blankValuesAsNull(true)
+				.clearButtonVisible(true);
 		label(property);
 	}
 

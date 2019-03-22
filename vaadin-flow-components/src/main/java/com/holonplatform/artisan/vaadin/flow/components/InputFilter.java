@@ -15,15 +15,24 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.builders.BooleanInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.DateInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.DateTimeInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumMultiOptionInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleOptionInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleSelectInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.GenericEnumInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.LocalDateInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.LocalDateTimeInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.LocalTimeInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
@@ -31,6 +40,7 @@ import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdap
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterConverterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperatorInputFilterAdapterBuilder;
 import com.holonplatform.core.config.ConfigProperty;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
@@ -179,6 +189,51 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
+	 * Get a builder to create a {@link LocalDate} type {@link InputFilter}.
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link LocalDateInputFilterBuilder}
+	 */
+	static LocalDateInputFilterBuilder localDate(Property<LocalDate> property) {
+		return LocalDateInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create a {@link LocalDateTime} type {@link InputFilter}.
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link LocalDateTimeInputFilterBuilder}
+	 */
+	static LocalDateTimeInputFilterBuilder localDateTime(Property<LocalDateTime> property) {
+		return LocalDateTimeInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create a {@link LocalTime} type {@link InputFilter}.
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link LocalTimeInputFilterBuilder}
+	 */
+	static LocalTimeInputFilterBuilder localTime(Property<LocalTime> property) {
+		return LocalTimeInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create a {@link Date} type {@link InputFilter}.
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link DateInputFilterBuilder}
+	 */
+	static DateInputFilterBuilder date(Property<Date> property) {
+		return DateInputFilterBuilder.create(property);
+	}
+
+	/**
+	 * Get a builder to create a {@link Date} with time type {@link InputFilter}.
+	 * @param property The property to use as filter expression (not null)
+	 * @return A new {@link DateTimeInputFilterBuilder}
+	 */
+	static DateTimeInputFilterBuilder dateTime(Property<Date> property) {
+		return DateTimeInputFilterBuilder.create(property);
+	}
+
+	/**
 	 * Get a builder to create an enumeration type {@link InputFilter}, using a single select as input component.
 	 * @param <T> Enumeratin type
 	 * @param property The property to use as filter expression (not null)
@@ -244,6 +299,20 @@ public interface InputFilter<T> extends Input<T> {
 	 */
 	static <T extends Enum<T>> GenericEnumInputFilterBuilder<T> enumeration(Property<T> property) {
 		return EnumInputFilterBuilder.create(property);
+	}
+
+	// ------- using renderers
+
+	/**
+	 * Create an {@link InputFilter} using given <code>property</code>, if a suitable renderer is available.
+	 * @param <T> Value type
+	 * @param property The property for which to create the {@link InputFilter} (not null)
+	 * @return Optional {@link InputFilter} for given property
+	 */
+	@SuppressWarnings("unchecked")
+	static <T> Optional<InputFilter<T>> create(Property<T> property) {
+		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		return property.renderIfAvailable(InputFilter.class).map(i -> (InputFilter<T>) i);
 	}
 
 	// ------- configuration
