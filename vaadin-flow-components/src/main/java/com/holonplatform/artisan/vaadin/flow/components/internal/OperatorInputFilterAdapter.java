@@ -81,7 +81,6 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		addThemeName("operator-input-filter");
 		// operator select
 		this.operatorSelect = operatorSelect;
-		this.operatorSelect.getStyle().set("margin-right", "2px");
 		this.operatorSelect.addValueChangeListener(e -> {
 			// check operator
 			getInput().ifPresent(i -> i.setReadOnly((e.getValue() != null
@@ -336,7 +335,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	private static class DefaultFilterOperatorChangeEvent<T> implements FilterOperatorChangeEvent<T> {
 
 		private static final long serialVersionUID = 8212171204337291572L;
-		
+
 		private final boolean fromClient;
 		private final InputFilter<T> source;
 		private final Input<T> input;

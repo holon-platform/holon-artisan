@@ -22,6 +22,7 @@ import java.util.Optional;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.HasTheme;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.select.Select;
 
 /**
@@ -29,6 +30,7 @@ import com.vaadin.flow.component.select.Select;
  *
  * @since 1.0.0
  */
+@HtmlImport("frontend://com-holonplatform-filter-operator-select-styles.html")
 public class FilterOperatorSelect extends Select<InputFilterOperator> implements HasTheme {
 
 	private static final long serialVersionUID = -8923120517061581962L;
@@ -44,10 +46,8 @@ public class FilterOperatorSelect extends Select<InputFilterOperator> implements
 
 		// configuration
 		setEmptySelectionAllowed(false);
-		addThemeName("filter-operator-select");
 
-		// default width
-		setWidth("4.2em");
+		addThemeName("filter-operator-select");
 
 		// labels
 		setItemLabelGenerator(operator -> operator.getSymbol());
