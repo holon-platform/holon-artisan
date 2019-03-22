@@ -15,7 +15,6 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -29,14 +28,12 @@ import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.StringInputBuilder;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.holonplatform.vaadin.flow.internal.components.builders.DelegatedShortcutConfigurator;
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.CompositionEndEvent;
 import com.vaadin.flow.component.CompositionStartEvent;
 import com.vaadin.flow.component.CompositionUpdateEvent;
-import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.FocusNotifier.FocusEvent;
 import com.vaadin.flow.component.InputEvent;
 import com.vaadin.flow.component.Key;
@@ -50,8 +47,6 @@ import com.vaadin.flow.component.textfield.Autocapitalize;
 import com.vaadin.flow.component.textfield.Autocomplete;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.dom.DomEventListener;
-import com.vaadin.flow.dom.Element;
 
 /**
  * Default {@link StringInputFilterBuilder} implementation.
@@ -72,7 +67,8 @@ public class DefaultStringInputFilterBuilder extends
 	public DefaultStringInputFilterBuilder(Property<String> property) {
 		super(property, InputFilterOperator.CONTAINS, InputFilterOperator.STARTS_WITH, InputFilterOperator.EQUAL,
 				InputFilterOperator.NOT_EQUAL, InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
-		this.inputBuilder = StringInputBuilder.create().clearButtonVisible(true).label(property);
+		this.inputBuilder = StringInputBuilder.create().clearButtonVisible(true);
+		label(property);
 	}
 
 	@Override
@@ -159,16 +155,6 @@ public class DefaultStringInputFilterBuilder extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.InputConfigurator#readOnly(boolean)
-	 */
-	@Override
-	public StringInputFilterBuilder readOnly(boolean readOnly) {
-		inputBuilder.readOnly(readOnly);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see
 	 * com.holonplatform.vaadin.flow.components.builders.InputConfigurator#withValueChangeListener(com.holonplatform.
 	 * vaadin.flow.components.ValueHolder.ValueChangeListener)
@@ -177,102 +163,6 @@ public class DefaultStringInputFilterBuilder extends
 	public StringInputFilterBuilder withValueChangeListener(
 			ValueChangeListener<String, ValueChangeEvent<String>> listener) {
 		inputBuilder.withValueChangeListener(listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.InputConfigurator#required(boolean)
-	 */
-	@Override
-	public StringInputFilterBuilder required(boolean required) {
-		inputBuilder.required(required);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#id(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder id(String id) {
-		inputBuilder.id(id);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#visible(boolean)
-	 */
-	@Override
-	public StringInputFilterBuilder visible(boolean visible) {
-		inputBuilder.visible(visible);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#elementConfiguration(java.util.function.
-	 * Consumer)
-	 */
-	@Override
-	public StringInputFilterBuilder elementConfiguration(Consumer<Element> element) {
-		inputBuilder.elementConfiguration(element);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withAttachListener(com.vaadin.flow.
-	 * component.ComponentEventListener)
-	 */
-	@Override
-	public StringInputFilterBuilder withAttachListener(ComponentEventListener<AttachEvent> listener) {
-		inputBuilder.withAttachListener(listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withDetachListener(com.vaadin.flow.
-	 * component.ComponentEventListener)
-	 */
-	@Override
-	public StringInputFilterBuilder withDetachListener(ComponentEventListener<DetachEvent> listener) {
-		inputBuilder.withDetachListener(listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withThemeName(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder withThemeName(String themeName) {
-		inputBuilder.withThemeName(themeName);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.lang.String,
-	 * com.vaadin.flow.dom.DomEventListener)
-	 */
-	@Override
-	public StringInputFilterBuilder withEventListener(String eventType, DomEventListener listener) {
-		inputBuilder.withEventListener(eventType, listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.lang.String,
-	 * com.vaadin.flow.dom.DomEventListener, java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder withEventListener(String eventType, DomEventListener listener, String filter) {
-		inputBuilder.withEventListener(eventType, listener, filter);
 		return this;
 	}
 
@@ -343,16 +233,6 @@ public class DefaultStringInputFilterBuilder extends
 	@Override
 	public StringInputFilterBuilder clearButtonVisible(boolean clearButtonVisible) {
 		inputBuilder.clearButtonVisible(clearButtonVisible);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasEnabledConfigurator#enabled(boolean)
-	 */
-	@Override
-	public StringInputFilterBuilder enabled(boolean enabled) {
-		inputBuilder.enabled(enabled);
 		return this;
 	}
 
@@ -488,86 +368,6 @@ public class DefaultStringInputFilterBuilder extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder width(String width) {
-		inputBuilder.width(width);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#height(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder height(String height) {
-		inputBuilder.height(height);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder minWidth(String minWidth) {
-		inputBuilder.minWidth(minWidth);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder maxWidth(String maxWidth) {
-		inputBuilder.maxWidth(maxWidth);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder minHeight(String minHeight) {
-		inputBuilder.minHeight(minHeight);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder maxHeight(String maxHeight) {
-		inputBuilder.maxHeight(maxHeight);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.String[])
-	 */
-	@Override
-	public StringInputFilterBuilder styleNames(String... styleNames) {
-		inputBuilder.styleNames(styleNames);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleName(java.lang.String)
-	 */
-	@Override
-	public StringInputFilterBuilder styleName(String styleName) {
-		inputBuilder.styleName(styleName);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasAutofocusConfigurator#autofocus(boolean)
 	 */
 	@Override
@@ -694,17 +494,6 @@ public class DefaultStringInputFilterBuilder extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasLabelConfigurator#label(com.holonplatform.core.i18n.
-	 * Localizable)
-	 */
-	@Override
-	public StringInputFilterBuilder label(Localizable label) {
-		inputBuilder.label(label);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasTitleConfigurator#title(com.holonplatform.core.i18n.
 	 * Localizable)
 	 */
@@ -743,27 +532,6 @@ public class DefaultStringInputFilterBuilder extends
 	public StringInputFilterBuilder withThemeVariants(TextFieldVariant... variants) {
 		inputBuilder.withThemeVariants(variants);
 		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.DeferrableLocalizationConfigurator#withDeferredLocalization(
-	 * boolean)
-	 */
-	@Override
-	public StringInputFilterBuilder withDeferredLocalization(boolean deferredLocalization) {
-		inputBuilder.withDeferredLocalization(deferredLocalization);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasDeferrableLocalization#isDeferredLocalizationEnabled()
-	 */
-	@Override
-	public boolean isDeferredLocalizationEnabled() {
-		return inputBuilder.isDeferredLocalizationEnabled();
 	}
 
 }

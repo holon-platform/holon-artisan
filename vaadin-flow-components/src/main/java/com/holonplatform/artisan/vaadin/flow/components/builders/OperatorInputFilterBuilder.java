@@ -17,10 +17,9 @@ package com.holonplatform.artisan.vaadin.flow.components.builders;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
-import com.holonplatform.vaadin.flow.components.builders.InputConfigurator;
 
 /**
- * {@link InputFilter} base builder.
+ * {@link InputFilter} with operator selection support base builder.
  *
  * @param <T> Value type
  * @param <E> Value change event type
@@ -28,21 +27,8 @@ import com.holonplatform.vaadin.flow.components.builders.InputConfigurator;
  * 
  * @since 1.0.0
  */
-public interface InputFilterBuilder<T, E extends ValueChangeEvent<T>, B extends InputFilterBuilder<T, E, B>>
-		extends InputConfigurator<T, E, B> {
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.InputConfigurator#required()
-	 */
-	@Override
-	default B required() {
-		return required(true);
-	}
-
-	/**
-	 * Build and returns the {@link InputFilter} instance.
-	 * @return The {@link InputFilter} instance
-	 */
-	InputFilter<T> build();
+public interface OperatorInputFilterBuilder<T, B extends OperatorInputFilterBuilder<T, B>>
+		extends OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, B>,
+		InputFilterBuilder<T, ValueChangeEvent<T>, B> {
 
 }

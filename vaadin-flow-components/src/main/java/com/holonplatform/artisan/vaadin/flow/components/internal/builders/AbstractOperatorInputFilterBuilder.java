@@ -21,13 +21,16 @@ import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
 import com.holonplatform.artisan.vaadin.flow.components.internal.OperatorInputFilterAdapter;
+import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.Input;
-import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
+import com.holonplatform.vaadin.flow.components.builders.HasLabelConfigurator;
 import com.holonplatform.vaadin.flow.internal.components.builders.AbstractLocalizableComponentConfigurator;
+import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasLabelConfigurator;
 import com.vaadin.flow.component.HasEnabled;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
@@ -40,14 +43,18 @@ import com.vaadin.flow.component.HasStyle;
  * 
  * @since 1.0.0
  */
-public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, B>>
+public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorInputFilterBuilder<T, B>>
 		extends AbstractLocalizableComponentConfigurator<OperatorInputFilterAdapter<T>, B>
-		implements OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, B> {
+		implements OperatorInputFilterBuilder<T, B> {
+
+	private final HasLabelConfigurator<?> labelConfigurator;
 
 	private Consumer<FilterOperatorSelectConfigurator> filterOperatorSelectConfiguration;
 
 	public AbstractOperatorInputFilterBuilder(Property<? super T> property, InputFilterOperator... operators) {
 		super(new OperatorInputFilterAdapter<>(property, new FilterOperatorSelect(operators)));
+		this.labelConfigurator = new DefaultHasLabelConfigurator<>(getComponent(), l -> getComponent().setLabel(l),
+				this);
 	}
 
 	@Override
@@ -110,6 +117,29 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	@Override
 	public B defaultOperator(InputFilterOperator operator) {
 		getComponent().setDefaultOperator(operator);
+		return getConfigurator();
+	}
+
+	@Override
+	public B readOnly(boolean readOnly) {
+		getComponent().setReadOnly(readOnly);
+		return getConfigurator();
+	}
+
+	@Override
+	public B required(boolean required) {
+		getComponent().setRequired(required);
+		return getConfigurator();
+	}
+
+	@Override
+	public B required() {
+		return required(true);
+	}
+
+	@Override
+	public B label(Localizable label) {
+		labelConfigurator.label(label);
 		return getConfigurator();
 	}
 

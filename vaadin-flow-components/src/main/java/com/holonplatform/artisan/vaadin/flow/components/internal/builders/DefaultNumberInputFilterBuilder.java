@@ -17,7 +17,6 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
@@ -29,14 +28,12 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.NumberInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.internal.components.builders.DelegatedShortcutConfigurator;
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.CompositionEndEvent;
 import com.vaadin.flow.component.CompositionStartEvent;
 import com.vaadin.flow.component.CompositionUpdateEvent;
-import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.FocusNotifier.FocusEvent;
 import com.vaadin.flow.component.InputEvent;
 import com.vaadin.flow.component.Key;
@@ -47,8 +44,6 @@ import com.vaadin.flow.component.KeyUpEvent;
 import com.vaadin.flow.component.textfield.Autocomplete;
 import com.vaadin.flow.component.textfield.TextFieldVariant;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.dom.DomEventListener;
-import com.vaadin.flow.dom.Element;
 
 /**
  * Default {@link NumberInputFilterBuilder} implementation.
@@ -67,8 +62,8 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
 				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
-		this.inputBuilder = NumberInputBuilder.create((Class<T>) property.getType()).clearButtonVisible(true)
-				.label(property);
+		this.inputBuilder = NumberInputBuilder.create((Class<T>) property.getType()).clearButtonVisible(true);
+		label(property);
 	}
 
 	@Override
@@ -89,16 +84,6 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.InputConfigurator#readOnly(boolean)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> readOnly(boolean readOnly) {
-		inputBuilder.readOnly(readOnly);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see
 	 * com.holonplatform.vaadin.flow.components.builders.InputConfigurator#withValueChangeListener(com.holonplatform.
 	 * vaadin.flow.components.ValueHolder.ValueChangeListener)
@@ -111,117 +96,11 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.InputConfigurator#required(boolean)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> required(boolean required) {
-		inputBuilder.required(required);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#id(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> id(String id) {
-		inputBuilder.id(id);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#visible(boolean)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> visible(boolean visible) {
-		inputBuilder.visible(visible);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#elementConfiguration(java.util.function.
-	 * Consumer)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> elementConfiguration(Consumer<Element> element) {
-		inputBuilder.elementConfiguration(element);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withAttachListener(com.vaadin.flow.
-	 * component.ComponentEventListener)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> withAttachListener(ComponentEventListener<AttachEvent> listener) {
-		inputBuilder.withAttachListener(listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withDetachListener(com.vaadin.flow.
-	 * component.ComponentEventListener)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> withDetachListener(ComponentEventListener<DetachEvent> listener) {
-		inputBuilder.withDetachListener(listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withThemeName(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> withThemeName(String themeName) {
-		inputBuilder.withThemeName(themeName);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.lang.String,
-	 * com.vaadin.flow.dom.DomEventListener)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> withEventListener(String eventType, DomEventListener listener) {
-		inputBuilder.withEventListener(eventType, listener);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.lang.String,
-	 * com.vaadin.flow.dom.DomEventListener, java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> withEventListener(String eventType, DomEventListener listener, String filter) {
-		inputBuilder.withEventListener(eventType, listener, filter);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.InputValueConfigurator#withValue(java.lang.Object)
 	 */
 	@Override
 	public NumberInputFilterBuilder<T> withValue(T value) {
 		inputBuilder.withValue(value);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasEnabledConfigurator#enabled(boolean)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> enabled(boolean enabled) {
-		inputBuilder.enabled(enabled);
 		return this;
 	}
 
@@ -355,86 +234,6 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> width(String width) {
-		inputBuilder.width(width);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#height(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> height(String height) {
-		inputBuilder.height(height);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> minWidth(String minWidth) {
-		inputBuilder.minWidth(minWidth);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> maxWidth(String maxWidth) {
-		inputBuilder.maxWidth(maxWidth);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> minHeight(String minHeight) {
-		inputBuilder.minHeight(minHeight);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> maxHeight(String maxHeight) {
-		inputBuilder.maxHeight(maxHeight);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.String[])
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> styleNames(String... styleNames) {
-		inputBuilder.styleNames(styleNames);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleName(java.lang.String)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> styleName(String styleName) {
-		inputBuilder.styleName(styleName);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasAutofocusConfigurator#autofocus(boolean)
 	 */
 	@Override
@@ -562,17 +361,6 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasLabelConfigurator#label(com.holonplatform.core.i18n.
-	 * Localizable)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> label(Localizable label) {
-		inputBuilder.label(label);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.HasTitleConfigurator#title(com.holonplatform.core.i18n.
 	 * Localizable)
 	 */
@@ -611,27 +399,6 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	public NumberInputFilterBuilder<T> withThemeVariants(TextFieldVariant... variants) {
 		inputBuilder.withThemeVariants(variants);
 		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.DeferrableLocalizationConfigurator#withDeferredLocalization(
-	 * boolean)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> withDeferredLocalization(boolean deferredLocalization) {
-		inputBuilder.withDeferredLocalization(deferredLocalization);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasDeferrableLocalization#isDeferredLocalizationEnabled()
-	 */
-	@Override
-	public boolean isDeferredLocalizationEnabled() {
-		return inputBuilder.isDeferredLocalizationEnabled();
 	}
 
 	/*

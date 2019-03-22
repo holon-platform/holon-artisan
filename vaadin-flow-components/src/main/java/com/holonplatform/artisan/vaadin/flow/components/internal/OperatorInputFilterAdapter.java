@@ -35,6 +35,7 @@ import com.holonplatform.vaadin.flow.internal.components.events.DefaultValueChan
 import com.holonplatform.vaadin.flow.internal.components.support.RegistrationAdapter;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
@@ -48,13 +49,14 @@ import com.vaadin.flow.data.value.HasValueChangeMode;
  *
  * @since 1.0.0
  */
-public class OperatorInputFilterAdapter<T> extends CustomField<T> implements InputFilter<T>, HasStyle {
+public class OperatorInputFilterAdapter<T> extends CustomField<T> implements InputFilter<T>, HasStyle, HasTheme {
 
 	private static final long serialVersionUID = 3088317891629157757L;
 
 	private final Property<? super T> property;
-	private final Input<T> input;
 	private final FilterOperatorSelect operatorSelect;
+
+	private Input<T> input;
 
 	private Supplier<Boolean> ignoreCaseSupplier = () -> false;
 
@@ -69,9 +71,8 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		ObjectUtils.argumentNotNull(operatorSelect, "Filter operator select must be not null");
 		this.property = property;
 		this.input = input;
-		// style classes
-		getElement().getClassList().add("h-input-filter");
-		getElement().getClassList().add("h-operator-input-filter");
+		// theme
+		addThemeName("operator-input-filter");
 		// operator select
 		this.operatorSelect = operatorSelect;
 		this.operatorSelect.getStyle().set("margin-right", "2px");
@@ -90,17 +91,24 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	 */
 	public void build(Input<T> input) {
 		ObjectUtils.argumentNotNull(input, "Input must be not null");
+		this.input = input;
+
 		getChildren().forEach(c -> remove(c));
+
+		// input.addValueChangeListener(e -> updateValue());
+
 		final HorizontalLayout content = new HorizontalLayout();
 		content.setPadding(false);
 		content.setMargin(false);
 		content.setSpacing(false);
-		content.setAlignItems(Alignment.CENTER);
+		content.setAlignItems(Alignment.BASELINE);
 		content.add(getOperatorSelect());
+
 		final Component inputComponent = input.getComponent();
 		content.add(inputComponent);
 		content.setFlexGrow(1, inputComponent);
 		add(content);
+
 	}
 
 	/**
@@ -129,8 +137,9 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	@Override
 	public Optional<QueryFilter> getFilter() {
-		return Optional.ofNullable(InputFilterOperator.getQueryFilter(getValue(), getProperty(),
-				getFilterOperator().orElse(null), isIgnoreCase()));
+		return Optional.ofNullable(
+				InputFilterOperator.getQueryFilter(getInput().map(i -> i.getValue()).orElseGet(() -> getValue()),
+						getProperty(), getFilterOperator().orElse(null), isIgnoreCase()));
 	}
 
 	/**

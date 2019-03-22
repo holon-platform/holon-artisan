@@ -53,7 +53,6 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 		ObjectUtils.argumentNotNull(filterProvider, "Filter provider must be not null");
 		this.input = input;
 		this.filterProvider = filterProvider;
-		this.input.hasStyle().ifPresent(hs -> hs.addClassName("h-input-filter"));
 	}
 
 	/**

@@ -18,7 +18,6 @@ package com.holonplatform.artisan.vaadin.flow.components.builders;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultNumberInputFilterBuilder;
 import com.holonplatform.core.property.Property;
-import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.builders.NumberInputConfigurator;
 
 /**
@@ -29,7 +28,7 @@ import com.holonplatform.vaadin.flow.components.builders.NumberInputConfigurator
  * @since 1.0.0
  */
 public interface NumberInputFilterBuilder<T extends Number>
-		extends OperatorInputFilterConfigurator<T, ValueChangeEvent<T>, NumberInputFilterBuilder<T>>,
+		extends OperatorInputFilterBuilder<T, NumberInputFilterBuilder<T>>,
 		NumberInputConfigurator<T, NumberInputFilterBuilder<T>> {
 
 	/**
