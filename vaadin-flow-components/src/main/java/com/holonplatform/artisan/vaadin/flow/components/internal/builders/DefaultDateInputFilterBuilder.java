@@ -45,10 +45,6 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 
 	private final DateInputBuilder inputBuilder;
 
-	/**
-	 * @param property
-	 * @param operators
-	 */
 	public DefaultDateInputFilterBuilder(Property<? super Date> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,

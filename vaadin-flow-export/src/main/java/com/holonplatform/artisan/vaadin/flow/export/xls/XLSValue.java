@@ -256,6 +256,7 @@ public interface XLSValue<T> extends Serializable {
 
 	/**
 	 * Create a Enum type value.
+	 * @param <E> Enumeration type
 	 * @param valueType Value type (not null)
 	 * @param value The value (may be null)
 	 * @return The {@link XLSValue}

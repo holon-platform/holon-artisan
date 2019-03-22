@@ -82,6 +82,7 @@ public final class ComponentUtils implements Serializable {
 
 	/**
 	 * Convert given multi value input into a single value input.
+	 * @param <T> Value type
 	 * @param input The input to convert
 	 * @return The converted input
 	 */
@@ -101,6 +102,7 @@ public final class ComponentUtils implements Serializable {
 
 	/**
 	 * Convert given multi value input filter into a single value input filter.
+	 * @param <T> Value type
 	 * @param input The input filter to convert
 	 * @return The converted input filter
 	 */

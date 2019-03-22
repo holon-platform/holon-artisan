@@ -80,6 +80,7 @@ public interface XLSExporter {
 
 	/**
 	 * Get a {@link XLSExporter} using given {@link DataProvider} supplier as export data source.
+	 * @param <P> Property type
 	 * @param dataSource The export data source provider (not null)
 	 * @param properties The property set to use (not null)
 	 * @return A new {@link XLSExporter} builder

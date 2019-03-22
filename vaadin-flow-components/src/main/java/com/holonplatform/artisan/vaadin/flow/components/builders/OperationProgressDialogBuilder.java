@@ -23,7 +23,6 @@ import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 /**
  * Base {@link OperationProgressDialog} builder.
  * 
- * @param <B> Concrete builder type
  * @param <T> Operation result type
  *
  * @since 1.0.0

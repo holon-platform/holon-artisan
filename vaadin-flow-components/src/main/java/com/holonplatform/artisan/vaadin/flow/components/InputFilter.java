@@ -269,9 +269,9 @@ public interface InputFilter<T> extends Input<T> {
 	 * <p>
 	 * For specific builders according to rendering mode, use:
 	 * <ul>
-	 * <li>{@link #singleSelect(Property)}</li>
-	 * <li>{@link #singleOption(Property)}</li>
-	 * <li>{@link #multiOption(Property)}</li>
+	 * <li>{@link #enumSingleSelect(Property)}</li>
+	 * <li>{@link #enumSingleOption(Property)}</li>
+	 * <li>{@link #enumMultiOption(Property)}</li>
 	 * </ul>
 	 * @param <T> Enumeration type
 	 * @param property The property to use as filter expression (not null)
@@ -289,9 +289,9 @@ public interface InputFilter<T> extends Input<T> {
 	 * <p>
 	 * For specific builders according to rendering mode, use:
 	 * <ul>
-	 * <li>{@link #singleSelect(Property)}</li>
-	 * <li>{@link #singleOption(Property)}</li>
-	 * <li>{@link #multiOption(Property)}</li>
+	 * <li>{@link #enumSingleSelect(Property)}</li>
+	 * <li>{@link #enumSingleOption(Property)}</li>
+	 * <li>{@link #enumMultiOption(Property)}</li>
 	 * </ul>
 	 * @param <T> Enumeration type
 	 * @param property The property to use as filter expression (not null)

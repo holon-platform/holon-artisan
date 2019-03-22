@@ -46,10 +46,6 @@ public class DefaultLocalDateTimeInputFilterBuilder
 
 	private final LocalDateTimeInputBuilder inputBuilder;
 	
-	/**
-	 * @param property
-	 * @param operators
-	 */
 	public DefaultLocalDateTimeInputFilterBuilder(Property<? super LocalDateTime> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,

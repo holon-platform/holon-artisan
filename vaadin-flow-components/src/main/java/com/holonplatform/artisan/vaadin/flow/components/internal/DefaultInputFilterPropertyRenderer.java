@@ -136,6 +136,7 @@ public class DefaultInputFilterPropertyRenderer<T> implements PropertyRenderer<I
 
 	/**
 	 * Render the property as a {@link Enum} type {@link InputFilter}.
+	 * @param <E> Enumeration type
 	 * @param property Property to render
 	 * @return The {@link InputFilter} instance
 	 */
@@ -193,6 +194,7 @@ public class DefaultInputFilterPropertyRenderer<T> implements PropertyRenderer<I
 
 	/**
 	 * Render the property as a numeric type {@link InputFilter}.
+	 * @param <N> Number type
 	 * @param property Property to render
 	 * @return The {@link InputFilter} instance
 	 */
