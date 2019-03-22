@@ -15,30 +15,16 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
-import java.io.Serializable;
-
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 
 /**
- * {@link InputFilter} builder.
+ * {@link InputFilter} adapter builder with filter operator support.
  * 
  * @param <T> Value type
  *
  * @since 1.0.0
  */
-public interface InputFilterAdapterBuilder<T> extends Serializable {
-
-	/**
-	 * Set the callback to invoke when {@link InputFilter#reset()} is performed.
-	 * @param resetCallback the reset callback to set
-	 * @return this
-	 */
-	InputFilterAdapterBuilder<T> resetCallback(Runnable resetCallback);
-
-	/**
-	 * Build the {@link InputFilter} instance.
-	 * @return the {@link InputFilter} instance
-	 */
-	InputFilter<T> build();
+public interface OperatorInputFilterAdapterBuilder<T>
+		extends OperatorInputFilterBuilder<T, OperatorInputFilterAdapterBuilder<T>> {
 
 }

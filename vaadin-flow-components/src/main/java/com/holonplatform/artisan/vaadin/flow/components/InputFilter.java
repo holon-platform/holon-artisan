@@ -24,12 +24,12 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilter
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleOptionInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleSelectInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.GenericEnumInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterConverterAdapter;
-import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultInputFilterAdapterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperatorInputFilterAdapterBuilder;
 import com.holonplatform.core.config.ConfigProperty;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
@@ -138,15 +138,16 @@ public interface InputFilter<T> extends Input<T> {
 	// ------- builders
 
 	/**
-	 * Get a builder to create an {@link InputFilter} from given <code>input</code>.
+	 * Get a builder to create an {@link InputFilter} with operator support from given <code>input</code>.
 	 * @param <T> Value type
 	 * @param input The {@link Input} component (not null)
-	 * @param filterProvider The function to provide a {@link QueryFilter} according to the {@link Input} value, or
-	 *        <code>null</code> if none (not null)
-	 * @return A new {@link InputFilterAdapterBuilder}
+	 * @param property The property to use as query filter expression (not null)
+	 * @param operators The available filter operators (not null)
+	 * @return A new {@link OperatorInputFilterAdapterBuilder}
 	 */
-	static <T> InputFilterAdapterBuilder<T> builder(Input<T> input, Function<T, QueryFilter> filterProvider) {
-		return new DefaultInputFilterAdapterBuilder<>(input, filterProvider);
+	static <T> OperatorInputFilterAdapterBuilder<T> builder(Input<T> input, Property<? super T> property,
+			InputFilterOperator... operators) {
+		return new DefaultOperatorInputFilterAdapterBuilder<>(input, property, operators);
 	}
 
 	/**

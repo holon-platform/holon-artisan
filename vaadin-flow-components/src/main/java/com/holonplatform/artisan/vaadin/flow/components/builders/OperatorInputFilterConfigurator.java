@@ -15,10 +15,13 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
+import java.io.Serializable;
+import java.util.EventListener;
 import java.util.function.Consumer;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
+import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.DeferrableLocalizationConfigurator;
@@ -66,11 +69,75 @@ public interface OperatorInputFilterConfigurator<T, E extends ValueChangeEvent<T
 	B defaultOperator(InputFilterOperator operator);
 
 	/**
+	 * Add a {@link FilterOperatorChangeListener} to listener to filter operator change events.
+	 * @param listener The listener to add (not null)
+	 * @return this
+	 */
+	B withFilterOperatorChangeListener(FilterOperatorChangeListener<T> listener);
+
+	// ------- sub types
+
+	/**
 	 * Filter operator select configurator.
 	 */
 	public interface FilterOperatorSelectConfigurator extends ComponentConfigurator<FilterOperatorSelectConfigurator>,
 			HasSizeConfigurator<FilterOperatorSelectConfigurator>,
 			HasStyleConfigurator<FilterOperatorSelectConfigurator> {
+
+	}
+
+	/**
+	 * A listener for filter operator change events.
+	 *
+	 * @param <T> Value type
+	 */
+	@FunctionalInterface
+	public interface FilterOperatorChangeListener<T> extends EventListener, Serializable {
+
+		/**
+		 * Invoked when this listener receives a filter operator change event from an event source to which it has been
+		 * added.
+		 * @param event the received event, not <code>null</code>
+		 */
+		void filterOperatorChanged(FilterOperatorChangeEvent<T> event);
+	}
+
+	/**
+	 * Filter operator change event.
+	 *
+	 * @param <T> Value type
+	 */
+	public interface FilterOperatorChangeEvent<T> extends Serializable {
+
+		/**
+		 * Checks if this event originated from the client side.
+		 * @return <code>true</code> if the event originated from the client side, <code>false</code> otherwise
+		 */
+		boolean isFromClient();
+
+		/**
+		 * Get the event source.
+		 * @return The event source
+		 */
+		InputFilter<T> getSource();
+
+		/**
+		 * Get the value input.
+		 * @return the value input
+		 */
+		Input<T> getInput();
+
+		/**
+		 * Get the filter operator value before this value change event occurred.
+		 * @return the previous value
+		 */
+		InputFilterOperator getOldValue();
+
+		/**
+		 * Get the new filter operator value that triggered this event.
+		 * @return the new value
+		 */
+		InputFilterOperator getValue();
 
 	}
 

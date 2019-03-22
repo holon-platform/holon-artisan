@@ -22,7 +22,6 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
  * {@link InputFilter} with operator selection support base builder.
  *
  * @param <T> Value type
- * @param <E> Value change event type
  * @param <B> Concrete builder type
  * 
  * @since 1.0.0

@@ -86,37 +86,27 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 		return () -> false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder#
-	 * filterOperatorSelectConfiguration(java.util.function.Consumer)
-	 */
 	@Override
 	public B filterOperatorSelectConfiguration(Consumer<FilterOperatorSelectConfigurator> configuration) {
 		this.filterOperatorSelectConfiguration = configuration;
 		return getConfigurator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder#operatorSelectionAllowed(
-	 * boolean)
-	 */
 	@Override
 	public B operatorSelectionAllowed(boolean operatorSelectionAllowed) {
 		getComponent().setVisible(operatorSelectionAllowed);
 		return getConfigurator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder#defaultOperator(com.
-	 * holonplatform.artisan.vaadin.flow.components.OperatorInputFilter.Operator)
-	 */
 	@Override
 	public B defaultOperator(InputFilterOperator operator) {
 		getComponent().setDefaultOperator(operator);
+		return getConfigurator();
+	}
+
+	@Override
+	public B withFilterOperatorChangeListener(FilterOperatorChangeListener<T> listener) {
+		getComponent().addFilterOperatorChangeListener(listener);
 		return getConfigurator();
 	}
 
@@ -143,10 +133,6 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 		return getConfigurator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder#build()
-	 */
 	@Override
 	public InputFilter<T> build() {
 		if (filterOperatorSelectConfiguration != null) {

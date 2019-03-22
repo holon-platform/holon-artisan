@@ -15,11 +15,15 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorChangeEvent;
+import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorChangeListener;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorSelectConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultFilterOperatorSelectConfigurator;
 import com.holonplatform.core.Registration;
@@ -60,6 +64,8 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	private Supplier<Boolean> ignoreCaseSupplier = () -> false;
 
+	private final List<FilterOperatorChangeListener<T>> filterOperatorChangeListeners = new LinkedList<>();
+
 	public OperatorInputFilterAdapter(Property<? super T> property, FilterOperatorSelect operatorSelect) {
 		this(property, null, operatorSelect);
 	}
@@ -77,8 +83,15 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		this.operatorSelect = operatorSelect;
 		this.operatorSelect.getStyle().set("margin-right", "2px");
 		this.operatorSelect.addValueChangeListener(e -> {
+			// check operator
 			getInput().ifPresent(i -> i.setReadOnly((e.getValue() != null
 					&& (e.getValue() == InputFilterOperator.EMPTY || e.getValue() == InputFilterOperator.NOT_EMPTY))));
+			// fire listeners
+			getInput().ifPresent(i -> {
+				final FilterOperatorChangeEvent<T> event = new DefaultFilterOperatorChangeEvent<>(e.isFromClient(),
+						this, i, e.getOldValue(), e.getValue());
+				filterOperatorChangeListeners.forEach(l -> l.filterOperatorChanged(event));
+			});
 		});
 		if (input != null) {
 			build(input);
@@ -182,6 +195,15 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	 */
 	public FilterOperatorSelectConfigurator getFilterOperatorSelectConfigurator() {
 		return new DefaultFilterOperatorSelectConfigurator(getOperatorSelect());
+	}
+
+	/**
+	 * A filter operator change listener.
+	 * @param listener The listener to add (not null)
+	 */
+	public void addFilterOperatorChangeListener(FilterOperatorChangeListener<T> listener) {
+		ObjectUtils.argumentNotNull(listener, "FilterOperatorChangeListener must be not null");
+		this.filterOperatorChangeListeners.add(listener);
 	}
 
 	/**
@@ -309,6 +331,53 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	@Override
 	public void clear() {
 		InputFilter.super.clear();
+	}
+
+	private static class DefaultFilterOperatorChangeEvent<T> implements FilterOperatorChangeEvent<T> {
+
+		private static final long serialVersionUID = 8212171204337291572L;
+		
+		private final boolean fromClient;
+		private final InputFilter<T> source;
+		private final Input<T> input;
+		private final InputFilterOperator oldValue;
+		private final InputFilterOperator value;
+
+		public DefaultFilterOperatorChangeEvent(boolean fromClient, InputFilter<T> source, Input<T> input,
+				InputFilterOperator oldValue, InputFilterOperator value) {
+			super();
+			this.fromClient = fromClient;
+			this.source = source;
+			this.input = input;
+			this.oldValue = oldValue;
+			this.value = value;
+		}
+
+		@Override
+		public boolean isFromClient() {
+			return fromClient;
+		}
+
+		@Override
+		public InputFilter<T> getSource() {
+			return source;
+		}
+
+		@Override
+		public Input<T> getInput() {
+			return input;
+		}
+
+		@Override
+		public InputFilterOperator getOldValue() {
+			return oldValue;
+		}
+
+		@Override
+		public InputFilterOperator getValue() {
+			return value;
+		}
+
 	}
 
 }
