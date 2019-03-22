@@ -15,6 +15,11 @@
  */
 package com.holonplatform.artisan.demo.components;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter.EnumFilterMode;
@@ -24,7 +29,9 @@ import com.holonplatform.core.property.BooleanProperty;
 import com.holonplatform.core.property.NumericProperty;
 import com.holonplatform.core.property.PathProperty;
 import com.holonplatform.core.property.StringProperty;
+import com.holonplatform.core.property.TemporalProperty;
 import com.holonplatform.core.query.QueryFilter;
+import com.holonplatform.core.temporal.TemporalType;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
@@ -60,6 +67,14 @@ public class InputFilterPage extends VerticalLayout {
 	private static final PathProperty<MyEnum> ENM2 = PathProperty.create("enm2", MyEnum.class)
 			.message("Enumeration value 2")
 			.withConfiguration(InputFilter.PROPERTY_ENUM_FILTER_MODE, EnumFilterMode.MULTI_OPTION);
+	private static final TemporalProperty<LocalDate> LD = TemporalProperty.localDate("ld").message("LocalDate value");
+	private static final TemporalProperty<LocalDateTime> LDT = TemporalProperty.localDateTime("ldt")
+			.message("LocalDateTime value");
+	private static final TemporalProperty<LocalTime> LT = TemporalProperty.localTime("lt").message("LocalTime value");
+	private static final TemporalProperty<Date> DATE = TemporalProperty.date("date").temporalType(TemporalType.DATE)
+			.message("Date value");
+	private static final TemporalProperty<Date> DATE_TIME = TemporalProperty.date("date_time")
+			.temporalType(TemporalType.DATE_TIME).message("Date with time value");
 
 	public InputFilterPage() {
 		super();
@@ -79,6 +94,13 @@ public class InputFilterPage extends VerticalLayout {
 		add(buildRow(InputFilter.enumeration(ENM, EnumFilterMode.SINGLE_SELECT)
 				.label("Enumeration mode (single option)").build(), true));
 		add(buildRow(InputFilter.enumeration(ENM2).label("My enumeration label").build()));
+		add(buildRow(InputFilter.localDate(LD).build()));
+		add(buildRow(InputFilter.localDateTime(LDT).build()));
+		add(buildRow(InputFilter.localTime(LT).build()));
+		add(buildRow(InputFilter.date(DATE).build()));
+		add(buildRow(InputFilter.dateTime(DATE_TIME).build()));
+
+		InputFilter.create(STR).ifPresent(i -> add(buildRow(i)));
 	}
 
 	private static Component buildRow(InputFilter<?> i) {
