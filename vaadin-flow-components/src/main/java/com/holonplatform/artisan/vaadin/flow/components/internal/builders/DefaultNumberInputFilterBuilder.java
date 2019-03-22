@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.Input;
@@ -72,14 +71,8 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 				.label(property);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.internal.builders.AbstractOperatorInputFilterBuilder#getBuilder(
-	 * )
-	 */
 	@Override
-	protected NumberInputFilterBuilder<T> getBuilder() {
+	protected NumberInputFilterBuilder<T> getConfigurator() {
 		return this;
 	}
 
@@ -90,10 +83,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	 * com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect)
 	 */
 	@Override
-	protected Input<T> buildInput(FilterOperatorSelect operatorSelect) {
-		if (operatorSelect.isVisible()) {
-			inputBuilder.prefixComponent(operatorSelect);
-		}
+	protected Input<T> buildInput() {
 		return inputBuilder.build();
 	}
 

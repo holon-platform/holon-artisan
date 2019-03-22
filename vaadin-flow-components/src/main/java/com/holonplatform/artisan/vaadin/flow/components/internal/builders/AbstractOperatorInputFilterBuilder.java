@@ -15,21 +15,22 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
-import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterAdapterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultOperatorQueryFilterProvider;
 import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.internal.OperatorInputFilterAdapter;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
+import com.holonplatform.vaadin.flow.internal.components.builders.AbstractLocalizableComponentConfigurator;
+import com.vaadin.flow.component.HasEnabled;
+import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.HasStyle;
 
 /**
  * Base {@link OperatorInputFilterBuilder} implementation.
@@ -40,36 +41,35 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
  * @since 1.0.0
  */
 public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorInputFilterBuilder<T, ValueChangeEvent<T>, B>>
+		extends AbstractLocalizableComponentConfigurator<OperatorInputFilterAdapter<T>, B>
 		implements OperatorInputFilterBuilder<T, ValueChangeEvent<T>, B> {
-
-	private final Property<? super T> property;
-
-	private final List<InputFilterOperator> operators;
-
-	private final FilterOperatorSelect operatorSelect;
 
 	private Consumer<FilterOperatorSelectConfigurator> filterOperatorSelectConfiguration;
 
 	public AbstractOperatorInputFilterBuilder(Property<? super T> property, InputFilterOperator... operators) {
-		super();
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
-		this.property = property;
-		this.operators = Arrays.asList(operators);
-		this.operatorSelect = new FilterOperatorSelect(operators);
+		super(new OperatorInputFilterAdapter<>(property, new FilterOperatorSelect(operators)));
+	}
+
+	@Override
+	protected Optional<HasSize> hasSize() {
+		return Optional.of(getComponent());
+	}
+
+	@Override
+	protected Optional<HasStyle> hasStyle() {
+		return Optional.of(getComponent());
+	}
+
+	@Override
+	protected Optional<HasEnabled> hasEnabled() {
+		return Optional.of(getComponent());
 	}
 
 	/**
-	 * Get the actual builder.
-	 * @return The actual builder
-	 */
-	protected abstract B getBuilder();
-
-	/**
 	 * Build the {@link Input} instance.
-	 * @param operatorSelect The filter operator select
 	 * @return The {@link Input} instance
 	 */
-	protected abstract Input<T> buildInput(FilterOperatorSelect operatorSelect);
+	protected abstract Input<T> buildInput();
 
 	/**
 	 * Get the ignore case mode supplier.
@@ -77,34 +77,6 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 */
 	protected Supplier<Boolean> getIgnoreCaseSupplier() {
 		return () -> false;
-	}
-
-	/**
-	 * Get the property to use to provide the query filter.
-	 * @return the property
-	 */
-	protected Property<? super T> getProperty() {
-		return property;
-	}
-
-	/**
-	 * Get the filter operators select.
-	 * @return the operators select
-	 */
-	protected FilterOperatorSelect getOperatorSelect() {
-		return operatorSelect;
-	}
-
-	/**
-	 * Get the operator supplier using the filter operators select, if visible.
-	 * @return the operator supplier
-	 */
-	protected Supplier<InputFilterOperator> getOperatorSupplier() {
-		if (operatorSelect.isVisible()) {
-			return () -> operatorSelect.getValue();
-		}
-		final InputFilterOperator fixedOperator = operatorSelect.getDefaultOperator().orElse(InputFilterOperator.EQUAL);
-		return () -> fixedOperator;
 	}
 
 	/*
@@ -115,7 +87,7 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	@Override
 	public B filterOperatorSelectConfiguration(Consumer<FilterOperatorSelectConfigurator> configuration) {
 		this.filterOperatorSelectConfiguration = configuration;
-		return getBuilder();
+		return getConfigurator();
 	}
 
 	/*
@@ -126,8 +98,8 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 */
 	@Override
 	public B operatorSelectionAllowed(boolean operatorSelectionAllowed) {
-		getOperatorSelect().setVisible(operatorSelectionAllowed);
-		return getBuilder();
+		getComponent().setVisible(operatorSelectionAllowed);
+		return getConfigurator();
 	}
 
 	/*
@@ -137,11 +109,8 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 */
 	@Override
 	public B defaultOperator(InputFilterOperator operator) {
-		if (operator != null && operators.contains(operator)) {
-			getOperatorSelect().setDefaultOperator(operator);
-			getOperatorSelect().setValue(operator);
-		}
-		return getBuilder();
+		getComponent().setDefaultOperator(operator);
+		return getConfigurator();
 	}
 
 	/*
@@ -150,31 +119,13 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 */
 	@Override
 	public InputFilter<T> build() {
-
 		if (filterOperatorSelectConfiguration != null) {
-			filterOperatorSelectConfiguration.accept(new DefaultFilterOperatorSelectConfigurator(getOperatorSelect()));
+			filterOperatorSelectConfiguration.accept(getComponent().getFilterOperatorSelectConfigurator());
 		}
-
-		final Input<T> input = buildInput(getOperatorSelect());
-
-		final InputFilterAdapterBuilder<T> builder = InputFilter.builder(input,
-				new DefaultOperatorQueryFilterProvider<>(getProperty(), getOperatorSupplier(),
-						getIgnoreCaseSupplier()));
-
-		if (getOperatorSelect().isVisible()) {
-			// reset callback
-			builder.resetCallback(() -> getOperatorSelect().clear());
-			// operator change
-			if (operators.contains(InputFilterOperator.EMPTY) || operators.contains(InputFilterOperator.NOT_EMPTY)) {
-				getOperatorSelect().addValueChangeListener(e -> {
-					final InputFilterOperator operator = e.getValue();
-					input.setReadOnly((operator != null
-							&& (operator == InputFilterOperator.EMPTY || operator == InputFilterOperator.NOT_EMPTY)));
-				});
-			}
-		}
-
-		return builder.build();
+		final Input<T> input = buildInput();
+		getComponent().build(input);
+		getComponent().setIgnoreCaseSupplier(getIgnoreCaseSupplier());
+		return getComponent();
 	}
 
 }

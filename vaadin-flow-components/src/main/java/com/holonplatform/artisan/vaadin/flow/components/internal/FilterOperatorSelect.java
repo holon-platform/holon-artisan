@@ -15,10 +15,13 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
+import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.select.Select;
 
 /**
@@ -26,22 +29,22 @@ import com.vaadin.flow.component.select.Select;
  *
  * @since 1.0.0
  */
-public class FilterOperatorSelect extends Select<InputFilterOperator> {
+public class FilterOperatorSelect extends Select<InputFilterOperator> implements HasTheme {
 
 	private static final long serialVersionUID = -8923120517061581962L;
 
+	private final List<InputFilterOperator> operators;
+
 	private InputFilterOperator defaultOperator;
 
-	public FilterOperatorSelect(InputFilterOperator... items) {
-		super(items);
-
-		if (items != null && items.length > 0) {
-			this.defaultOperator = items[0];
-		}
+	public FilterOperatorSelect(InputFilterOperator... operators) {
+		super(operators);
+		this.operators = Arrays.asList(operators);
+		this.defaultOperator = this.operators.isEmpty() ? null : this.operators.get(0);
 
 		// configuration
 		setEmptySelectionAllowed(false);
-		addClassName("h-filter-operator-select");
+		addThemeName("filter-operator-select");
 
 		// default width
 		setWidth("4.2em");
@@ -64,7 +67,7 @@ public class FilterOperatorSelect extends Select<InputFilterOperator> {
 	 */
 	@Override
 	public void clear() {
-		setValue(getDefaultOperator().orElseGet(() -> getEmptyValue()));
+		setValue(getDefaultOperator().orElse(getEmptyValue()));
 	}
 
 	/**
@@ -80,7 +83,13 @@ public class FilterOperatorSelect extends Select<InputFilterOperator> {
 	 * @param defaultOperator the default operator to set
 	 */
 	public void setDefaultOperator(InputFilterOperator defaultOperator) {
-		this.defaultOperator = defaultOperator;
+		if (defaultOperator == null || !operators.contains(defaultOperator)) {
+			if (!operators.isEmpty()) {
+				this.defaultOperator = operators.get(0);
+			}
+		} else {
+			this.defaultOperator = defaultOperator;
+		}
 	}
 
 }

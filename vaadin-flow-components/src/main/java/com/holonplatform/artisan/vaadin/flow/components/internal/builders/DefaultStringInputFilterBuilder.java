@@ -20,7 +20,6 @@ import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.Input;
@@ -76,14 +75,8 @@ public class DefaultStringInputFilterBuilder extends
 		this.inputBuilder = StringInputBuilder.create().clearButtonVisible(true).label(property);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.internal.builders.AbstractOperatorInputFilterBuilder#getBuilder(
-	 * )
-	 */
 	@Override
-	protected StringInputFilterBuilder getBuilder() {
+	protected StringInputFilterBuilder getConfigurator() {
 		return this;
 	}
 
@@ -94,13 +87,8 @@ public class DefaultStringInputFilterBuilder extends
 	 * com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect)
 	 */
 	@Override
-	protected Input<String> buildInput(FilterOperatorSelect operatorSelect) {
-		if (operatorSelect.isVisible()) {
-			inputBuilder.prefixComponent(operatorSelect);
-		}
-
+	protected Input<String> buildInput() {
 		final Input<String> input = inputBuilder.build();
-
 		// context menu
 		if (ignoreCaseSelectionAllowed) {
 			final ContextMenu ctxMenu = new ContextMenu();
@@ -128,7 +116,6 @@ public class DefaultStringInputFilterBuilder extends
 			ctxMenu.setTarget(input.getComponent());
 
 		}
-
 		return input;
 	}
 

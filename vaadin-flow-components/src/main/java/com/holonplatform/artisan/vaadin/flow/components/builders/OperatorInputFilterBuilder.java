@@ -21,6 +21,7 @@ import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.DeferrableLocalizationConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
 
@@ -34,7 +35,7 @@ import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
  * @since 1.0.0
  */
 public interface OperatorInputFilterBuilder<T, E extends ValueChangeEvent<T>, B extends OperatorInputFilterBuilder<T, E, B>>
-		extends InputFilterBuilder<T, E, B> {
+		extends DeferrableLocalizationConfigurator<B>, InputFilterBuilder<T, E, B> {
 
 	/**
 	 * Configure the filter operator select using a {@link FilterOperatorSelectConfigurator}.
