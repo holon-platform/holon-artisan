@@ -34,6 +34,7 @@ import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.core.temporal.TemporalType;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -101,6 +102,18 @@ public class InputFilterPage extends VerticalLayout {
 		add(buildRow(InputFilter.dateTime(DATE_TIME).build()));
 
 		InputFilter.create(STR).ifPresent(i -> add(buildRow(i)));
+		
+		add(new Hr());
+		
+		final HorizontalLayout hl = new HorizontalLayout();
+		final InputFilter<String> sf = InputFilter.string(STR).build();
+		hl.add(sf.getComponent());
+		
+		hl.add(new Button("Get value", e -> Notification.show("Value: " + sf.getValue())));
+		hl.add(new Button("Set value (a)", e -> sf.setValue("a")));
+		hl.add(new Button("Clear", e -> sf.clear()));
+		hl.add(new Button("Focus", e -> sf.focus()));
+		add(hl);
 	}
 
 	private static Component buildRow(InputFilter<?> i) {
