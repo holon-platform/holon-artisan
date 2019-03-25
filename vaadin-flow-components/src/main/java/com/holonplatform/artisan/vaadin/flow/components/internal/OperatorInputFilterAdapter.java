@@ -42,8 +42,7 @@ import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
@@ -53,6 +52,7 @@ import com.vaadin.flow.data.value.HasValueChangeMode;
  *
  * @since 1.0.0
  */
+@HtmlImport("frontend://com-holonplatform-operator-input-filter-styles.html")
 public class OperatorInputFilterAdapter<T> extends CustomField<T> implements InputFilter<T>, HasStyle, HasTheme {
 
 	private static final long serialVersionUID = 3088317891629157757L;
@@ -107,20 +107,11 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 		getChildren().forEach(c -> remove(c));
 
-		// input.addValueChangeListener(e -> updateValue());
-
-		final HorizontalLayout content = new HorizontalLayout();
-		content.setPadding(false);
-		content.setMargin(false);
-		content.setSpacing(false);
-		content.setAlignItems(Alignment.BASELINE);
-		content.add(getOperatorSelect());
-
+		add(getOperatorSelect());
 		final Component inputComponent = input.getComponent();
-		content.add(inputComponent);
-		content.setFlexGrow(1, inputComponent);
-		add(content);
+		add(inputComponent);
 
+		inputComponent.getElement().getStyle().set("flex-grow", "1");
 	}
 
 	/**
