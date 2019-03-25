@@ -382,7 +382,7 @@ public interface InputFilter<T> extends Input<T> {
 		 * @param function The function to use to provide the {@link InputFilter} (not null)
 		 * @return A new {@link InputFilterPropertyRenderer}
 		 */
-		static <T> InputPropertyRenderer<T> create(Function<Property<? extends T>, InputFilter<T>> function) {
+		static <T> InputFilterPropertyRenderer<T> create(Function<Property<? extends T>, InputFilter<T>> function) {
 			return property -> function.apply(property);
 		}
 
