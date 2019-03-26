@@ -324,6 +324,13 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 			return builder();
 		}
 
+		@Override
+		public B withPostProcessor(BiConsumer<Property<?>, InputFilter<?>> postProcessor) {
+			ObjectUtils.argumentNotNull(postProcessor, "Post processor must be not null");
+			instance.addPostProcessor(postProcessor);
+			return builder();
+		}
+
 	}
 
 }

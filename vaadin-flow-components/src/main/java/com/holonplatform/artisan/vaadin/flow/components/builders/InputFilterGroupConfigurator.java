@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
@@ -170,5 +171,13 @@ public interface InputFilterGroupConfigurator<C extends InputFilterGroupConfigur
 			Converter<V, T> converter, Function<T, QueryFilter> filterProvider) {
 		return bind(property, InputFilter.from(field, filterProvider, converter));
 	}
+
+	/**
+	 * Add a {@link BiConsumer} to allow further {@link InputFilter} configuration before the input filter is actually
+	 * bound to a property.
+	 * @param postProcessor the post processor to add (not null)
+	 * @return this
+	 */
+	C withPostProcessor(BiConsumer<Property<?>, InputFilter<?>> postProcessor);
 
 }
