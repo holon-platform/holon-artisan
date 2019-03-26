@@ -70,6 +70,7 @@ public class DefaultInputFilterComponent<C extends Component>
 	 */
 	public DefaultInputFilterComponent(C content) {
 		super(content);
+		content.getElement().setAttribute("input-filter-group-content", "");
 	}
 
 	@Override

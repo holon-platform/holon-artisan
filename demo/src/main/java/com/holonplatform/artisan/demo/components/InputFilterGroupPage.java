@@ -27,6 +27,7 @@ import com.holonplatform.artisan.vaadin.flow.components.InputFilterComponent;
 import com.holonplatform.core.datastore.Datastore;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
+import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -48,6 +49,8 @@ public class InputFilterGroupPage extends VerticalLayout {
 		// filters
 		filters = InputFilterComponent.formLayout(PRODUCT).initializer(l -> {
 			l.setWidth("100%");
+			l.setResponsiveSteps(new ResponsiveStep("0px", 1), new ResponsiveStep("500px", 2),
+					new ResponsiveStep("800px", 3));
 		}).build();
 		add(filters.getComponent());
 
