@@ -48,6 +48,7 @@ public interface InputFilterComponentConfigurator<E extends HasElement, C extend
 
 	/**
 	 * Sets the caption for the component bound to given property.
+	 * @param property Property for which to set the caption (not null)
 	 * @param caption The caption text to set
 	 * @return this
 	 */
@@ -57,6 +58,7 @@ public interface InputFilterComponentConfigurator<E extends HasElement, C extend
 
 	/**
 	 * Sets the caption for the component bound to given property using a localizable <code>messageCode</code>.
+	 * @param property Property for which to set the caption (not null)
 	 * @param defaultCaption Default caption text if no translation is available for given <code>messageCode</code>
 	 * @param messageCode Caption translation message key
 	 * @param arguments Optional translation arguments
