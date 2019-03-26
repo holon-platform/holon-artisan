@@ -106,9 +106,13 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		this.input = input;
 
 		getChildren().forEach(c -> remove(c));
-
-		add(getOperatorSelect());
+		
+		final FilterOperatorSelect operatorSelect = getOperatorSelect();
+		operatorSelect.getElement().setAttribute("operator-filter-slot", "operator");
+		add(operatorSelect);
+		
 		final Component inputComponent = input.getComponent();
+		operatorSelect.getElement().setAttribute("operator-filter-slot", "operator");
 		add(inputComponent);
 
 		inputComponent.getElement().getStyle().set("flex-grow", "1");
