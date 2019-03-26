@@ -46,11 +46,9 @@ public class InputFilterGroupPage extends VerticalLayout {
 		setSizeFull();
 
 		// filters
-		filters = InputFilterComponent.formLayout(PRODUCT)
-				.initializer(l -> {
-					l.setWidth("100%");
-				})
-				.build();
+		filters = InputFilterComponent.formLayout(PRODUCT).initializer(l -> {
+			l.setWidth("100%");
+		}).build();
 		add(filters.getComponent());
 
 		// listing
@@ -59,7 +57,7 @@ public class InputFilterGroupPage extends VerticalLayout {
 				.withQueryConfigurationProvider(() -> filters.getFilter().orElse(null))
 				// sorts
 				.withQuerySort(ID.asc()).withDefaultQuerySort(DESCRIPTION.asc())
-				// size 
+				// size
 				.fullWidth()
 				//
 				.build();
