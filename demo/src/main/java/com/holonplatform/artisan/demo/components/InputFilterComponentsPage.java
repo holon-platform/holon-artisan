@@ -40,8 +40,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "filters", layout = Menu.class)
-public class InputFilterPage extends VerticalLayout {
+@Route(value = "filters1", layout = Menu.class)
+public class InputFilterComponentsPage extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
 
@@ -77,7 +77,7 @@ public class InputFilterPage extends VerticalLayout {
 	private static final TemporalProperty<Date> DATE_TIME = TemporalProperty.date("date_time")
 			.temporalType(TemporalType.DATE_TIME).message("Date with time value");
 
-	public InputFilterPage() {
+	public InputFilterComponentsPage() {
 		super();
 
 		add(buildRow(InputFilter.string(STR).build()));

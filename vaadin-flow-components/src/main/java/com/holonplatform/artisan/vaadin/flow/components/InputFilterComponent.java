@@ -20,6 +20,7 @@ import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultInputFil
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.vaadin.flow.components.Composable;
+import com.holonplatform.vaadin.flow.components.HasComponent;
 import com.holonplatform.vaadin.flow.components.builders.FormLayoutBuilder;
 import com.holonplatform.vaadin.flow.components.builders.HorizontalLayoutBuilder;
 import com.holonplatform.vaadin.flow.components.builders.VerticalLayoutBuilder;
@@ -34,7 +35,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
  *
  * @since 1.0.0
  */
-public interface InputFilterComponent extends InputFilterGroup, Composable {
+public interface InputFilterComponent extends InputFilterGroup, HasComponent, Composable {
 
 	/**
 	 * Get a builder to create a {@link InputFilterComponent} using given property set.

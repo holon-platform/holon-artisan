@@ -87,6 +87,11 @@ public class DefaultInputFilterComponent<C extends Component>
 	}
 
 	@Override
+	public Component getComponent() {
+		return getContent();
+	}
+
+	@Override
 	public Collection<Property<?>> getProperties() {
 		return getComponentGroup().getProperties();
 	}
