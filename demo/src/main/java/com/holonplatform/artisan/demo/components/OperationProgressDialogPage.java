@@ -1,11 +1,11 @@
 /*
  * Copyright 2016-2019 Axioma srl.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Commercial Holon Platform Module License Version 1 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://docs.holon-platform.com/license/chpml_v1.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -51,15 +51,15 @@ public class OperationProgressDialogPage extends VerticalLayout {
 			throw new RuntimeException(e);
 		}
 	};
-	
+
 	private final static Operation<String> OPERATION3 = callback -> {
 		try {
 			callback.onProgress(3, 0);
 			Thread.sleep(2000);
 			callback.onProgress(3, 1);
-			
+
 			throw new OperationExecutionException("Test error");
-			
+
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -85,7 +85,7 @@ public class OperationProgressDialogPage extends VerticalLayout {
 			OperationProgressDialog.builder(OPERATION2).text("Operation running...").execute();
 		});
 		add(btn);
-		
+
 		btn = new Button("Operation with exception");
 		btn.addClickListener(e -> {
 			OperationProgressDialog.builder(OPERATION3).text("Operation running...").execute(r -> Notification.show(r));

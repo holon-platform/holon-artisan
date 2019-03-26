@@ -1,11 +1,11 @@
 /*
  * Copyright 2016-2019 Axioma srl.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Commercial Holon Platform Module License Version 1 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://docs.holon-platform.com/license/chpml_v1.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -30,7 +30,7 @@ public class Tabs10Page extends Div {
 	public Tabs10Page() {
 		super();
 		setSizeFull();
-		
+
 		VerticalLayout vl = new VerticalLayout();
 		vl.setWidth("100%");
 		vl.add(Components.label().text("A text").build());
@@ -72,7 +72,7 @@ public class Tabs10Page extends Div {
 		vl.add(Components.label().text("A text").build());
 		vl.add(Components.label().text("A text").build());
 		vl.add(Components.label().text("A text").build());
-		
+
 		add(TabLayout.builder().fullSize()
 				// tab 1
 				.withTab(vl).scrollable().label("Tab 1").add()

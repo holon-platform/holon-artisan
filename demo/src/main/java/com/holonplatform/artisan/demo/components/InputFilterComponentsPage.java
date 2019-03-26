@@ -1,11 +1,11 @@
 /*
  * Copyright 2016-2019 Axioma srl.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Commercial Holon Platform Module License Version 1 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://docs.holon-platform.com/license/chpml_v1.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -102,13 +102,13 @@ public class InputFilterComponentsPage extends VerticalLayout {
 		add(buildRow(InputFilter.dateTime(DATE_TIME).build()));
 
 		InputFilter.create(STR).ifPresent(i -> add(buildRow(i)));
-		
+
 		add(new Hr());
-		
+
 		final HorizontalLayout hl = new HorizontalLayout();
 		final InputFilter<String> sf = InputFilter.string(STR).build();
 		hl.add(sf.getComponent());
-		
+
 		hl.add(new Button("Get value", e -> Notification.show("Value: " + sf.getValue())));
 		hl.add(new Button("Set value (a)", e -> sf.setValue("a")));
 		hl.add(new Button("Clear", e -> sf.clear()));

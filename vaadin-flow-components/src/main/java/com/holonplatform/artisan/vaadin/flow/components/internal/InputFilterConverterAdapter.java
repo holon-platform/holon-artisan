@@ -1,11 +1,11 @@
 /*
  * Copyright 2016-2017 Axioma srl.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * Licensed under the Commercial Holon Platform Module License Version 1 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://docs.holon-platform.com/license/chpml_v1.html
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -37,8 +37,8 @@ import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
- * Adapter class to build a {@link InputFilter} of a different value type from another {@link InputFilter}, using a suitable
- * {@link Converter}.
+ * Adapter class to build a {@link InputFilter} of a different value type from another {@link InputFilter}, using a
+ * suitable {@link Converter}.
  * 
  * @param <T> Presentation value type
  * @param <V> Model value type
@@ -65,7 +65,8 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 		this.converter = converter;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see com.holonplatform.artisan.vaadin.flow.components.InputFilter#getFilter()
 	 */
 	@Override

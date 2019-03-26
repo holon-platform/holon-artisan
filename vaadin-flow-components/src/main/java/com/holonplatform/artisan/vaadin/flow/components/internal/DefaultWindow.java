@@ -107,7 +107,7 @@ public class DefaultWindow extends Dialog implements Window {
 		footer.setJustifyContentMode(JustifyContentMode.END);
 		add(footer);
 
-//		title.setVisible(false);
+		// title.setVisible(false);
 		buttons.setVisible(false);
 		btnMaximize.setVisible(false);
 		btnMinimize.setVisible(false);
