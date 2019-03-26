@@ -23,7 +23,6 @@ import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator;
-import com.holonplatform.artisan.vaadin.flow.components.internal.FilterOperatorSelect;
 import com.holonplatform.artisan.vaadin.flow.components.internal.OperatorInputFilterAdapter;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
@@ -52,7 +51,7 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	private Consumer<FilterOperatorSelectConfigurator> filterOperatorSelectConfiguration;
 
 	public AbstractOperatorInputFilterBuilder(Property<? super T> property, InputFilterOperator... operators) {
-		super(new OperatorInputFilterAdapter<>(property, new FilterOperatorSelect(operators)));
+		super(new OperatorInputFilterAdapter<>(property, operators));
 		this.labelConfigurator = new DefaultHasLabelConfigurator<>(getComponent(), l -> getComponent().setLabel(l),
 				this);
 	}

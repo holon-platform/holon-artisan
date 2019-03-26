@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,7 @@ import com.holonplatform.vaadin.flow.components.HasPlaceholder;
 import com.holonplatform.vaadin.flow.components.HasTitle;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
+import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.holonplatform.vaadin.flow.internal.components.events.DefaultValueChangeEvent;
 import com.holonplatform.vaadin.flow.internal.components.support.RegistrationAdapter;
 import com.vaadin.flow.component.Component;
@@ -43,6 +45,7 @@ import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
@@ -66,21 +69,14 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	private final List<FilterOperatorChangeListener<T>> filterOperatorChangeListeners = new LinkedList<>();
 
-	public OperatorInputFilterAdapter(Property<? super T> property, FilterOperatorSelect operatorSelect) {
-		this(property, null, operatorSelect);
-	}
-
-	public OperatorInputFilterAdapter(Property<? super T> property, Input<T> input,
-			FilterOperatorSelect operatorSelect) {
+	public OperatorInputFilterAdapter(Property<? super T> property, InputFilterOperator... operators) {
 		super();
 		ObjectUtils.argumentNotNull(property, "Property must be not null");
-		ObjectUtils.argumentNotNull(operatorSelect, "Filter operator select must be not null");
 		this.property = property;
-		this.input = input;
-		// theme
-		addThemeName("operator-input-filter");
+		// config
+		getElement().setAttribute("operator-input-filter", "");
 		// operator select
-		this.operatorSelect = operatorSelect;
+		this.operatorSelect = new FilterOperatorSelect(operators);
 		this.operatorSelect.addValueChangeListener(e -> {
 			// check operator
 			getInput().ifPresent(i -> i.setReadOnly((e.getValue() != null
@@ -92,9 +88,6 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 				filterOperatorChangeListeners.forEach(l -> l.filterOperatorChanged(event));
 			});
 		});
-		if (input != null) {
-			build(input);
-		}
 	}
 
 	/**
@@ -106,13 +99,13 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		this.input = input;
 
 		getChildren().forEach(c -> remove(c));
-		
+
 		final FilterOperatorSelect operatorSelect = getOperatorSelect();
 		operatorSelect.getElement().setAttribute("operator-filter-slot", "operator");
 		add(operatorSelect);
-		
+
 		final Component inputComponent = input.getComponent();
-		operatorSelect.getElement().setAttribute("operator-filter-slot", "operator");
+		inputComponent.getElement().setAttribute("operator-filter-slot", "operator");
 		add(inputComponent);
 
 		inputComponent.getElement().getStyle().set("flex-grow", "1");
@@ -370,6 +363,67 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		@Override
 		public InputFilterOperator getValue() {
 			return value;
+		}
+
+	}
+	
+	class FilterOperatorSelect extends Select<InputFilterOperator> implements HasTheme {
+
+		private static final long serialVersionUID = -8923120517061581962L;
+
+		private final List<InputFilterOperator> operators;
+
+		private InputFilterOperator defaultOperator;
+
+		public FilterOperatorSelect(InputFilterOperator... operators) {
+			super(operators);
+			this.operators = Arrays.asList(operators);
+			this.defaultOperator = this.operators.isEmpty() ? null : this.operators.get(0);
+
+			// configuration
+			setEmptySelectionAllowed(false);
+
+			// labels
+			setItemLabelGenerator(operator -> operator.getSymbol());
+
+			// captions
+			setTextRenderer(operator -> LocalizationProvider.localize(operator.getCaption()).orElse(operator.getSymbol()));
+
+			// init
+			if (defaultOperator != null) {
+				setValue(defaultOperator);
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see com.vaadin.flow.component.HasValue#clear()
+		 */
+		@Override
+		public void clear() {
+			setValue(getDefaultOperator().orElse(getEmptyValue()));
+		}
+
+		/**
+		 * Get the default operator, if available.
+		 * @return Optional default operator
+		 */
+		public Optional<InputFilterOperator> getDefaultOperator() {
+			return Optional.ofNullable(defaultOperator);
+		}
+
+		/**
+		 * Set the default operator.
+		 * @param defaultOperator the default operator to set
+		 */
+		public void setDefaultOperator(InputFilterOperator defaultOperator) {
+			if (defaultOperator == null || !operators.contains(defaultOperator)) {
+				if (!operators.isEmpty()) {
+					this.defaultOperator = operators.get(0);
+				}
+			} else {
+				this.defaultOperator = defaultOperator;
+			}
 		}
 
 	}
