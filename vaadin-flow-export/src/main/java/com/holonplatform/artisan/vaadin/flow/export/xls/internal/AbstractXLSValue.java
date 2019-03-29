@@ -17,9 +17,9 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.internal;
 
 import java.util.Optional;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.temporal.TemporalType;
 
 /**
@@ -47,7 +47,7 @@ public abstract class AbstractXLSValue<T> implements XLSValue<T> {
 	 */
 	public AbstractXLSValue(Class<? extends T> valueType, T value, TemporalType temporalType, String dataFormat) {
 		super();
-		ObjectUtils.argumentNotNull(valueType, "Value type must be not null");
+		Obj.argumentNotNull(valueType, "Value type must be not null");
 		this.valueType = valueType;
 		this.value = value;
 		this.temporalType = temporalType;

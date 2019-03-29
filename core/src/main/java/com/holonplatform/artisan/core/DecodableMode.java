@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.core.internal;
+package com.holonplatform.artisan.core;
 
 import com.holonplatform.core.i18n.Caption;
 

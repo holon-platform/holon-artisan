@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellConfiguration;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSColor;
@@ -31,7 +32,6 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSFileVersion;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSFontSize;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 
 /**
@@ -74,7 +74,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	 */
 	@Override
 	public Optional<XLSPropertyConfiguration> getPropertyConfiguration(Property<?> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		return Optional.ofNullable(propertyConfigurations.get(property));
 	}
 
@@ -86,7 +86,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	 */
 	@Override
 	public boolean hasTotalFooter(Property<?> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		return totalProperties.contains(property);
 	}
 
@@ -212,7 +212,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	 * @param configuration The property configuration
 	 */
 	protected void setPropertyConfiguration(Property<?> property, XLSPropertyConfiguration configuration) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		this.propertyConfigurations.put(property, configuration);
 	}
 
@@ -221,7 +221,7 @@ public class DefaultXLSConfiguration implements XLSConfiguration {
 	 * @param property The property for which to provide a total footer (not null)
 	 */
 	protected void addTotalProperty(Property<?> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		this.totalProperties.add(property);
 	}
 

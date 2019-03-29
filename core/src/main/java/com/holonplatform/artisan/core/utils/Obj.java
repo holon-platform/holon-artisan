@@ -184,4 +184,52 @@ public final class Obj implements Serializable {
 		return type != null && Enum.class.isAssignableFrom(type);
 	}
 
+	/**
+	 * Check if type is an integer number (Long, Integer, Short or Byte, including primitives)
+	 * @param cls Type to check
+	 * @return <code>true</code> if integer number
+	 */
+	public static boolean isIntegerNumber(Class<?> cls) {
+		return cls != null && (Integer.class.isAssignableFrom(cls) || Long.class.isAssignableFrom(cls)
+				|| Short.class.isAssignableFrom(cls) || Byte.class.isAssignableFrom(cls) || cls == int.class
+				|| cls == long.class || cls == short.class || cls == byte.class);
+	}
+
+	/**
+	 * Check if type is a decimal number (Double, Float or BigDecimal, including primitives)
+	 * @param cls Type to check
+	 * @return <code>true</code> if decimal number
+	 */
+	public static boolean isDecimalNumber(Class<?> cls) {
+		return cls != null && (Double.class.isAssignableFrom(cls) || Float.class.isAssignableFrom(cls)
+				|| BigDecimal.class.isAssignableFrom(cls) || cls == double.class || cls == float.class);
+	}
+
+	/**
+	 * Return the default ClassLoader: the thread context ClassLoader, if available; the ClassLoader that loaded the
+	 * ClassUtils class will be used as fallback.
+	 * @return Default ClassLoader
+	 */
+	public static ClassLoader getDefaultClassLoader() {
+		ClassLoader cl = null;
+		try {
+			cl = Thread.currentThread().getContextClassLoader();
+		} catch (@SuppressWarnings("unused") Throwable ex) {
+			// Cannot access thread context ClassLoader
+		}
+		if (cl == null) {
+			// No thread context class loader -> use class loader of this class.
+			cl = Obj.class.getClassLoader();
+			if (cl == null) {
+				// null indicates the bootstrap ClassLoader
+				try {
+					cl = ClassLoader.getSystemClassLoader();
+				} catch (@SuppressWarnings("unused") Throwable ex) {
+					// Cannot access system ClassLoader
+				}
+			}
+		}
+		return cl;
+	}
+
 }

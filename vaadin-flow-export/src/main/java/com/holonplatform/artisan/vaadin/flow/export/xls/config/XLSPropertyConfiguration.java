@@ -18,7 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.export.xls.config;
 import java.io.Serializable;
 import java.util.Optional;
 
-import com.holonplatform.artisan.core.internal.DecodableMode;
+import com.holonplatform.artisan.core.DecodableMode;
 import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.xls.internal.config.DefaultXLSPropertyConfiguration;
 import com.holonplatform.core.i18n.Localizable;

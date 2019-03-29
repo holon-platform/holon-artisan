@@ -30,10 +30,9 @@ import javax.annotation.Priority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
-import com.holonplatform.core.internal.utils.ClassUtils;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 
 /**
@@ -64,7 +63,7 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 	 * @return Default {@link PropertyXLSValueProviderRegistry}
 	 */
 	public static PropertyXLSValueProviderRegistry getDefault(ClassLoader classLoader) {
-		return ensureInited((classLoader != null) ? classLoader : ClassUtils.getDefaultClassLoader());
+		return ensureInited((classLoader != null) ? classLoader : Obj.getDefaultClassLoader());
 	}
 
 	/**
@@ -97,7 +96,7 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 	 *        ClassLoader. Every default provider will be registered using an always <code>true</code> condition.
 	 */
 	public DefaultPropertyXLSValueProviderRegistry(boolean loadDefaults) {
-		this(loadDefaults, ClassUtils.getDefaultClassLoader());
+		this(loadDefaults, Obj.getDefaultClassLoader());
 	}
 
 	/**
@@ -117,8 +116,8 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 
 	@Override
 	public <T> void register(Predicate<Property<? extends T>> condition, PropertyXLSValueProvider<? super T> provider) {
-		ObjectUtils.argumentNotNull(condition, "Condition Predicate must be not null");
-		ObjectUtils.argumentNotNull(provider, "PropertyXLSValueProvider must be not null");
+		Obj.argumentNotNull(condition, "Condition Predicate must be not null");
+		Obj.argumentNotNull(provider, "PropertyXLSValueProvider must be not null");
 
 		PropertyXLSValueProvider<?> rp = providers.putIfAbsent(condition, provider);
 
@@ -131,7 +130,7 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public <T> Optional<PropertyXLSValueProvider<T>> getProvider(Property<T> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Get PropertyXLSValueProvider for property [" + property + "]");

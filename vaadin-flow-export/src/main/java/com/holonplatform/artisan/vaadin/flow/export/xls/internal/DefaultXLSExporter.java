@@ -56,6 +56,7 @@ import org.slf4j.LoggerFactory;
 import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
 import com.holonplatform.artisan.core.operation.OperationProgress;
 import com.holonplatform.artisan.core.operation.OperationProgressCallback;
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
 import com.holonplatform.artisan.vaadin.flow.export.exceptions.ExportException;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
@@ -77,10 +78,7 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfig
 import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.i18n.LocalizationContext;
-import com.holonplatform.core.internal.utils.AnnotationUtils;
 import com.holonplatform.core.internal.utils.ConversionUtils;
-import com.holonplatform.core.internal.utils.ObjectUtils;
-import com.holonplatform.core.internal.utils.TypeUtils;
 import com.holonplatform.core.presentation.StringValuePresenter;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
@@ -133,8 +131,8 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	public DefaultXLSExporter(DataProvider<PropertyBox, ?> dataSource, PropertySet<?> propertySet) {
 		super();
-		ObjectUtils.argumentNotNull(dataSource, "The DataProvider must be not null");
-		ObjectUtils.argumentNotNull(propertySet, "The PropertySet must be not null");
+		Obj.argumentNotNull(dataSource, "The DataProvider must be not null");
+		Obj.argumentNotNull(propertySet, "The PropertySet must be not null");
 		this.dataSource = dataSource;
 		this.propertySet = propertySet;
 	}
@@ -243,8 +241,8 @@ public class DefaultXLSExporter implements XLSExporter {
 	@Override
 	public void export(OutputStream outputStream, OperationProgressCallback exportProgressCallback)
 			throws ExportException {
-		ObjectUtils.argumentNotNull(outputStream, "The data output stream must be not null");
-		ObjectUtils.argumentNotNull(exportProgressCallback, "The export progres callback must be not null");
+		Obj.argumentNotNull(outputStream, "The data output stream must be not null");
+		Obj.argumentNotNull(exportProgressCallback, "The export progres callback must be not null");
 
 		workbookFonts.clear();
 		workbookStyles.clear();
@@ -565,7 +563,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			XLSPropertyConfiguration configuration) {
 		if (XLSDataType.NUMERIC == xlsValue.getDataType()) {
 			// integers
-			if (TypeUtils.isIntegerNumber(xlsValue.getValueType())) {
+			if (Obj.isIntegerNumber(xlsValue.getValueType())) {
 				// check percentage
 				if (isPercentStyle(property, configuration)) {
 					return "0%";
@@ -576,7 +574,7 @@ public class DefaultXLSExporter implements XLSExporter {
 				return "0";
 			}
 			// decimals
-			if (TypeUtils.isDecimalNumber(xlsValue.getValueType())) {
+			if (Obj.isDecimalNumber(xlsValue.getValueType())) {
 				// check percentage
 				if (isPercentStyle(property, configuration)) {
 					return "0.00%";
@@ -596,7 +594,7 @@ public class DefaultXLSExporter implements XLSExporter {
 		}
 		if (XLSDataType.DATE == xlsValue.getDataType()) {
 			// dates
-			if (TypeUtils.isDate(xlsValue.getValueType()) || TypeUtils.isCalendar(xlsValue.getValueType())) {
+			if (Obj.isDate(xlsValue.getValueType()) || Obj.isCalendar(xlsValue.getValueType())) {
 				TemporalType tt = getTemporalType(property, xlsValue).orElse(TemporalType.DATE_TIME);
 				return getDateFormat(tt);
 			}
@@ -752,7 +750,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected Optional<CellType> setBooleanValue(Cell cell, XLSValue<?> xlsValue, XLSConfiguration configuration,
 			XLSPropertyConfiguration propertyConfiguration) {
-		if (!TypeUtils.isBoolean(xlsValue.getValueType())) {
+		if (!Obj.isBoolean(xlsValue.getValueType())) {
 			// fallback to string
 			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(xlsValue.getValue().orElse(null)));
@@ -789,7 +787,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected Optional<CellType> setNumericValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
-			if (!TypeUtils.isNumber(xlsValue.getValueType())) {
+			if (!Obj.isNumber(xlsValue.getValueType())) {
 				// fallback to string
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
@@ -853,7 +851,7 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected Optional<CellType> setEnumValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
-			if (!TypeUtils.isEnum(xlsValue.getValueType())) {
+			if (!Obj.isEnum(xlsValue.getValueType())) {
 				// fallback to string
 				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
@@ -904,15 +902,25 @@ public class DefaultXLSExporter implements XLSExporter {
 		try {
 			final java.lang.reflect.Field field = value.getClass().getField(value.name());
 			if (field.isAnnotationPresent(Caption.class)) {
-				String captionMessage = AnnotationUtils.getStringValue(field.getAnnotation(Caption.class).value());
+				String captionMessage = getStringValue(field.getAnnotation(Caption.class).value());
 				return Localizable.builder().message((captionMessage != null) ? captionMessage : value.name())
-						.messageCode(AnnotationUtils.getStringValue(field.getAnnotation(Caption.class).messageCode()))
+						.messageCode(getStringValue(field.getAnnotation(Caption.class).messageCode()))
 						.build();
 			}
 		} catch (@SuppressWarnings("unused") NoSuchFieldException | SecurityException e) {
 			return Localizable.of(value.name());
 		}
 		return Localizable.of(value.name());
+	}
+	
+	/**
+	 * Read a string annotation value, treating empty strings as <code>null</code> values
+	 * @param annotationValue Annotation string value
+	 * @return String value, or <code>null</code> if <code>annotationValue</code> is an empty string
+	 */
+	private static String getStringValue(String annotationValue) {
+		return (annotationValue != null && !annotationValue.equals("")) ? annotationValue
+				: null;
 	}
 
 	/**

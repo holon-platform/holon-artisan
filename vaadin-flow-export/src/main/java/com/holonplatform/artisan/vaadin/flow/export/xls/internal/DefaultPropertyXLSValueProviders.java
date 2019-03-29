@@ -24,10 +24,11 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.WeakHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
-import com.holonplatform.core.internal.Logger;
-import com.holonplatform.core.internal.property.PropertyLogger;
-import com.holonplatform.core.internal.utils.ClassUtils;
 
 /**
  * Class to manage default {@link PropertyXLSValueProvider}s obtained using standard Java extensions loader from
@@ -43,7 +44,7 @@ public final class DefaultPropertyXLSValueProviders implements Serializable {
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = PropertyLogger.create();
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultPropertyXLSValueProviders.class);
 
 	/**
 	 * Default providers by ClassLoader
@@ -61,7 +62,7 @@ public final class DefaultPropertyXLSValueProviders implements Serializable {
 	 * @return Default PropertyXLSValueProviders, or an empty List if none
 	 */
 	public static List<PropertyXLSValueProvider> getDefaultProviders(ClassLoader classLoader) {
-		return ensureInited((classLoader != null) ? classLoader : ClassUtils.getDefaultClassLoader());
+		return ensureInited((classLoader != null) ? classLoader : Obj.getDefaultClassLoader());
 	}
 
 	/**
@@ -73,7 +74,7 @@ public final class DefaultPropertyXLSValueProviders implements Serializable {
 	private static synchronized List<PropertyXLSValueProvider> ensureInited(final ClassLoader classLoader) {
 		if (!PROVIDERS.containsKey(classLoader)) {
 
-			LOGGER.debug(() -> "Load PropertyXLSValueProviders for classloader [" + classLoader
+			LOGGER.debug("Load PropertyXLSValueProviders for classloader [" + classLoader
 					+ "] using ServiceLoader with service name: " + PropertyXLSValueProvider.class.getName());
 
 			final List<PropertyXLSValueProvider> result = new LinkedList<>();
@@ -88,7 +89,7 @@ public final class DefaultPropertyXLSValueProviders implements Serializable {
 			providers.forEach(pr -> {
 				result.add(pr);
 
-				LOGGER.debug(() -> "Loaded and registered PropertyXLSValueProvider [" + pr + "] for classloader ["
+				LOGGER.debug("Loaded and registered PropertyXLSValueProvider [" + pr + "] for classloader ["
 						+ classLoader + "]");
 			});
 			PROVIDERS.put(classLoader, result);
