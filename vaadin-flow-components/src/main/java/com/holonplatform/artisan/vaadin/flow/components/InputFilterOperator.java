@@ -15,9 +15,9 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.TypeUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.core.query.StringFunction.Lower;
@@ -97,7 +97,7 @@ public enum InputFilterOperator {
 		}
 		case EQUAL: {
 			if (!ComponentUtils.isEmptyValue(value)) {
-				if (TypeUtils.isString(property.getType()) && ignoreCase) {
+				if (Obj.isString(property.getType()) && ignoreCase) {
 					@SuppressWarnings("unchecked")
 					final Property<String> stringProperty = (Property<String>) property;
 					return QueryFilter.eq(Lower.create(stringProperty),
@@ -109,7 +109,7 @@ public enum InputFilterOperator {
 		}
 		case NOT_EQUAL: {
 			if (!ComponentUtils.isEmptyValue(value)) {
-				if (TypeUtils.isString(property.getType()) && ignoreCase) {
+				if (Obj.isString(property.getType()) && ignoreCase) {
 					@SuppressWarnings("unchecked")
 					final Property<String> stringProperty = (Property<String>) property;
 					return QueryFilter.neq(Lower.create(stringProperty),
@@ -120,7 +120,7 @@ public enum InputFilterOperator {
 			return null;
 		}
 		case CONTAINS: {
-			if (!ComponentUtils.isEmptyValue(value) && TypeUtils.isString(property.getType())) {
+			if (!ComponentUtils.isEmptyValue(value) && Obj.isString(property.getType())) {
 				@SuppressWarnings("unchecked")
 				final Property<String> stringProperty = (Property<String>) property;
 				return QueryFilter.contains(stringProperty, ComponentUtils.trimValueAsString(value), ignoreCase);
@@ -128,7 +128,7 @@ public enum InputFilterOperator {
 			return null;
 		}
 		case STARTS_WITH: {
-			if (!ComponentUtils.isEmptyValue(value) && TypeUtils.isString(property.getType())) {
+			if (!ComponentUtils.isEmptyValue(value) && Obj.isString(property.getType())) {
 				@SuppressWarnings("unchecked")
 				final Property<String> stringProperty = (Property<String>) property;
 				return QueryFilter.startsWith(stringProperty, ComponentUtils.trimValueAsString(value), ignoreCase);

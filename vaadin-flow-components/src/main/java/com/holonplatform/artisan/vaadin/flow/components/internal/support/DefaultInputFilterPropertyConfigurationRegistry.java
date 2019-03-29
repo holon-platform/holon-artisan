@@ -18,7 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.core.property.Property;
 
 /**

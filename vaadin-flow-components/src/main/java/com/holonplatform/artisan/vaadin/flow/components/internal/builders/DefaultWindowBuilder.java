@@ -17,11 +17,11 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.Window;
 import com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultWindow;
 import com.holonplatform.artisan.vaadin.flow.components.internal.WindowVariant;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.holonplatform.vaadin.flow.internal.components.builders.DefaultComponentConfigurator;

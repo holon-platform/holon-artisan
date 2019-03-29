@@ -19,9 +19,9 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;

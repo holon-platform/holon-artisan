@@ -17,8 +17,8 @@ package com.holonplatform.artisan.vaadin.flow.components.internal;
 
 import java.util.Optional;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.Registration;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.shared.communication.PushMode;
 

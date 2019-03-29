@@ -17,7 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.List;
 
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.vaadin.flow.components.builders.BaseTemporalInputConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.BaseTemporalInputConfigurator.CalendarLocalizationBuilder;

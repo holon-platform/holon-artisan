@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.builders.BooleanInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.DateInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.DateTimeInputFilterBuilder;
@@ -39,7 +40,6 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilt
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterConverterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperatorInputFilterAdapterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.config.ConfigProperty;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;

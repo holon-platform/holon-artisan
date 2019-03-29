@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterGroup;
 import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterGroupBuilder;
@@ -30,7 +31,6 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterGrou
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyConfiguration;
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyConfigurationRegistry;
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyRegistry;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.property.PropertyRendererRegistry;

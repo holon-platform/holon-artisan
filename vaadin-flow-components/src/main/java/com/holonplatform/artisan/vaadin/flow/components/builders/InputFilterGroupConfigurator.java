@@ -18,10 +18,10 @@ package com.holonplatform.artisan.vaadin.flow.components.builders;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter.InputFilterPropertyRenderer;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterGroup;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertyRenderer;

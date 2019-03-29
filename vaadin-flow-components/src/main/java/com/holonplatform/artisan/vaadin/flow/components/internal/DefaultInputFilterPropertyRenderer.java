@@ -22,10 +22,10 @@ import java.util.Date;
 
 import javax.annotation.Priority;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.builders.LocalTimeInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
-import com.holonplatform.core.internal.utils.TypeUtils;
 import com.holonplatform.core.presentation.StringValuePresenter;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
@@ -66,15 +66,15 @@ public class DefaultInputFilterPropertyRenderer<T> implements PropertyRenderer<I
 			// Try to render the property according to the property type
 			final Class<?> propertyType = property.getType();
 
-			if (TypeUtils.isString(propertyType)) {
+			if (Obj.isString(propertyType)) {
 				// String
 				return renderString((Property<String>) property);
 			}
-			if (TypeUtils.isBoolean(propertyType)) {
+			if (Obj.isBoolean(propertyType)) {
 				// Boolean
 				return renderBoolean((Property<Boolean>) property);
 			}
-			if (TypeUtils.isEnum(propertyType)) {
+			if (Obj.isEnum(propertyType)) {
 				// Enum
 				return renderEnum((Property<? extends Enum>) property);
 			}
@@ -90,11 +90,11 @@ public class DefaultInputFilterPropertyRenderer<T> implements PropertyRenderer<I
 				// LocalDate
 				return renderLocalDateTime((Property<LocalDateTime>) property);
 			}
-			if (TypeUtils.isDate(propertyType)) {
+			if (Obj.isDate(propertyType)) {
 				// Date
 				return renderDate((Property<Date>) property);
 			}
-			if (TypeUtils.isNumber(propertyType)) {
+			if (Obj.isNumber(propertyType)) {
 				// Number
 				return renderNumber((Property<? extends Number>) property);
 			}

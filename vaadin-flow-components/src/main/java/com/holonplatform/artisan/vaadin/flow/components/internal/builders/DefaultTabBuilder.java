@@ -17,12 +17,12 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
 import com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder.TabBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultTab;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
 import com.vaadin.flow.component.Component;
 

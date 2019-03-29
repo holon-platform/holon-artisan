@@ -17,12 +17,12 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter.EnumFilterMode;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.GenericEnumInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;

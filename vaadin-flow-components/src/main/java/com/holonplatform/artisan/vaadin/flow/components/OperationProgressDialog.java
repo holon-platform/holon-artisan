@@ -22,9 +22,9 @@ import java.util.function.Consumer;
 import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperationProgressDialogBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
 

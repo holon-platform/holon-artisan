@@ -20,8 +20,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.BoundComponentGroup.Binding;
 

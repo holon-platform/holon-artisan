@@ -17,11 +17,11 @@ package com.holonplatform.artisan.vaadin.flow.components.builders;
 
 import java.util.function.Consumer;
 
+import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.SelectedTabChangeListener;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
-import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.vaadin.flow.components.HasComponent;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasEnabledConfigurator;
