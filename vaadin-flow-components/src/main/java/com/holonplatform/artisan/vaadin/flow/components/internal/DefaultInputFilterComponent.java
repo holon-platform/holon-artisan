@@ -35,7 +35,6 @@ import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Composable;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
-import com.holonplatform.vaadin.flow.internal.components.AbstractComposable;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -51,10 +50,39 @@ import com.vaadin.flow.dom.Element;
  *
  * @since 1.0.0
  */
-public class DefaultInputFilterComponent<C extends Component>
-		extends AbstractComposable<C, InputFilter<?>, InputFilterGroup> implements InputFilterComponent {
+public class DefaultInputFilterComponent<C extends Component> implements InputFilterComponent {
 
 	private static final long serialVersionUID = -38314217172619843L;
+
+	/**
+	 * Form content initializer
+	 */
+	private Consumer<C> initializer;
+
+	/**
+	 * Composer
+	 */
+	private Composer<? super C, InputFilter<?>, InputFilterGroup> composer;
+
+	/**
+	 * Compose on attach behaviour
+	 */
+	private boolean composeOnAttach = true;
+
+	/**
+	 * Whether content component was initialized
+	 */
+	private boolean contentInitialized = false;
+
+	/**
+	 * Composition state
+	 */
+	private boolean composed = false;
+
+	/**
+	 * Content component
+	 */
+	private final C content;
 
 	/**
 	 * Backing group
@@ -71,11 +99,89 @@ public class DefaultInputFilterComponent<C extends Component>
 	 * @param content Component content (not null)
 	 */
 	public DefaultInputFilterComponent(C content) {
-		super(content);
-		content.getElement().setAttribute("input-filter-group-content", "");
+		super();
+		Obj.argumentNotNull(content, "Content component must be not null");
+		this.content = content;
+		this.content.getElement().setAttribute("input-filter-group-content", "");
+		// compose on attach
+		content.addAttachListener(e -> {
+			// check compose on attach if not already composed
+			if (!isComposed() && isComposeOnAttach()) {
+				compose();
+			}
+		});
 	}
 
-	@Override
+	/**
+	 * Get the form content component.
+	 * @return the form content component
+	 */
+	protected C getContent() {
+		return content;
+	}
+
+	/**
+	 * Gets whether the form was already composed.
+	 * @return whether the form was already composed
+	 */
+	protected boolean isComposed() {
+		return composed;
+	}
+
+	/**
+	 * Get the form content initializer
+	 * @return the form content initializer
+	 */
+	public Optional<Consumer<C>> getInitializer() {
+		return Optional.ofNullable(initializer);
+	}
+
+	/**
+	 * Set the form content initializer
+	 * @param initializer the initializer to set
+	 */
+	public void setInitializer(Consumer<C> initializer) {
+		this.initializer = initializer;
+	}
+
+	/**
+	 * Get the composer, if available.
+	 * @return Optional composer
+	 */
+	public Optional<Composer<? super C, InputFilter<?>, InputFilterGroup>> getComposer() {
+		return Optional.ofNullable(composer);
+	}
+
+	/**
+	 * Set the composer
+	 * @param composer the composer to set
+	 */
+	public void setComposer(Composer<? super C, InputFilter<?>, InputFilterGroup> composer) {
+		this.composer = composer;
+	}
+
+	/**
+	 * Gets whether the form must be composed on content component <code>attach</code>, if not already composed invoking
+	 * {@link #compose()}.
+	 * @return <code>true</code> if the form must be composed on content component <code>attach</code>
+	 */
+	public boolean isComposeOnAttach() {
+		return composeOnAttach;
+	}
+
+	/**
+	 * Sets whether the form must be composed on content component <code>attach</code>, if not already composed invoking
+	 * {@link #compose()}.
+	 * @param composeOnAttach <code>true</code> to compose the form on content component <code>attach</code>
+	 */
+	public void setComposeOnAttach(boolean composeOnAttach) {
+		this.composeOnAttach = composeOnAttach;
+	}
+
+	/**
+	 * Get the {@link InputFilterGroup}.
+	 * @return the {@link InputFilterGroup}
+	 */
 	protected InputFilterGroup getComponentGroup() {
 		return group;
 	}
@@ -159,6 +265,23 @@ public class DefaultInputFilterComponent<C extends Component>
 				}
 			});
 		}
+	}
+
+	@Override
+	public void compose() {
+		// content initializer
+		getInitializer().ifPresent(i -> {
+			if (!contentInitialized) {
+				i.accept(getContent());
+				contentInitialized = true;
+			}
+		});
+
+		// compose
+		getComposer().orElseThrow(() -> new IllegalStateException("No composer available")).compose(getContent(),
+				getComponentGroup());
+
+		this.composed = true;
 	}
 
 	// Builder
