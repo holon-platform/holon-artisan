@@ -30,7 +30,6 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFi
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorSelectConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultFilterOperatorSelectConfigurator;
 import com.holonplatform.core.Registration;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;
@@ -40,8 +39,6 @@ import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
 import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
-import com.holonplatform.vaadin.flow.internal.components.events.DefaultValueChangeEvent;
-import com.holonplatform.vaadin.flow.internal.components.support.RegistrationAdapter;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.HasTheme;
@@ -266,8 +263,10 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	public Registration addValueChangeListener(
 			com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener<T, com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent<T>> listener) {
 		Obj.argumentNotNull(listener, "ValueChangeListener must be not null");
-		return RegistrationAdapter.adapt(super.addValueChangeListener(e -> listener
-				.valueChange(new DefaultValueChangeEvent<>(this, e.getOldValue(), e.getValue(), e.isFromClient()))));
+		final com.vaadin.flow.shared.Registration r = super.addValueChangeListener(
+				e -> listener.valueChange(com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent
+						.create(this, e.getOldValue(), e.getValue(), e.isFromClient())));
+		return () -> r.remove();
 	}
 
 	@Override
@@ -282,7 +281,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	@Override
 	public <A> Optional<A> as(Class<A> type) {
-		ObjectUtils.argumentNotNull(type, "Type must be not null");
+		Obj.argumentNotNull(type, "Type must be not null");
 		final Optional<A> adapter = adapters.getAs(this, type);
 		if (adapter.isPresent()) {
 			return adapter;

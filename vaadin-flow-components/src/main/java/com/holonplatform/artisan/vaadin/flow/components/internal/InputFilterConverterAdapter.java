@@ -21,7 +21,6 @@ import java.util.function.Function;
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.core.Registration;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;
 import com.holonplatform.vaadin.flow.components.HasPlaceholder;
@@ -291,7 +290,7 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 
 	@Override
 	public <A> Optional<A> as(Class<A> type) {
-		ObjectUtils.argumentNotNull(type, "Type must be not null");
+		Obj.argumentNotNull(type, "Type must be not null");
 		final Optional<A> adapter = adapters.getAs(this, type);
 		if (adapter.isPresent()) {
 			return adapter;

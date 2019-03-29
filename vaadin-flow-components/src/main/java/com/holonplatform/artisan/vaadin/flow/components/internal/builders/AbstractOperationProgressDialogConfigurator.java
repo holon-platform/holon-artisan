@@ -25,8 +25,8 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgre
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultOperationProgressDialog;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator.BaseButtonConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasSizeConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasStyleConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
 
 /**
  * Abstract {@link OperationProgressDialogConfigurator} implementation.
@@ -41,8 +41,8 @@ public abstract class AbstractOperationProgressDialogConfigurator<T, C extends O
 
 	protected final DefaultOperationProgressDialog<T> instance;
 
-	private final DefaultHasStyleConfigurator styleConfigurator;
-	private final DefaultHasSizeConfigurator sizeConfigurator;
+	private final BaseHasStyleConfigurator styleConfigurator;
+	private final BaseHasSizeConfigurator sizeConfigurator;
 
 	/**
 	 * Constructor.
@@ -51,8 +51,8 @@ public abstract class AbstractOperationProgressDialogConfigurator<T, C extends O
 	public AbstractOperationProgressDialogConfigurator(Operation<T> operation) {
 		super();
 		this.instance = new DefaultOperationProgressDialog<>(operation);
-		this.styleConfigurator = new DefaultHasStyleConfigurator(this.instance);
-		this.sizeConfigurator = new DefaultHasSizeConfigurator(this.instance);
+		this.styleConfigurator = HasStyleConfigurator.create(this.instance);
+		this.sizeConfigurator = HasSizeConfigurator.create(this.instance);
 	}
 
 	protected abstract C getBuilder();

@@ -32,9 +32,9 @@ import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
+import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.OptionsMultiSelectConfigurator.OptionsMultiSelectInputBuilder;
 import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
-import com.holonplatform.vaadin.flow.internal.components.EnumItemCaptionGenerator;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
@@ -256,7 +256,7 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 			@SuppressWarnings("unchecked")
 			final Class<E> enumType = (Class<E>) property.getType();
 			inputBuilder = Input.multiOptionSelect(enumType).items(enumType.getEnumConstants())
-					.itemCaptionGenerator(new EnumItemCaptionGenerator<>()).label(property);
+					.itemCaptionGenerator(ItemSetConfigurator.enumCaptionGenerator()).label(property);
 		}
 
 		/*

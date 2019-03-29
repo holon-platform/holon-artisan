@@ -34,12 +34,11 @@ import com.holonplatform.vaadin.flow.components.builders.HasLabelConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasPlaceholderConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.InputBuilder;
+import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectConfigurator.SingleSelectInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectableInputConfigurator;
 import com.holonplatform.vaadin.flow.device.DeviceInfo;
-import com.holonplatform.vaadin.flow.internal.components.EnumItemCaptionGenerator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DelegatedShortcutConfigurator;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
@@ -83,7 +82,7 @@ public class DefaultEnumSingleSelectInputFilterBuilder<T extends Enum<T>>
 
 		if (mobile) {
 			final SingleSelectInputBuilder<T, T> builder = Input.singleSimpleSelect(enumType)
-					.items(enumType.getEnumConstants()).itemCaptionGenerator(new EnumItemCaptionGenerator<>())
+					.items(enumType.getEnumConstants()).itemCaptionGenerator(ItemSetConfigurator.enumCaptionGenerator())
 					.emptySelectionAllowed(true);
 			this.inputBuilder = builder;
 			this.singleSelectableConfigurator = builder;
@@ -94,7 +93,8 @@ public class DefaultEnumSingleSelectInputFilterBuilder<T extends Enum<T>>
 			this.focusableConfigurator = builder;
 		} else {
 			final FilterableSingleSelectInputBuilder<T, T> builder = Input.singleSelect(enumType)
-					.items(enumType.getEnumConstants()).itemCaptionGenerator(new EnumItemCaptionGenerator<>());
+					.items(enumType.getEnumConstants())
+					.itemCaptionGenerator(ItemSetConfigurator.enumCaptionGenerator());
 			this.inputBuilder = builder;
 			this.singleSelectableConfigurator = builder;
 			this.sizeConfigurator = builder;
@@ -461,7 +461,7 @@ public class DefaultEnumSingleSelectInputFilterBuilder<T extends Enum<T>>
 	 */
 	@Override
 	public ShortcutConfigurator<EnumSingleSelectInputFilterBuilder<T>> withFocusShortcut(Key key) {
-		return new DelegatedShortcutConfigurator<>(focusableConfigurator.withFocusShortcut(key), this);
+		return ShortcutConfigurator.delegated(focusableConfigurator.withFocusShortcut(key), this);
 	}
 
 	@Override

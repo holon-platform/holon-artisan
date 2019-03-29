@@ -32,7 +32,6 @@ import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator.Ite
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectConfigurator.SingleSelectInputBuilder;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
-import com.holonplatform.vaadin.flow.internal.components.builders.DelegatedShortcutConfigurator;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
@@ -428,7 +427,7 @@ public class DefaultBooleanInputFilterBuilder implements BooleanInputFilterBuild
 	 */
 	@Override
 	public ShortcutConfigurator<BooleanInputFilterBuilder> withFocusShortcut(Key key) {
-		return new DelegatedShortcutConfigurator<>(inputBuilder.withFocusShortcut(key), this);
+		return ShortcutConfigurator.delegated(inputBuilder.withFocusShortcut(key), this);
 	}
 
 	/*

@@ -26,9 +26,6 @@ import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultTabLayou
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultComponentConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasSizeConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasStyleConfigurator;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -55,9 +52,9 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent<L>
 
 	private final L layout;
 
-	private final ComponentConfigurator<?> componentConfigurator;
-	private final HasSizeConfigurator<?> sizeConfigurator;
-	private final HasStyleConfigurator<?> styleConfigurator;
+	private final BaseComponentConfigurator componentConfigurator;
+	private final BaseHasSizeConfigurator sizeConfigurator;
+	private final BaseHasStyleConfigurator styleConfigurator;
 
 	private int selectTabIndex = -1;
 	private Tab selectTab = null;
@@ -67,9 +64,9 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent<L>
 		this.layout = layout;
 		this.instance = new DefaultTabLayout(layout, orientation);
 		this.layout.addClassName("h-tabs");
-		this.componentConfigurator = new DefaultComponentConfigurator(layout);
-		this.sizeConfigurator = new DefaultHasSizeConfigurator(layout);
-		this.styleConfigurator = new DefaultHasStyleConfigurator(layout);
+		this.componentConfigurator = ComponentConfigurator.create(layout);
+		this.sizeConfigurator = HasSizeConfigurator.create(layout);
+		this.styleConfigurator = HasStyleConfigurator.create(layout);
 	}
 
 	/**

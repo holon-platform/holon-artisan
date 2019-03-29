@@ -21,9 +21,6 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFi
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultComponentConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasSizeConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasStyleConfigurator;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
@@ -38,15 +35,15 @@ import com.vaadin.flow.dom.Element;
  */
 public class DefaultFilterOperatorSelectConfigurator implements FilterOperatorSelectConfigurator {
 
-	private final ComponentConfigurator<?> componentConfigurator;
-	private final HasSizeConfigurator<?> sizeConfigurator;
-	private final HasStyleConfigurator<?> styleConfigurator;
+	private final BaseComponentConfigurator componentConfigurator;
+	private final BaseHasSizeConfigurator sizeConfigurator;
+	private final BaseHasStyleConfigurator styleConfigurator;
 
 	public DefaultFilterOperatorSelectConfigurator(Select<?> select) {
 		super();
-		this.componentConfigurator = new DefaultComponentConfigurator(select);
-		this.sizeConfigurator = new DefaultHasSizeConfigurator(select);
-		this.styleConfigurator = new DefaultHasStyleConfigurator(select);
+		this.componentConfigurator = ComponentConfigurator.create(select);
+		this.sizeConfigurator = HasSizeConfigurator.create(select);
+		this.styleConfigurator = HasStyleConfigurator.create(select);
 	}
 
 	/*

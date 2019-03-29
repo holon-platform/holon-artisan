@@ -23,10 +23,10 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultWindow;
 import com.holonplatform.artisan.vaadin.flow.components.internal.WindowVariant;
 import com.holonplatform.core.i18n.Localizable;
+import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator;
+import com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultComponentConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasSizeConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasStyleConfigurator;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -43,9 +43,9 @@ public class DefaultWindowBuilder implements WindowBuilder {
 
 	private final DefaultWindow instance;
 
-	private final DefaultComponentConfigurator componentConfigurator;
-	private final DefaultHasStyleConfigurator styleConfigurator;
-	private final DefaultHasSizeConfigurator sizeConfigurator;
+	private final BaseComponentConfigurator componentConfigurator;
+	private final BaseHasStyleConfigurator styleConfigurator;
+	private final BaseHasSizeConfigurator sizeConfigurator;
 
 	/**
 	 * Default constructor
@@ -53,9 +53,9 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	public DefaultWindowBuilder() {
 		super();
 		this.instance = new DefaultWindow();
-		this.componentConfigurator = new DefaultComponentConfigurator(this.instance.getComponent());
-		this.styleConfigurator = new DefaultHasStyleConfigurator(this.instance);
-		this.sizeConfigurator = new DefaultHasSizeConfigurator(this.instance);
+		this.componentConfigurator = ComponentConfigurator.create(this.instance.getComponent());
+		this.styleConfigurator = HasStyleConfigurator.create(this.instance);
+		this.sizeConfigurator = HasSizeConfigurator.create(this.instance);
 	}
 
 	/*

@@ -28,7 +28,6 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.NumberInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DelegatedShortcutConfigurator;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -282,7 +281,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	 */
 	@Override
 	public ShortcutConfigurator<NumberInputFilterBuilder<T>> withFocusShortcut(Key key) {
-		return new DelegatedShortcutConfigurator<>(inputBuilder.withFocusShortcut(key), this);
+		return ShortcutConfigurator.delegated(inputBuilder.withFocusShortcut(key), this);
 	}
 
 	/*

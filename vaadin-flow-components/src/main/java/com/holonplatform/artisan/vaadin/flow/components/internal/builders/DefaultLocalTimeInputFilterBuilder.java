@@ -29,7 +29,6 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.LocalTimeInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
-import com.holonplatform.vaadin.flow.internal.components.builders.DelegatedShortcutConfigurator;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -100,7 +99,7 @@ public class DefaultLocalTimeInputFilterBuilder
 
 	@Override
 	public ShortcutConfigurator<LocalTimeInputFilterBuilder> withFocusShortcut(Key key) {
-		return new DelegatedShortcutConfigurator<>(inputBuilder.withFocusShortcut(key), this);
+		return ShortcutConfigurator.delegated(inputBuilder.withFocusShortcut(key), this);
 	}
 
 	@Override
