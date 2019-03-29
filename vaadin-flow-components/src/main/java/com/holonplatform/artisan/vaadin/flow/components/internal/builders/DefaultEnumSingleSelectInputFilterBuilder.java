@@ -16,6 +16,7 @@
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
@@ -461,6 +462,12 @@ public class DefaultEnumSingleSelectInputFilterBuilder<T extends Enum<T>>
 	@Override
 	public ShortcutConfigurator<EnumSingleSelectInputFilterBuilder<T>> withFocusShortcut(Key key) {
 		return new DelegatedShortcutConfigurator<>(focusableConfigurator.withFocusShortcut(key), this);
+	}
+
+	@Override
+	public <A> EnumSingleSelectInputFilterBuilder<T> withAdapter(Class<A> type, Function<Input<T>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
+		return this;
 	}
 
 }

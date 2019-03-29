@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -532,6 +533,12 @@ public class DefaultStringInputFilterBuilder extends
 	@Override
 	public StringInputFilterBuilder withThemeVariants(TextFieldVariant... variants) {
 		inputBuilder.withThemeVariants(variants);
+		return this;
+	}
+
+	@Override
+	public <A> StringInputFilterBuilder withAdapter(Class<A> type, Function<Input<String>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
 		return this;
 	}
 

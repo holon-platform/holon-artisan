@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.holonplatform.artisan.core.utils.Obj;
@@ -29,6 +30,7 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFi
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorSelectConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultFilterOperatorSelectConfigurator;
 import com.holonplatform.core.Registration;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;
@@ -36,6 +38,7 @@ import com.holonplatform.vaadin.flow.components.HasPlaceholder;
 import com.holonplatform.vaadin.flow.components.HasTitle;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
+import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.holonplatform.vaadin.flow.internal.components.events.DefaultValueChangeEvent;
 import com.holonplatform.vaadin.flow.internal.components.support.RegistrationAdapter;
@@ -68,6 +71,8 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	private Supplier<Boolean> ignoreCaseSupplier = () -> false;
 
 	private final List<FilterOperatorChangeListener<T>> filterOperatorChangeListeners = new LinkedList<>();
+
+	private final InputAdaptersContainer<T> adapters = InputAdaptersContainer.create();
 
 	public OperatorInputFilterAdapter(Property<? super T> property, InputFilterOperator... operators) {
 		super();
@@ -273,6 +278,26 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	@Override
 	protected void setPresentationValue(T newPresentationValue) {
 		getInput().ifPresent(i -> i.setValue(newPresentationValue));
+	}
+
+	@Override
+	public <A> Optional<A> as(Class<A> type) {
+		ObjectUtils.argumentNotNull(type, "Type must be not null");
+		final Optional<A> adapter = adapters.getAs(this, type);
+		if (adapter.isPresent()) {
+			return adapter;
+		}
+		return getInput().flatMap(i -> i.as(type));
+	}
+
+	/**
+	 * Set the adapter for given type.
+	 * @param <A> Adapter type
+	 * @param type Adapter type (not null)
+	 * @param adapter Adapter function
+	 */
+	public <A> void setAdapter(Class<A> type, Function<Input<T>, A> adapter) {
+		adapters.setAdapter(type, adapter);
 	}
 
 	@Override

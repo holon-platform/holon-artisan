@@ -16,13 +16,6 @@
 package com.holonplatform.artisan.vaadin.flow.components.internal.utils;
 
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Set;
-
-import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
-import com.holonplatform.vaadin.flow.components.Input;
-import com.vaadin.flow.data.binder.Result;
-import com.vaadin.flow.data.converter.Converter;
 
 /**
  * Utility class.
@@ -78,46 +71,6 @@ public final class ComponentUtils implements Serializable {
 			return value.toString().trim();
 		}
 		return null;
-	}
-
-	/**
-	 * Convert given multi value input into a single value input.
-	 * @param <T> Value type
-	 * @param input The input to convert
-	 * @return The converted input
-	 */
-	public static <T> Input<T> asSingleValueInput(Input<Set<T>> input) {
-		return Input.from(input, Converter.from(value -> {
-			if (value != null && !value.isEmpty()) {
-				return Result.ok(value.iterator().next());
-			}
-			return Result.ok(null);
-		}, value -> {
-			if (value == null) {
-				return null;
-			}
-			return Collections.singleton(value);
-		}));
-	}
-
-	/**
-	 * Convert given multi value input filter into a single value input filter.
-	 * @param <T> Value type
-	 * @param input The input filter to convert
-	 * @return The converted input filter
-	 */
-	public static <T> InputFilter<T> asSingleValueInputFilter(InputFilter<Set<T>> input) {
-		return InputFilter.from(input, Converter.from(value -> {
-			if (value != null && !value.isEmpty()) {
-				return Result.ok(value.iterator().next());
-			}
-			return Result.ok(null);
-		}, value -> {
-			if (value == null) {
-				return null;
-			}
-			return Collections.singleton(value);
-		}));
 	}
 
 }

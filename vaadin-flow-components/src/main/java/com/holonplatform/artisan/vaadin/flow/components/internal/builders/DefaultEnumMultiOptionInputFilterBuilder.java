@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
@@ -348,6 +349,12 @@ public class DefaultEnumMultiOptionInputFilterBuilder<T extends Enum<T>>
 	@Override
 	public EnumMultiOptionInputFilterBuilder<T> label(Localizable label) {
 		inputBuilder.label(label);
+		return this;
+	}
+
+	@Override
+	public <A> EnumMultiOptionInputFilterBuilder<T> withAdapter(Class<A> type, Function<Input<Set<T>>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
 		return this;
 	}
 

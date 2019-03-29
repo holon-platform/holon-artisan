@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.function.Function;
+
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterAdapterBuilder;
@@ -57,6 +59,12 @@ public class DefaultOperatorInputFilterAdapterBuilder<T>
 	public OperatorInputFilterAdapterBuilder<T> withValueChangeListener(
 			ValueChangeListener<T, ValueChangeEvent<T>> listener) {
 		input.addValueChangeListener(listener);
+		return this;
+	}
+
+	@Override
+	public <A> OperatorInputFilterAdapterBuilder<T> withAdapter(Class<A> type, Function<Input<T>, A> adapter) {
+		getComponent().setAdapter(type, adapter);
 		return this;
 	}
 

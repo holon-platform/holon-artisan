@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.LocalDateTimeInputFilterBuilder;
@@ -158,6 +159,12 @@ public class DefaultLocalDateTimeInputFilterBuilder
 	@Override
 	public LocalDateTimeInputFilterBuilder timeStep(Duration step) {
 		inputBuilder.timeStep(step);
+		return this;
+	}
+
+	@Override
+	public <A> LocalDateTimeInputFilterBuilder withAdapter(Class<A> type, Function<Input<LocalDateTime>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
 		return this;
 	}
 

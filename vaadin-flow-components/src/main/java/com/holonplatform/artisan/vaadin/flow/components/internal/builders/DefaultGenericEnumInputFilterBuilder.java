@@ -15,14 +15,17 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.Collections;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter.EnumFilterMode;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.GenericEnumInputFilterBuilder;
-import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
+import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterConverterAdapter;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
@@ -30,11 +33,13 @@ import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.OptionsMultiSelectConfigurator.OptionsMultiSelectInputBuilder;
+import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
 import com.holonplatform.vaadin.flow.internal.components.EnumItemCaptionGenerator;
-import com.holonplatform.vaadin.flow.internal.components.events.DefaultValueChangeEvent;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.dom.DomEventListener;
 import com.vaadin.flow.dom.Element;
@@ -219,6 +224,12 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 	}
 
 	@Override
+	public <A> GenericEnumInputFilterBuilder<T> withAdapter(Class<A> type, Function<Input<T>, A> adapter) {
+		inputFilterBuilder.withAdapter(type, adapter);
+		return this;
+	}
+
+	@Override
 	public GenericEnumInputFilterBuilder<T> withDeferredLocalization(boolean deferredLocalization) {
 		inputFilterBuilder.withDeferredLocalization(deferredLocalization);
 		return this;
@@ -236,6 +247,8 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 
 		private final OptionsMultiSelectInputBuilder<E, E> inputBuilder;
 
+		private final InputAdaptersContainer<E> adapters = InputAdaptersContainer.create();
+
 		public EnumMultiOptionInputFilterAdapterBuilder(Property<E> property) {
 			super();
 			Obj.argumentNotNull(property, "Property must be not null");
@@ -252,12 +265,29 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 		 */
 		@Override
 		public InputFilter<E> build() {
-			return ComponentUtils.asSingleValueInputFilter(InputFilter.from(inputBuilder.build(), value -> {
+			return asSingleValueInputFilter(InputFilter.from(inputBuilder.build(), value -> {
 				if (value != null && !value.isEmpty()) {
 					return QueryFilter.in(queryProperty, value);
 				}
 				return null;
 			}));
+		}
+
+		private InputFilter<E> asSingleValueInputFilter(InputFilter<Set<E>> input) {
+			InputFilterConverterAdapter<Set<E>, E> ifc = new InputFilterConverterAdapter<>(input,
+					Converter.from(value -> {
+						if (value != null && !value.isEmpty()) {
+							return Result.ok(value.iterator().next());
+						}
+						return Result.ok(null);
+					}, value -> {
+						if (value == null) {
+							return null;
+						}
+						return Collections.singleton(value);
+					}));
+			adapters.getAdapters().forEach((t, a) -> ifc.setAdapter(t, a));
+			return ifc;
 		}
 
 		/*
@@ -285,7 +315,7 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 				final E oldValue = (e.getOldValue() != null && !e.getOldValue().isEmpty())
 						? e.getOldValue().iterator().next()
 						: null;
-				listener.valueChange(new DefaultValueChangeEvent<>(null, oldValue, value, e.isUserOriginated()));
+				listener.valueChange(ValueChangeEvent.create(null, oldValue, value, e.isUserOriginated()));
 			});
 			return this;
 		}
@@ -549,6 +579,13 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 		@Override
 		public EnumMultiOptionInputFilterAdapterBuilder<E> label(Localizable label) {
 			inputBuilder.label(label);
+			return this;
+		}
+
+		@Override
+		public <A> DefaultGenericEnumInputFilterBuilder<T>.EnumMultiOptionInputFilterAdapterBuilder<E> withAdapter(
+				Class<A> type, Function<Input<E>, A> adapter) {
+			adapters.setAdapter(type, adapter);
 			return this;
 		}
 

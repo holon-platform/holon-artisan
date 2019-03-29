@@ -22,8 +22,17 @@ import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.core.Registration;
 import com.holonplatform.core.query.QueryFilter;
+import com.holonplatform.vaadin.flow.components.HasLabel;
+import com.holonplatform.vaadin.flow.components.HasPlaceholder;
+import com.holonplatform.vaadin.flow.components.HasTitle;
 import com.holonplatform.vaadin.flow.components.Input;
+import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasEnabled;
+import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.HasValidation;
+import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
  * Adapter to turn a {@link Input} component into a {@link InputFilter}.
@@ -187,6 +196,56 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 	@Override
 	public Optional<QueryFilter> getFilter() {
 		return Optional.ofNullable(getFilterProvider().apply(getValue()));
+	}
+
+	@Override
+	public Optional<HasTitle> hasTitle() {
+		return getInput().hasTitle();
+	}
+
+	@Override
+	public Optional<HasPlaceholder> hasPlaceholder() {
+		return getInput().hasPlaceholder();
+	}
+
+	@Override
+	public Optional<InvalidChangeEventNotifier> hasInvalidChangeEventNotifier() {
+		return getInput().hasInvalidChangeEventNotifier();
+	}
+
+	@Override
+	public <A> Optional<A> as(Class<A> type) {
+		return getInput().as(type);
+	}
+
+	@Override
+	public Optional<HasValueChangeMode> hasValueChangeMode() {
+		return getInput().hasValueChangeMode();
+	}
+
+	@Override
+	public Optional<HasEnabled> hasEnabled() {
+		return getInput().hasEnabled();
+	}
+
+	@Override
+	public Optional<HasStyle> hasStyle() {
+		return getInput().hasStyle();
+	}
+
+	@Override
+	public Optional<HasSize> hasSize() {
+		return getInput().hasSize();
+	}
+
+	@Override
+	public Optional<HasLabel> hasLabel() {
+		return getInput().hasLabel();
+	}
+
+	@Override
+	public Optional<HasValidation> hasValidation() {
+		return getInput().hasValidation();
 	}
 
 }

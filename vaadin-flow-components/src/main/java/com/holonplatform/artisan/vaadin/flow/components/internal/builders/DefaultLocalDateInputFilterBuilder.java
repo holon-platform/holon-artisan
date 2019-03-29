@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.LocalDateInputFilterBuilder;
@@ -139,6 +140,12 @@ public class DefaultLocalDateInputFilterBuilder
 	@Override
 	public LocalDateInputFilterBuilder placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		return this;
+	}
+
+	@Override
+	public <A> LocalDateInputFilterBuilder withAdapter(Class<A> type, Function<Input<LocalDate>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
 		return this;
 	}
 

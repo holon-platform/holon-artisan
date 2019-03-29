@@ -16,17 +16,20 @@
 package com.holonplatform.artisan.vaadin.flow.components.internal;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.core.Registration;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;
 import com.holonplatform.vaadin.flow.components.HasPlaceholder;
 import com.holonplatform.vaadin.flow.components.HasTitle;
+import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder;
 import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
-import com.holonplatform.vaadin.flow.internal.components.events.DefaultValueChangeEvent;
+import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasEnabled;
 import com.vaadin.flow.component.HasSize;
@@ -51,6 +54,8 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 
 	private final InputFilter<T> input;
 	private final Converter<T, V> converter;
+
+	private final InputAdaptersContainer<V> adapters = InputAdaptersContainer.create();
 
 	/**
 	 * Constructor.
@@ -100,7 +105,7 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	@Override
 	public Registration addValueChangeListener(ValueHolder.ValueChangeListener<V, ValueChangeEvent<V>> listener) {
 		Obj.argumentNotNull(listener, "ValueChangeListener must be not null");
-		return input.addValueChangeListener(e -> listener.valueChange(new DefaultValueChangeEvent<>(this,
+		return input.addValueChangeListener(e -> listener.valueChange(ValueChangeEvent.create(this,
 				convertToModel(e.getOldValue()), convertToModel(e.getValue()), e.isUserOriginated())));
 	}
 
@@ -282,6 +287,26 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	@Override
 	public Optional<HasValueChangeMode> hasValueChangeMode() {
 		return input.hasValueChangeMode();
+	}
+
+	@Override
+	public <A> Optional<A> as(Class<A> type) {
+		ObjectUtils.argumentNotNull(type, "Type must be not null");
+		final Optional<A> adapter = adapters.getAs(this, type);
+		if (adapter.isPresent()) {
+			return adapter;
+		}
+		return input.as(type);
+	}
+
+	/**
+	 * Set the adapter for given type.
+	 * @param <A> Adapter type
+	 * @param type Adapter type (not null)
+	 * @param adapter Adapter function
+	 */
+	public <A> void setAdapter(Class<A> type, Function<Input<V>, A> adapter) {
+		adapters.setAdapter(type, adapter);
 	}
 
 	/**

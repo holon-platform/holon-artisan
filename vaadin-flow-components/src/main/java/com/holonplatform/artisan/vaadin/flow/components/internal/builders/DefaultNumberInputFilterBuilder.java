@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.NumberInputFilterBuilder;
@@ -460,6 +461,12 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> maxDecimals(int maxDecimals) {
 		inputBuilder.maxDecimals(maxDecimals);
+		return this;
+	}
+
+	@Override
+	public <A> NumberInputFilterBuilder<T> withAdapter(Class<A> type, Function<Input<T>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
 		return this;
 	}
 

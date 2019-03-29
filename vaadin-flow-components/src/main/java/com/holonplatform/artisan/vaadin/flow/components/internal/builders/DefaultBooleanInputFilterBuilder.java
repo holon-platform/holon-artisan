@@ -463,4 +463,10 @@ public class DefaultBooleanInputFilterBuilder implements BooleanInputFilterBuild
 		return inputBuilder.isDeferredLocalizationEnabled();
 	}
 
+	@Override
+	public <A> BooleanInputFilterBuilder withAdapter(Class<A> type, Function<Input<Boolean>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
+		return this;
+	}
+
 }

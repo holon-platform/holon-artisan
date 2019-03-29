@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
+import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.DateTimeInputFilterBuilder;
@@ -164,6 +165,12 @@ public class DefaultDateTimeInputFilterBuilder extends
 	@Override
 	public DateTimeInputFilterBuilder timeStep(Duration step) {
 		inputBuilder.timeStep(step);
+		return this;
+	}
+
+	@Override
+	public <A> DateTimeInputFilterBuilder withAdapter(Class<A> type, Function<Input<Date>, A> adapter) {
+		inputBuilder.withAdapter(type, adapter);
 		return this;
 	}
 
