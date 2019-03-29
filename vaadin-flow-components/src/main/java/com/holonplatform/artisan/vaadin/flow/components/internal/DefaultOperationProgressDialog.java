@@ -30,7 +30,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
-import com.holonplatform.artisan.core.internal.ArtisanLogger;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.core.operation.OperationProgress;
 import com.holonplatform.artisan.core.operation.OperationProgressCallback;
@@ -40,13 +39,14 @@ import com.holonplatform.auth.AuthContext;
 import com.holonplatform.core.Context;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.i18n.LocalizationContext;
-import com.holonplatform.core.internal.Logger;
 import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.PropertyRendererRegistry;
 import com.holonplatform.core.property.PropertyValuePresenterRegistry;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator.BaseButtonConfigurator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
+import com.vaadin.external.org.slf4j.Logger;
+import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -71,7 +71,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 	private static final long serialVersionUID = 4036015960558648086L;
 
-	protected static final Logger LOGGER = ArtisanLogger.create();
+	protected static final Logger LOGGER = LoggerFactory.getLogger(OperationProgressDialog.class);
 
 	private static final int DEFAULT_POLLING_INTERVAL = 200;
 

@@ -50,9 +50,10 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.DateFormatConverter;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.holonplatform.artisan.core.exceptions.InterruptedOperationException;
-import com.holonplatform.artisan.core.internal.ArtisanLogger;
 import com.holonplatform.artisan.core.operation.OperationProgress;
 import com.holonplatform.artisan.core.operation.OperationProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.export.BooleanExportMode;
@@ -76,7 +77,6 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfig
 import com.holonplatform.core.i18n.Caption;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.i18n.LocalizationContext;
-import com.holonplatform.core.internal.Logger;
 import com.holonplatform.core.internal.utils.AnnotationUtils;
 import com.holonplatform.core.internal.utils.ConversionUtils;
 import com.holonplatform.core.internal.utils.ObjectUtils;
@@ -100,7 +100,7 @@ import com.vaadin.flow.data.provider.QuerySortOrder;
  */
 public class DefaultXLSExporter implements XLSExporter {
 
-	protected static final Logger LOGGER = ArtisanLogger.create();
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XLSExporter.class);
 
 	private static final int DEFAULT_BATCH_SIZE = 20;
 
@@ -250,14 +250,14 @@ public class DefaultXLSExporter implements XLSExporter {
 		workbookStyles.clear();
 		cellTypes.clear();
 
-		LOGGER.debug(() -> "Start XLS export...");
+		LOGGER.debug("Start XLS export...");
 
 		final XLSConfiguration configuration = getConfiguration().orElseGet(() -> XLSConfiguration.builder().build());
 
 		final int estimatedSize = getDataProvider().size(new Query<>());
 		final int totalSteps = estimatedSize + 4;
 
-		LOGGER.debug(() -> "XLS export estimated row count: " + estimatedSize);
+		LOGGER.debug("XLS export estimated row count: " + estimatedSize);
 
 		updateExportProgress(exportProgressCallback, totalSteps, 0);
 
@@ -396,7 +396,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			// style
 			cell.setCellStyle(configuration.getPropertyConfiguration(property).map(cfg -> cfg.getHeaderConfiguration())
 					.filter(cfg -> !cfg.equals(headerConfig)).map(cfg -> {
-						LOGGER.debug(() -> "Create custom header style for property: " + property);
+						LOGGER.debug("Create custom header style for property: " + property);
 						CellStyle headerStyle = workbook.createCellStyle();
 						configureCellStyle(workbook, headerStyle, configuration, cfg);
 						return headerStyle;
@@ -1030,7 +1030,7 @@ public class DefaultXLSExporter implements XLSExporter {
 		final StyleConfiguration styleConfiguration = new StyleConfiguration(cellConfiguration, dataFormat);
 
 		return workbookStyles.computeIfAbsent(styleConfiguration, config -> {
-			LOGGER.debug(() -> "Create custom cell style for property: " + property);
+			LOGGER.debug("Create custom cell style for property: " + property);
 			CellStyle style = workbook.createCellStyle();
 			configureCellStyle(workbook, style, configuration, cellConfiguration);
 			if (dataFormat != null && !dataFormat.trim().equals("")) {

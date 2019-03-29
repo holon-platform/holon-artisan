@@ -27,10 +27,11 @@ import java.util.function.Predicate;
 
 import javax.annotation.Priority;
 
-import com.holonplatform.artisan.core.internal.ArtisanLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
-import com.holonplatform.core.internal.Logger;
 import com.holonplatform.core.internal.utils.ClassUtils;
 import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
@@ -45,7 +46,7 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 	/**
 	 * Logger
 	 */
-	private static final Logger LOGGER = ArtisanLogger.create();
+	protected static final Logger LOGGER = LoggerFactory.getLogger(PropertyXLSValueProviderRegistry.class);
 
 	/**
 	 * Default registry map by ClassLoader
@@ -121,9 +122,9 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 
 		PropertyXLSValueProvider<?> rp = providers.putIfAbsent(condition, provider);
 
-		if (rp == null) {
-			LOGGER.debug(() -> "Registered PropertyXLSValueProvider [" + provider + "] bound to condition [" + condition
-					+ "]");
+		if (rp == null && LOGGER.isDebugEnabled()) {
+			LOGGER.debug(
+					"Registered PropertyXLSValueProvider [" + provider + "] bound to condition [" + condition + "]");
 		}
 	}
 
@@ -132,7 +133,9 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 	public <T> Optional<PropertyXLSValueProvider<T>> getProvider(Property<T> property) {
 		ObjectUtils.argumentNotNull(property, "Property must be not null");
 
-		LOGGER.debug(() -> "Get PropertyXLSValueProvider for property [" + property + "]");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Get PropertyXLSValueProvider for property [" + property + "]");
+		}
 
 		final LinkedList<PropertyXLSValueProvider> candidates = new LinkedList<>();
 
@@ -147,13 +150,15 @@ public class DefaultPropertyXLSValueProviderRegistry implements PropertyXLSValue
 				// sort by priority
 				candidates.sort(PRIORITY_COMPARATOR);
 
-				LOGGER.debug(() -> "Get PropertyXLSValueProvider for property [" + property
+				LOGGER.debug("Get PropertyXLSValueProvider for property [" + property
 						+ "] - return first of candidates: [" + candidates + "]");
 			}
 			return Optional.of(candidates.getFirst());
 		}
 
-		LOGGER.debug(() -> "No PropertyXLSValueProvider available for property [" + property + "]");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("No PropertyXLSValueProvider available for property [" + property + "]");
+		}
 
 		return Optional.empty();
 	}
