@@ -20,8 +20,8 @@ import java.util.function.Consumer;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumMultiOptionInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
@@ -52,7 +52,7 @@ public class DefaultEnumMultiOptionInputFilterBuilder<T extends Enum<T>>
 
 	public DefaultEnumMultiOptionInputFilterBuilder(Property<T> property) {
 		super();
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		this.property = property;
 
 		@SuppressWarnings("unchecked")

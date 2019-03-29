@@ -22,8 +22,8 @@ import com.holonplatform.artisan.vaadin.flow.components.InputFilter.EnumFilterMo
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.GenericEnumInputFilterBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.utils.ComponentUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
@@ -52,7 +52,7 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 
 	public DefaultGenericEnumInputFilterBuilder(Property<T> property, EnumFilterMode mode) {
 		super();
-		ObjectUtils.argumentNotNull(mode, "Filter mode must be not null");
+		Obj.argumentNotNull(mode, "Filter mode must be not null");
 		switch (mode) {
 		case MULTI_OPTION:
 			inputFilterBuilder = new EnumMultiOptionInputFilterAdapterBuilder<>(property);
@@ -238,7 +238,7 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 
 		public EnumMultiOptionInputFilterAdapterBuilder(Property<E> property) {
 			super();
-			ObjectUtils.argumentNotNull(property, "Property must be not null");
+			Obj.argumentNotNull(property, "Property must be not null");
 			this.queryProperty = property;
 			@SuppressWarnings("unchecked")
 			final Class<E> enumType = (Class<E>) property.getType();
@@ -278,7 +278,7 @@ public class DefaultGenericEnumInputFilterBuilder<T extends Enum<T>> implements 
 		@Override
 		public EnumMultiOptionInputFilterAdapterBuilder<E> withValueChangeListener(
 				ValueChangeListener<E, ValueChangeEvent<E>> listener) {
-			ObjectUtils.argumentNotNull(listener, "ValueChangeListener must be not null");
+			Obj.argumentNotNull(listener, "ValueChangeListener must be not null");
 			inputBuilder.withValueChangeListener(e -> {
 				final E value = (e.getValue() != null && !e.getValue().isEmpty()) ? e.getValue().iterator().next()
 						: null;

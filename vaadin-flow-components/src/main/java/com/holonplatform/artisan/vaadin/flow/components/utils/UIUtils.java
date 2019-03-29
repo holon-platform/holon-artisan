@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.shared.communication.PushMode;
 
@@ -42,7 +41,7 @@ public final class UIUtils implements Serializable {
 	 * @return A future that can be used to check for task completion and to cancel the task
 	 */
 	public static Future<Void> access(UI ui, final Consumer<UI> task) {
-		ObjectUtils.argumentNotNull(ui, "UI must be not null");
+		Obj.argumentNotNull(ui, "UI must be not null");
 		return ui.access(() -> {
 			task.accept(ui);
 			// check push

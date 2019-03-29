@@ -21,7 +21,7 @@ import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.SelectedTabChangeListener;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.vaadin.flow.components.HasComponent;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.HasEnabledConfigurator;
@@ -76,7 +76,7 @@ public interface TabsBuilder
 	 * @return A builder to configure the tab
 	 */
 	default TabBuilder withTab(HasComponent component) {
-		ObjectUtils.argumentNotNull(component, "The component provider must be not null");
+		Obj.argumentNotNull(component, "The component provider must be not null");
 		return withTab(tab -> component.getComponent());
 	}
 

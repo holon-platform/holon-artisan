@@ -30,7 +30,7 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterGrou
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyConfiguration;
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyConfigurationRegistry;
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyRegistry;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.property.PropertyRendererRegistry;
@@ -79,7 +79,7 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 	 */
 	public DefaultInputFilterGroup(PropertySet<?> propertySet) {
 		super();
-		ObjectUtils.argumentNotNull(propertySet, "PropertySet must be not null");
+		Obj.argumentNotNull(propertySet, "PropertySet must be not null");
 		this.propertySet = propertySet;
 	}
 
@@ -122,7 +122,7 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 	 * @param postProcessor the post-processor to register (not null)
 	 */
 	protected void addPostProcessor(BiConsumer<Property<?>, InputFilter<?>> postProcessor) {
-		ObjectUtils.argumentNotNull(postProcessor, "Post processor must be not null");
+		Obj.argumentNotNull(postProcessor, "Post processor must be not null");
 		postProcessors.add(postProcessor);
 	}
 
@@ -302,7 +302,7 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 
 		public <P extends Property<?>> AbstractBuilder(Iterable<P> properties) {
 			super();
-			ObjectUtils.argumentNotNull(properties, "Properties must be not null");
+			Obj.argumentNotNull(properties, "Properties must be not null");
 			this.instance = new DefaultInputFilterGroup(
 					(properties instanceof PropertySet<?>) ? (PropertySet<?>) properties : PropertySet.of(properties));
 		}
@@ -311,22 +311,22 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 
 		@Override
 		public <T> B hidden(Property<T> property) {
-			ObjectUtils.argumentNotNull(property, "Property must be not null");
+			Obj.argumentNotNull(property, "Property must be not null");
 			instance.getPropertyConfiguration(property).setHidden(true);
 			return builder();
 		}
 
 		@Override
 		public <T> B bind(Property<T> property, PropertyRenderer<InputFilter<T>, T> renderer) {
-			ObjectUtils.argumentNotNull(property, "Property must be not null");
-			ObjectUtils.argumentNotNull(renderer, "Renderer must be not null");
+			Obj.argumentNotNull(property, "Property must be not null");
+			Obj.argumentNotNull(renderer, "Renderer must be not null");
 			instance.getPropertyConfiguration(property).setRenderer(renderer);
 			return builder();
 		}
 
 		@Override
 		public B withPostProcessor(BiConsumer<Property<?>, InputFilter<?>> postProcessor) {
-			ObjectUtils.argumentNotNull(postProcessor, "Post processor must be not null");
+			Obj.argumentNotNull(postProcessor, "Post processor must be not null");
 			instance.addPostProcessor(postProcessor);
 			return builder();
 		}

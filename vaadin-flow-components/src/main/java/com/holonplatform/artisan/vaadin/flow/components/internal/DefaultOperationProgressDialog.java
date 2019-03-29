@@ -34,12 +34,12 @@ import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.core.operation.OperationProgress;
 import com.holonplatform.artisan.core.operation.OperationProgressCallback;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.utils.UIUtils;
 import com.holonplatform.auth.AuthContext;
 import com.holonplatform.core.Context;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.i18n.LocalizationContext;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.PropertyRendererRegistry;
 import com.holonplatform.core.property.PropertyValuePresenterRegistry;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator;
@@ -89,11 +89,12 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 	private Consumer<OperationExecutionException> operationExecutionExceptionHandler = e -> {
 		LOGGER.error("Operation execution failed", e);
-		// TODO
+
 		Notification notification = new Notification(ExceptionUtils.getRootCauseMessage(e));
 		notification.setPosition(Position.MIDDLE);
 		notification.open();
 	};
+
 	private Consumer<InterruptedOperationException> interruptedOperationExceptionHandler = e -> {
 	};
 
@@ -109,7 +110,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 */
 	public DefaultOperationProgressDialog(Operation<T> operation) {
 		super();
-		ObjectUtils.argumentNotNull(operation, "The operation must be not null");
+		Obj.argumentNotNull(operation, "The operation must be not null");
 		this.operation = operation;
 
 		// id
@@ -186,7 +187,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 */
 	public void setOperationExecutionExceptionHandler(
 			Consumer<OperationExecutionException> operationExecutionExceptionHandler) {
-		ObjectUtils.argumentNotNull(operationExecutionExceptionHandler,
+		Obj.argumentNotNull(operationExecutionExceptionHandler,
 				"The OperationExecutionException handler must be not null");
 		this.operationExecutionExceptionHandler = operationExecutionExceptionHandler;
 	}
@@ -197,7 +198,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 */
 	public void setInterruptedOperationExceptionHandler(
 			Consumer<InterruptedOperationException> interruptedOperationExceptionHandler) {
-		ObjectUtils.argumentNotNull(interruptedOperationExceptionHandler,
+		Obj.argumentNotNull(interruptedOperationExceptionHandler,
 				"The InterruptedOperationException handler must be not null");
 		this.interruptedOperationExceptionHandler = interruptedOperationExceptionHandler;
 	}
@@ -207,7 +208,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 * @param contextResourcesConfigurator the context resources configurator to add
 	 */
 	public void addContextResourcesConfigurator(Consumer<Map<String, Object>> contextResourcesConfigurator) {
-		ObjectUtils.argumentNotNull(contextResourcesConfigurator, "Context resources configurator must be not null");
+		Obj.argumentNotNull(contextResourcesConfigurator, "Context resources configurator must be not null");
 		this.contextResourcesConfigurators.add(contextResourcesConfigurator);
 	}
 
@@ -313,7 +314,7 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	 */
 	@Override
 	public void execute(Consumer<T> thenExecute) {
-		ObjectUtils.argumentNotNull(thenExecute, "The Consumer must be not null");
+		Obj.argumentNotNull(thenExecute, "The Consumer must be not null");
 		final UI ui = getUI().orElseGet(() -> UI.getCurrent());
 		execute().thenAccept(result -> {
 			UIUtils.access(ui, theUi -> {
@@ -355,15 +356,14 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 				Consumer<OperationExecutionException> executionExceptionHandler,
 				Consumer<InterruptedOperationException> interruptedExceptionHandler) {
 			super();
-			ObjectUtils.argumentNotNull(ui, "The UI must be not null");
-			ObjectUtils.argumentNotNull(dialog, "The Dialog must be not null");
-			ObjectUtils.argumentNotNull(progress, "The ProgressBar must be not null");
-			ObjectUtils.argumentNotNull(task, "The operation must be not null");
-			ObjectUtils.argumentNotNull(operationProgressSupplier, "The operation progress supplier must be not null");
-			ObjectUtils.argumentNotNull(contextResources, "Context resources map must be not null");
-			ObjectUtils.argumentNotNull(executionExceptionHandler,
-					"The OperationExecutionException handler must be not null");
-			ObjectUtils.argumentNotNull(interruptedExceptionHandler,
+			Obj.argumentNotNull(ui, "The UI must be not null");
+			Obj.argumentNotNull(dialog, "The Dialog must be not null");
+			Obj.argumentNotNull(progress, "The ProgressBar must be not null");
+			Obj.argumentNotNull(task, "The operation must be not null");
+			Obj.argumentNotNull(operationProgressSupplier, "The operation progress supplier must be not null");
+			Obj.argumentNotNull(contextResources, "Context resources map must be not null");
+			Obj.argumentNotNull(executionExceptionHandler, "The OperationExecutionException handler must be not null");
+			Obj.argumentNotNull(interruptedExceptionHandler,
 					"The InterruptedOperationException handler must be not null");
 			this.ui = ui;
 			this.dialog = dialog;

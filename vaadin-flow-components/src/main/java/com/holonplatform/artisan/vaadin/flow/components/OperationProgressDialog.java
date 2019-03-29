@@ -24,7 +24,7 @@ import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperationProgressDialogBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperationProgressDialogBuilder;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
 
@@ -69,7 +69,7 @@ public interface OperationProgressDialog<T> extends HasStyle, HasSize {
 	 * @return A new {@link OperationProgressDialog} builder
 	 */
 	static <T> OperationProgressDialogBuilder<T> builder(Callable<T> operation) {
-		ObjectUtils.argumentNotNull(operation, "Operation must be not null");
+		Obj.argumentNotNull(operation, "Operation must be not null");
 		return builder(callback -> {
 			try {
 				callback.onProgress(0, 0);
@@ -93,7 +93,7 @@ public interface OperationProgressDialog<T> extends HasStyle, HasSize {
 	 * @return A new {@link OperationProgressDialog} builder
 	 */
 	static OperationProgressDialogBuilder<Void> builder(Runnable operation) {
-		ObjectUtils.argumentNotNull(operation, "Operation must be not null");
+		Obj.argumentNotNull(operation, "Operation must be not null");
 		return builder(callback -> {
 			callback.onProgress(0, 0);
 			operation.run();

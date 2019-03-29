@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.holonplatform.artisan.vaadin.flow.components.Window;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -194,7 +194,7 @@ public class DefaultWindow extends Dialog implements Window {
 	 * @param component Component to set as Window content
 	 */
 	public void setContent(Component component) {
-		ObjectUtils.argumentNotNull(component, "Window content must be not null");
+		Obj.argumentNotNull(component, "Window content must be not null");
 		content.removeAll();
 		content.add(component);
 	}

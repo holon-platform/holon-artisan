@@ -27,8 +27,8 @@ import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterComponent;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterGroup;
 import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterComponentBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
@@ -83,7 +83,7 @@ public class DefaultInputFilterComponent<C extends Component>
 	 * @param group the group to set (not null)
 	 */
 	protected void setComponentGroup(InputFilterGroup group) {
-		ObjectUtils.argumentNotNull(group, "Component group must be not null");
+		Obj.argumentNotNull(group, "Component group must be not null");
 		this.group = group;
 	}
 
@@ -225,14 +225,14 @@ public class DefaultInputFilterComponent<C extends Component>
 
 		@Override
 		public InputFilterComponentBuilder<C> initializer(Consumer<C> initializer) {
-			ObjectUtils.argumentNotNull(initializer, "Form content initializer must be not null");
+			Obj.argumentNotNull(initializer, "Form content initializer must be not null");
 			instance.setInitializer(initializer);
 			return this;
 		}
 
 		@Override
 		public InputFilterComponentBuilder<C> composer(Composer<? super C, InputFilter<?>, InputFilterGroup> composer) {
-			ObjectUtils.argumentNotNull(composer, "Composer must be not null");
+			Obj.argumentNotNull(composer, "Composer must be not null");
 			instance.setComposer(composer);
 			return this;
 		}
@@ -245,8 +245,8 @@ public class DefaultInputFilterComponent<C extends Component>
 
 		@Override
 		public InputFilterComponentBuilder<C> propertyCaption(Property<?> property, Localizable caption) {
-			ObjectUtils.argumentNotNull(property, "Property must be not null");
-			ObjectUtils.argumentNotNull(caption, "Caption must be not null");
+			Obj.argumentNotNull(property, "Property must be not null");
+			Obj.argumentNotNull(caption, "Caption must be not null");
 			instance.setPropertyCaption(property, caption);
 			return this;
 		}

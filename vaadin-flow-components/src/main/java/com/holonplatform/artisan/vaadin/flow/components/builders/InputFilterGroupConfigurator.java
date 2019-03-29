@@ -21,7 +21,7 @@ import java.util.function.Function;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter.InputFilterPropertyRenderer;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterGroup;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertyRenderer;
@@ -81,8 +81,8 @@ public interface InputFilterGroupConfigurator<C extends InputFilterGroupConfigur
 	 * @return this
 	 */
 	default <T> C bind(Property<T> property, InputFilter<T> inputFilter) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
-		ObjectUtils.argumentNotNull(inputFilter, "InputFilter must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(inputFilter, "InputFilter must be not null");
 		return bind(property, InputFilterPropertyRenderer.create(p -> inputFilter));
 	}
 
@@ -112,8 +112,8 @@ public interface InputFilterGroupConfigurator<C extends InputFilterGroupConfigur
 	 * @return this
 	 */
 	default <T> C bindInput(Property<T> property, Input<T> input, Function<T, QueryFilter> filterProvider) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
-		ObjectUtils.argumentNotNull(input, "Input must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(input, "Input must be not null");
 		return bind(property, InputFilter.from(input, filterProvider));
 	}
 
@@ -148,8 +148,8 @@ public interface InputFilterGroupConfigurator<C extends InputFilterGroupConfigur
 	 */
 	default <T, F extends Component & HasValue<?, T>> C bindField(Property<T> property, F field,
 			Function<T, QueryFilter> filterProvider) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
-		ObjectUtils.argumentNotNull(field, "Field must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(field, "Field must be not null");
 		return bind(property, InputFilter.from(field, filterProvider));
 	}
 

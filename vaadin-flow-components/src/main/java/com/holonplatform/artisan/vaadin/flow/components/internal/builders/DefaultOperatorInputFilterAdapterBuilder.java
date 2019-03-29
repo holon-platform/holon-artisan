@@ -17,7 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterAdapterBuilder;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
@@ -39,7 +39,7 @@ public class DefaultOperatorInputFilterAdapterBuilder<T>
 	public DefaultOperatorInputFilterAdapterBuilder(Input<T> input, Property<? super T> property,
 			InputFilterOperator... operators) {
 		super(property, operators);
-		ObjectUtils.argumentNotNull(input, "Input must be not null");
+		Obj.argumentNotNull(input, "Input must be not null");
 		this.input = input;
 	}
 

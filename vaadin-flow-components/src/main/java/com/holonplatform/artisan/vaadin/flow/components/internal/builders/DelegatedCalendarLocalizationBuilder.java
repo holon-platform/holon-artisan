@@ -17,8 +17,8 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.util.List;
 
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.vaadin.flow.components.builders.BaseTemporalInputConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.BaseTemporalInputConfigurator.CalendarLocalizationBuilder;
 
@@ -37,8 +37,8 @@ public class DelegatedCalendarLocalizationBuilder<D, C extends BaseTemporalInput
 
 	public DelegatedCalendarLocalizationBuilder(CalendarLocalizationBuilder<D, ?> delegate, C parent) {
 		super();
-		ObjectUtils.argumentNotNull(delegate, "Delegate configurator must be not null");
-		ObjectUtils.argumentNotNull(parent, "Parent configurator must be not null");
+		Obj.argumentNotNull(delegate, "Delegate configurator must be not null");
+		Obj.argumentNotNull(parent, "Parent configurator must be not null");
 		this.delegate = delegate;
 		this.parent = parent;
 	}

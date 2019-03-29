@@ -39,8 +39,8 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.StringInputFilt
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.InputFilterConverterAdapter;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultOperatorInputFilterAdapterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.config.ConfigProperty;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
@@ -311,7 +311,7 @@ public interface InputFilter<T> extends Input<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	static <T> Optional<InputFilter<T>> create(Property<T> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		return property.renderIfAvailable(InputFilter.class).map(i -> (InputFilter<T>) i);
 	}
 

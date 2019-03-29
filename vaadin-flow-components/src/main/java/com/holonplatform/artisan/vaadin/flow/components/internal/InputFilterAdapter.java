@@ -19,8 +19,8 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.Registration;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.vaadin.flow.component.Component;
@@ -49,8 +49,8 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 	 */
 	public InputFilterAdapter(Input<T> input, Function<T, QueryFilter> filterProvider) {
 		super();
-		ObjectUtils.argumentNotNull(input, "Input must be not null");
-		ObjectUtils.argumentNotNull(filterProvider, "Filter provider must be not null");
+		Obj.argumentNotNull(input, "Input must be not null");
+		Obj.argumentNotNull(filterProvider, "Filter provider must be not null");
 		this.input = input;
 		this.filterProvider = filterProvider;
 	}

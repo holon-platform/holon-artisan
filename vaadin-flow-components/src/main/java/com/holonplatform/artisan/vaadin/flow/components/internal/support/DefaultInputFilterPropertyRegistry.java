@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.BoundComponentGroup.Binding;
 
@@ -43,14 +43,14 @@ public class DefaultInputFilterPropertyRegistry implements InputFilterPropertyRe
 
 	@Override
 	public <T> void set(Property<T> property, InputFilter<T> component) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		components.put(property, component);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Optional<InputFilter<T>> get(Property<T> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		final InputFilter<T> component = (InputFilter<T>) components.get(property);
 		return Optional.ofNullable(component);
 	}

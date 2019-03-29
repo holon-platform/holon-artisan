@@ -21,8 +21,8 @@ import com.holonplatform.artisan.vaadin.flow.components.Window;
 import com.holonplatform.artisan.vaadin.flow.components.builders.WindowBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultWindow;
 import com.holonplatform.artisan.vaadin.flow.components.internal.WindowVariant;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.holonplatform.vaadin.flow.internal.components.builders.DefaultComponentConfigurator;
 import com.holonplatform.vaadin.flow.internal.components.builders.DefaultHasSizeConfigurator;
@@ -246,7 +246,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 */
 	@Override
 	public WindowBuilder title(Localizable title) {
-		ObjectUtils.argumentNotNull(title, "Localizable title must be not null");
+		Obj.argumentNotNull(title, "Localizable title must be not null");
 		this.instance.setTitle(LocalizationProvider.localize(title).orElse(null));
 		return this;
 	}
@@ -258,7 +258,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 */
 	@Override
 	public WindowBuilder content(Component content) {
-		ObjectUtils.argumentNotNull(content, "Window content must be not null");
+		Obj.argumentNotNull(content, "Window content must be not null");
 		this.instance.setContent(content);
 		return this;
 	}
@@ -292,7 +292,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 */
 	@Override
 	public WindowBuilder withHeaderComponent(Component component) {
-		ObjectUtils.argumentNotNull(component, "Window header content must be not null");
+		Obj.argumentNotNull(component, "Window header content must be not null");
 		this.instance.addHeaderComponent(component);
 		return this;
 	}
@@ -304,7 +304,7 @@ public class DefaultWindowBuilder implements WindowBuilder {
 	 */
 	@Override
 	public WindowBuilder withFooterComponent(Component component) {
-		ObjectUtils.argumentNotNull(component, "Window footer content must be not null");
+		Obj.argumentNotNull(component, "Window footer content must be not null");
 		this.instance.addFooterComponent(component);
 		return this;
 	}

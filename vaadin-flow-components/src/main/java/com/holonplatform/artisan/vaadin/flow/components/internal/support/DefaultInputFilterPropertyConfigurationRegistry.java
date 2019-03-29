@@ -18,7 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 
 /**
@@ -33,7 +33,7 @@ public class DefaultInputFilterPropertyConfigurationRegistry implements InputFil
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> InputFilterPropertyConfiguration<T> get(Property<T> property) {
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		return (InputFilterPropertyConfiguration<T>) configurations.computeIfAbsent(property,
 				p -> InputFilterPropertyConfiguration.create(p));
 	}

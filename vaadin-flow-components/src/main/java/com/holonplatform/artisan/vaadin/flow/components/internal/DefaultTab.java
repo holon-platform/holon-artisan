@@ -21,8 +21,8 @@ import java.util.function.Consumer;
 
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.Tab;
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
@@ -57,8 +57,8 @@ public class DefaultTab implements Tab, HasSize {
 	 */
 	public DefaultTab(com.vaadin.flow.component.tabs.Tab tab, TabContent content) {
 		super();
-		ObjectUtils.argumentNotNull(tab, "Tab must be not null");
-		ObjectUtils.argumentNotNull(content, "Tab content be not null");
+		Obj.argumentNotNull(tab, "Tab must be not null");
+		Obj.argumentNotNull(content, "Tab content be not null");
 		this.tab = tab;
 		this.content = content;
 	}

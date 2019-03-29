@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.holonplatform.artisan.vaadin.flow.components.TabLayout;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.Registration;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -57,7 +57,7 @@ public class DefaultTabLayout implements TabLayout {
 	 */
 	public <L extends Component & FlexComponent<L>> DefaultTabLayout(L layout, Orientation orientation) {
 		super();
-		ObjectUtils.argumentNotNull(layout, "Layout must be not null");
+		Obj.argumentNotNull(layout, "Layout must be not null");
 		// layout
 		this.layout = new TabsContent<>(layout);
 		// tabs
@@ -205,7 +205,7 @@ public class DefaultTabLayout implements TabLayout {
 	 */
 	@Override
 	public Registration addSelectedTabChangeListener(SelectedTabChangeListener listener) {
-		ObjectUtils.argumentNotNull(listener, "Listener must be not null");
+		Obj.argumentNotNull(listener, "Listener must be not null");
 		final com.vaadin.flow.shared.Registration r = getTabsComponent().addSelectedChangeListener(event -> {
 			if (fireSelectionChangeEvent) {
 				listener.onSelectedTabChange(new DefaultSelectedTabChangeEvent(this, event.isFromClient()));
@@ -265,7 +265,7 @@ public class DefaultTabLayout implements TabLayout {
 	 * @return The new tab reference
 	 */
 	public DefaultTab addTab(TabContent content) {
-		ObjectUtils.argumentNotNull(content, "Tab content provider must be not null");
+		Obj.argumentNotNull(content, "Tab content provider must be not null");
 		final com.vaadin.flow.component.tabs.Tab tab = new com.vaadin.flow.component.tabs.Tab();
 		final DefaultTab tabReference = new DefaultTab(tab, content);
 		getTabsComponent().add(tab);

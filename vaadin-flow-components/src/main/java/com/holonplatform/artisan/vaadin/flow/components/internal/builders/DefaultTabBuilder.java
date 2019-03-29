@@ -22,8 +22,8 @@ import com.holonplatform.artisan.vaadin.flow.components.TabLayout.TabContent;
 import com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.builders.TabsBuilder.TabBuilder;
 import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultTab;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.i18n.Localizable;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.vaadin.flow.component.Component;
 
 /**
@@ -44,7 +44,7 @@ public class DefaultTabBuilder implements TabBuilder {
 	 */
 	public DefaultTabBuilder(AbstractTabsBuilder<?> parentBuilder, TabContent content) {
 		super();
-		ObjectUtils.argumentNotNull(parentBuilder, "Parent builder must be not null");
+		Obj.argumentNotNull(parentBuilder, "Parent builder must be not null");
 		this.parentBuilder = parentBuilder;
 		this.instance = parentBuilder.getInstance().addTab(content);
 	}

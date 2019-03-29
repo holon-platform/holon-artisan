@@ -27,8 +27,8 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFi
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorChangeListener;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorSelectConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultFilterOperatorSelectConfigurator;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.Registration;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;
@@ -71,7 +71,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	public OperatorInputFilterAdapter(Property<? super T> property, InputFilterOperator... operators) {
 		super();
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		this.property = property;
 		// config
 		getElement().setAttribute("operator-input-filter", "");
@@ -95,7 +95,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	 * @param input The input component to use (not null)
 	 */
 	public void build(Input<T> input) {
-		ObjectUtils.argumentNotNull(input, "Input must be not null");
+		Obj.argumentNotNull(input, "Input must be not null");
 		this.input = input;
 
 		getChildren().forEach(c -> remove(c));
@@ -189,7 +189,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	 * @param listener The listener to add (not null)
 	 */
 	public void addFilterOperatorChangeListener(FilterOperatorChangeListener<T> listener) {
-		ObjectUtils.argumentNotNull(listener, "FilterOperatorChangeListener must be not null");
+		Obj.argumentNotNull(listener, "FilterOperatorChangeListener must be not null");
 		this.filterOperatorChangeListeners.add(listener);
 	}
 
@@ -206,7 +206,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	 * @param ignoreCaseSupplier the ignore case supplier to set (not null)
 	 */
 	public void setIgnoreCaseSupplier(Supplier<Boolean> ignoreCaseSupplier) {
-		ObjectUtils.argumentNotNull(ignoreCaseSupplier, "Ignore case supplier must be not null");
+		Obj.argumentNotNull(ignoreCaseSupplier, "Ignore case supplier must be not null");
 		this.ignoreCaseSupplier = ignoreCaseSupplier;
 	}
 
@@ -260,7 +260,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	@Override
 	public Registration addValueChangeListener(
 			com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener<T, com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent<T>> listener) {
-		ObjectUtils.argumentNotNull(listener, "ValueChangeListener must be not null");
+		Obj.argumentNotNull(listener, "ValueChangeListener must be not null");
 		return RegistrationAdapter.adapt(super.addValueChangeListener(e -> listener
 				.valueChange(new DefaultValueChangeEvent<>(this, e.getOldValue(), e.getValue(), e.isFromClient()))));
 	}

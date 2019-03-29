@@ -18,8 +18,8 @@ package com.holonplatform.artisan.vaadin.flow.components.internal;
 import java.util.Optional;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.Registration;
-import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.HasLabel;
 import com.holonplatform.vaadin.flow.components.HasPlaceholder;
@@ -59,8 +59,8 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	 */
 	public InputFilterConverterAdapter(InputFilter<T> input, Converter<T, V> converter) {
 		super();
-		ObjectUtils.argumentNotNull(input, "Input must be not null");
-		ObjectUtils.argumentNotNull(converter, "Converter must be not null");
+		Obj.argumentNotNull(input, "Input must be not null");
+		Obj.argumentNotNull(converter, "Converter must be not null");
 		this.input = input;
 		this.converter = converter;
 	}
@@ -99,7 +99,7 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	 */
 	@Override
 	public Registration addValueChangeListener(ValueHolder.ValueChangeListener<V, ValueChangeEvent<V>> listener) {
-		ObjectUtils.argumentNotNull(listener, "ValueChangeListener must be not null");
+		Obj.argumentNotNull(listener, "ValueChangeListener must be not null");
 		return input.addValueChangeListener(e -> listener.valueChange(new DefaultValueChangeEvent<>(this,
 				convertToModel(e.getOldValue()), convertToModel(e.getValue()), e.isUserOriginated())));
 	}

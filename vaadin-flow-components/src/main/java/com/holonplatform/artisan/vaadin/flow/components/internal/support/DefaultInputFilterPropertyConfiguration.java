@@ -18,7 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.support;
 import java.util.Optional;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
-import com.holonplatform.core.internal.utils.ObjectUtils;
+import com.holonplatform.artisan.vaadin.flow.components.utils.Obj;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 
@@ -41,7 +41,7 @@ public class DefaultInputFilterPropertyConfiguration<T> implements InputFilterPr
 
 	public DefaultInputFilterPropertyConfiguration(Property<T> property) {
 		super();
-		ObjectUtils.argumentNotNull(property, "Property must be not null");
+		Obj.argumentNotNull(property, "Property must be not null");
 		this.property = property;
 	}
 
