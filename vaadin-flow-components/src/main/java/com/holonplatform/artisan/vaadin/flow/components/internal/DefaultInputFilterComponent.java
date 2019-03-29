@@ -33,14 +33,16 @@ import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Composable;
+import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.holonplatform.vaadin.flow.internal.components.AbstractComposable;
-import com.holonplatform.vaadin.flow.internal.components.builders.AbstractComponentConfigurator;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.HasComponents;
-import com.vaadin.flow.component.HasEnabled;
-import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.dom.DomEventListener;
+import com.vaadin.flow.dom.Element;
 
 /**
  * Default {@link InputFilterComponent} implementation.
@@ -166,16 +168,22 @@ public class DefaultInputFilterComponent<C extends Component>
 	 * 
 	 * @param <C> Content type
 	 */
-	public static class DefaultBuilder<C extends Component> extends
-			AbstractComponentConfigurator<C, InputFilterComponentBuilder<C>> implements InputFilterComponentBuilder<C> {
+	public static class DefaultBuilder<C extends Component> implements InputFilterComponentBuilder<C> {
+
+		private final C content;
 
 		private final DefaultInputFilterComponent<C> instance;
 
 		private final DefaultInputFilterGroup.InternalBuilder groupBuilder;
 
+		private final BaseComponentConfigurator componentConfigurator;
+
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public <P extends Property<?>> DefaultBuilder(C content, Iterable<P> properties) {
-			super(content);
+			super();
+			Obj.argumentNotNull(content, "Content must be not null");
+			this.content = content;
+			this.componentConfigurator = ComponentConfigurator.create(content);
 			this.instance = new DefaultInputFilterComponent<>(content);
 			this.groupBuilder = new DefaultInputFilterGroup.InternalBuilder(properties);
 			// setup default composer
@@ -184,23 +192,56 @@ public class DefaultInputFilterComponent<C extends Component>
 			}
 		}
 
-		@Override
-		protected Optional<HasSize> hasSize() {
-			return Optional.empty();
+		protected C getContent() {
+			return content;
 		}
 
 		@Override
-		protected Optional<HasStyle> hasStyle() {
-			return Optional.empty();
+		public InputFilterComponentBuilder<C> id(String id) {
+			componentConfigurator.id(id);
+			return this;
 		}
 
 		@Override
-		protected Optional<HasEnabled> hasEnabled() {
-			return Optional.empty();
+		public InputFilterComponentBuilder<C> visible(boolean visible) {
+			componentConfigurator.visible(visible);
+			return this;
 		}
 
 		@Override
-		protected InputFilterComponentBuilder<C> getConfigurator() {
+		public InputFilterComponentBuilder<C> elementConfiguration(Consumer<Element> element) {
+			componentConfigurator.elementConfiguration(element);
+			return this;
+		}
+
+		@Override
+		public InputFilterComponentBuilder<C> withAttachListener(ComponentEventListener<AttachEvent> listener) {
+			componentConfigurator.withAttachListener(listener);
+			return this;
+		}
+
+		@Override
+		public InputFilterComponentBuilder<C> withDetachListener(ComponentEventListener<DetachEvent> listener) {
+			componentConfigurator.withDetachListener(listener);
+			return this;
+		}
+
+		@Override
+		public InputFilterComponentBuilder<C> withThemeName(String themeName) {
+			componentConfigurator.withThemeName(themeName);
+			return this;
+		}
+
+		@Override
+		public InputFilterComponentBuilder<C> withEventListener(String eventType, DomEventListener listener) {
+			componentConfigurator.withEventListener(eventType, listener);
+			return this;
+		}
+
+		@Override
+		public InputFilterComponentBuilder<C> withEventListener(String eventType, DomEventListener listener,
+				String filter) {
+			componentConfigurator.withEventListener(eventType, listener, filter);
 			return this;
 		}
 
