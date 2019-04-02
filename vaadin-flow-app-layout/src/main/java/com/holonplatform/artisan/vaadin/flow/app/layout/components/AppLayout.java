@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout.components;
 
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.HasStyle;
@@ -30,95 +31,112 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 @Tag("holon-app-layout")
 @HtmlImport("frontend://src/com/holonplatform/artisan/vaadin/flow/app/layout/app-layout.html")
 @HtmlImport("frontend://src/com/holonplatform/artisan/vaadin/flow/app/layout/app-layout-styles.html")
-public class AppLayout extends PolymerTemplate<TemplateModel> implements HasStyle {
+public class AppLayout extends PolymerTemplate<TemplateModel> implements ApplicationLayout, HasStyle {
 
 	private static final long serialVersionUID = 8796069540985099702L;
 
 	private final HorizontalLayout appBarElementWrapper = new HorizontalLayout();
-	private final HorizontalLayout appBarElementContainer = new HorizontalLayout();
-	private final HorizontalLayout titleWrapper = new HorizontalLayout();
-	private final Div menuElements;
-	private final Div contentHolder;
+	private final HorizontalLayout titleSlot;
+
+	private final Div drawerContent;
+	private final Div applicationContent;
 
 	@Id("drawer")
 	private AppDrawer drawer;
 
-	@Id("app-bar-elements")
-	private Div appBarElements;
-
 	public AppLayout() {
 		super();
-		getStyle().set("width", "100%").set("height", "100%"); // TODO move in html
 
-		titleWrapper.setHeight("100%");
-		titleWrapper.setAlignItems(FlexComponent.Alignment.CENTER);
-		titleWrapper.setPadding(false);
-		titleWrapper.setMargin(false);
-		titleWrapper.getElement().getStyle().set("flex", "1 1 100px").set("overflow", "hidden");
-		titleWrapper.setWidth("0px");
+		titleSlot = new HorizontalLayout();
+		titleSlot.addClassName("application-title-slot");
+		titleSlot.setPadding(false);
+		titleSlot.setMargin(false);
+		titleSlot.setHeight("100%");
+		titleSlot.setAlignItems(FlexComponent.Alignment.CENTER);
+		titleSlot.getElement().getStyle().set("flex", "1 1 100px").set("overflow", "hidden");
+		titleSlot.setWidth("0px");
 
-		HorizontalLayout appBarContentHolder = new HorizontalLayout(titleWrapper, appBarElementWrapper);
-		appBarContentHolder.setSizeFull();
-		appBarContentHolder.setSpacing(false);
-		appBarContentHolder.getElement().setAttribute("slot", "app-bar-content");
+		final HorizontalLayout headerContent = new HorizontalLayout(titleSlot, appBarElementWrapper);
+		headerContent.setSizeFull();
+		headerContent.setSpacing(false);
+		headerContent.getElement().setAttribute("slot", "header-content");
 
-		menuElements = new Div();
-		menuElements.setHeight("100%");
-		menuElements.getElement().setAttribute("slot", "drawer-content");
+		drawerContent = new Div();
+		drawerContent.setHeight("100%");
+		drawerContent.getElement().setAttribute("slot", "drawer-content");
 
-		contentHolder = new Div();
-		contentHolder.setHeight("100%");
-		contentHolder.setWidth("100%");
-		contentHolder.getElement().setAttribute("slot", "application-content");
+		applicationContent = new Div();
+		applicationContent.setHeight("100%");
+		applicationContent.setWidth("100%");
+		applicationContent.getElement().setAttribute("slot", "application-content");
 
-		getElement().appendChild(appBarContentHolder.getElement(), menuElements.getElement(),
-				contentHolder.getElement());
+		getElement().appendChild(headerContent.getElement(), drawerContent.getElement(),
+				applicationContent.getElement());
 	}
 
-	public AppDrawer getDrawer() {
+	protected AppDrawer getDrawer() {
 		return drawer;
 	}
 
+	@Override
 	public void setContent(HasElement content) {
-		this.contentHolder.getElement().removeAllChildren();
+		this.applicationContent.getElement().removeAllChildren();
 		if (content != null) {
-			this.contentHolder.getElement().appendChild(content.getElement());
+			this.applicationContent.getElement().appendChild(content.getElement());
 		}
 	}
 
-	public void setTitleComponent(Component component) {
-		titleWrapper.removeAll();
-		titleWrapper.add(component);
-	}
-
 	public void setAppBar(Component component) {
-		appBarElementContainer.removeAll();
-		appBarElementContainer.add(component);
+		appBarElementWrapper.removeAll();
+		appBarElementWrapper.add(component);
 	}
 
-	public void setAppMenu(Component component) {
-		menuElements.removeAll();
-		menuElements.add(component);
-	}
-
+	@Override
 	public void setResponsiveWidth(String width) {
 		getElement().setProperty("responsiveWidth", width);
 	}
 
+	@Override
 	public void toggleDrawer() {
 		getDrawer().getElement().callFunction("toggle");
 	}
 
+	@Override
 	public void openDrawer() {
 		getDrawer().getElement().callFunction("open");
 	}
 
+	@Override
+	public void closeDrawer() {
+		getDrawer().getElement().callFunction("close");
+	}
+
+	@Override
 	public void closeDrawerIfNotPersistent() {
 		getElement().callFunction("closeIfNotPersistent");
 	}
 
-	public void closeDrawer() {
-		getDrawer().getElement().callFunction("close");
+	@Override
+	public void setDrawerContent(Component component) {
+		drawerContent.removeAll();
+		if (component != null) {
+			drawerContent.add(component);
+		}
+	}
+
+	@Override
+	public void setTitleContent(Component component) {
+		titleSlot.removeAll();
+		if (component != null) {
+			titleSlot.add(component);
+		}
+	}
+
+	@Override
+	public void addToTitle(Component component) {
+		if (component != null) {
+			titleSlot.add(component);
+		}
 	}
 
 }

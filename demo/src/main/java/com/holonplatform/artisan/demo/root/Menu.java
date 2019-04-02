@@ -7,12 +7,10 @@ import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
 import com.holonplatform.artisan.vaadin.flow.app.layout.routing.AppRouterLayout;
+import com.holonplatform.vaadin.flow.components.Components;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.ParentLayout;
 
@@ -24,28 +22,14 @@ public class Menu extends AppRouterLayout {
 	public Menu() {
 		super();
 
+		addToTitle(Components.label().text("Demo").build());
+		
+		setDrawerContent(getMenuContent());
 	}
 
 	private Component getMenuContent() {
 
 		final VerticalLayout vl = new VerticalLayout();
-		// vl.setWidth("280px");
-		// vl.setHeight("100%");
-		// vl.getStyle().set("background-color", "black");
-
-		Image img = new Image("https://holon-platform.com/contrib/themes/Holon-theme/dist/img/pittogramma_platform.svg",
-				"Holon Java Platform");
-		img.setWidth("70%");
-
-		Label lblArtisan = new Label();
-		lblArtisan.getElement().setProperty("innerHTML", "Artisan Demo");
-		lblArtisan.getStyle().set("color", "white").set("font-size", "xx-large");
-
-		vl.add(img);
-		vl.add(lblArtisan);
-
-		vl.setHorizontalComponentAlignment(Alignment.CENTER, img);
-		vl.setHorizontalComponentAlignment(Alignment.CENTER, lblArtisan);
 
 		Button btn = new Button("Home");
 		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);

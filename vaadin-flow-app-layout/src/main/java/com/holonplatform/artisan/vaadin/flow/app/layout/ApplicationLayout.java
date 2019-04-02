@@ -17,6 +17,61 @@ package com.holonplatform.artisan.vaadin.flow.app.layout;
 
 import java.io.Serializable;
 
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasElement;
+
 public interface ApplicationLayout extends Serializable {
+
+	/**
+	 * Set the width limit for which the application menu becomes collapsed.
+	 * @param width The responsive width (default il <code>640px</code>)
+	 */
+	void setResponsiveWidth(String width);
+
+	/**
+	 * Toggle (open if closed, close if opened) the application drawer, i.e. the left layout side which typically
+	 * contains the application menu.
+	 */
+	void toggleDrawer();
+
+	/**
+	 * Open the application drawer, i.e. the left layout side which typically contains the application menu.
+	 */
+	void openDrawer();
+
+	/**
+	 * Close the application drawer, i.e. the left layout side which typically contains the application menu.
+	 */
+	void closeDrawer();
+
+	/**
+	 * Close the application drawer (i.e. the left layout side which typically contains the application menu) if in
+	 * collapsible mode.
+	 */
+	void closeDrawerIfNotPersistent();
+
+	/**
+	 * Set the application drawer (i.e. the left layout side which typically contains the application menu) content.
+	 * @param component The content to set
+	 */
+	void setDrawerContent(Component component);
+
+	/**
+	 * Set the application layout content.
+	 * @param content The content to set in the application layout viewport
+	 */
+	void setContent(HasElement content);
+
+	/**
+	 * Set the content of the <em>title</em> application header slot.
+	 * @param component The content to set
+	 */
+	void setTitleContent(Component component);
+
+	/**
+	 * Add given <code>component</code> to the <em>title</em> application header slot.
+	 * @param component The component to add
+	 */
+	void addToTitle(Component component);
 
 }

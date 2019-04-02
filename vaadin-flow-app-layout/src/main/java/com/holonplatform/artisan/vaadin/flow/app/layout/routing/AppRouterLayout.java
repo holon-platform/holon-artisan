@@ -16,35 +16,41 @@
 package com.holonplatform.artisan.vaadin.flow.app.layout.routing;
 
 import com.holonplatform.artisan.core.utils.Obj;
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.holonplatform.artisan.vaadin.flow.app.layout.components.AppLayout;
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.RouterLayout;
 
-public class AppRouterLayout extends Composite<Div> implements RouterLayout {
+public class AppRouterLayout extends Composite<Div> implements ApplicationLayout, RouterLayout {
 
 	private static final long serialVersionUID = -6642606449786472863L;
 
-	private final AppLayout appLayout;
+	private final ApplicationLayout applicationLayout;
 
 	public AppRouterLayout() {
 		this(new AppLayout());
 	}
 
-	public AppRouterLayout(AppLayout appLayout) {
+	public <A extends Component & ApplicationLayout> AppRouterLayout(A appLayout) {
 		super();
 		Obj.argumentNotNull(appLayout, "AppLayout must be not null");
-		this.appLayout = appLayout;
+		this.applicationLayout = appLayout;
 		getContent().setId("application-router-layout");
 		getContent().setSizeFull();
 		getContent().add(appLayout);
 	}
 
+	protected ApplicationLayout getApplicationLayout() {
+		return applicationLayout;
+	}
+
 	@Override
 	public void showRouterLayoutContent(HasElement content) {
-		appLayout.setContent(content);
+		setContent(content);
 	}
 
 	@Override
@@ -52,8 +58,53 @@ public class AppRouterLayout extends Composite<Div> implements RouterLayout {
 		super.onAttach(attachEvent);
 		// after navigation listener to close the drawer if not persistent
 		getUI().ifPresent(ui -> ui.addAfterNavigationListener(event -> {
-			appLayout.closeDrawerIfNotPersistent();
+			closeDrawerIfNotPersistent();
 		}));
+	}
+
+	@Override
+	public void setResponsiveWidth(String width) {
+		getApplicationLayout().setResponsiveWidth(width);
+	}
+
+	@Override
+	public void setContent(HasElement content) {
+		getApplicationLayout().setContent(content);
+	}
+
+	@Override
+	public void toggleDrawer() {
+		getApplicationLayout().toggleDrawer();
+	}
+
+	@Override
+	public void openDrawer() {
+		getApplicationLayout().openDrawer();
+	}
+
+	@Override
+	public void closeDrawer() {
+		getApplicationLayout().closeDrawer();
+	}
+
+	@Override
+	public void closeDrawerIfNotPersistent() {
+		getApplicationLayout().closeDrawerIfNotPersistent();
+	}
+
+	@Override
+	public void setDrawerContent(Component component) {
+		getApplicationLayout().setDrawerContent(component);
+	}
+
+	@Override
+	public void setTitleContent(Component component) {
+		getApplicationLayout().setTitleContent(component);
+	}
+
+	@Override
+	public void addToTitle(Component component) {
+		getApplicationLayout().addToTitle(component);
 	}
 
 }
