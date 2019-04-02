@@ -24,8 +24,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <style>
 
             :root {
-                --paper-badge-background: var(--app-layout-badge-background);
-                --paper-badge-text-color: var(--app-layout-badge-font-color);
                 --primary-color: var(--app-layout-primary-color);
                 --app-drawer-scrim-background: rgba(0, 0, 0, 0);
             }
@@ -38,15 +36,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             app-header {
                 right: 0px !important;
                 top: 0px;
-                height: var(--app-layout-bar-height);
-                background: var(--app-layout-bar-background-base-color);
+                height: var(--app-layout-header-height);
+                background: var(--app-layout-header-background-base-color);
             }
 
             app-toolbar {
-                height: var(--app-layout-bar-height);
-                background: var(--app-layout-bar-background-color);
-                box-shadow: var(--app-layout-bar-shadow);
-                color: var(--app-layout-bar-font-color);
+                height: var(--app-layout-header-height);
+                background: var(--app-layout-header-background-color);
+                box-shadow: var(--app-layout-header-shadow);
+                color: var(--app-layout-header-font-color);
                 padding: 0 0 0 16px;
                 z-index: 1;
                 position: absolute;
@@ -56,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             #drawer {
-                margin-top: var(--app-layout-bar-height);
+                margin-top: var(--app-layout-header-height);
             }
 
             #drawer #drawer-content {
@@ -72,8 +70,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             #toggle-menu {
                 flex-shrink: 0;
-                width: calc(var(--app-layout-bar-height) - 16px);
-                height: calc(var(--app-layout-bar-height) - 16px);
+                width: calc(var(--app-layout-header-height) - 16px);
+                height: calc(var(--app-layout-header-height) - 16px);
                 margin-right: 8px;
                 margin-left: -8px;
             }
@@ -90,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             #application-content {
                 width: 100%;
                 height: 100%;
-                padding-top: var(--app-layout-bar-height);
+                padding-top: var(--app-layout-header-height);
                 box-sizing: border-box;
                 overflow: auto;
                 background: var(--app-layout-background);
