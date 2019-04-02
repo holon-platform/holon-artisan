@@ -6,34 +6,32 @@ import com.holonplatform.artisan.demo.components.InputFiltersPage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
-import com.vaadin.flow.component.HasElement;
+import com.holonplatform.artisan.vaadin.flow.app.layout.routing.AppRouterLayout;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.ParentLayout;
-import com.vaadin.flow.router.RouterLayout;
 
 @ParentLayout(MainLayout.class)
-public class Menu extends HorizontalLayout implements RouterLayout {
+public class Menu extends AppRouterLayout {
 
 	private static final long serialVersionUID = 1L;
-
-	private final Div viewport = new Div();
 
 	public Menu() {
 		super();
 
-		setSizeFull();
-		setSpacing(false);
+	}
+
+	private Component getMenuContent() {
 
 		final VerticalLayout vl = new VerticalLayout();
-		vl.setWidth("280px");
-		vl.setHeight("100%");
-		vl.getStyle().set("background-color", "black");
+		// vl.setWidth("280px");
+		// vl.setHeight("100%");
+		// vl.getStyle().set("background-color", "black");
 
 		Image img = new Image("https://holon-platform.com/contrib/themes/Holon-theme/dist/img/pittogramma_platform.svg",
 				"Holon Java Platform");
@@ -85,23 +83,7 @@ public class Menu extends HorizontalLayout implements RouterLayout {
 		btn.setWidth("100%");
 		vl.add(btn);
 
-		add(vl);
-
-		viewport.setSizeFull();
-		viewport.getStyle().set("overflow-y", "auto");
-		add(viewport);
-		setFlexGrow(1, viewport);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.vaadin.flow.router.RouterLayout#showRouterLayoutContent(com.vaadin.flow.component.HasElement)
-	 */
-	@Override
-	public void showRouterLayoutContent(HasElement content) {
-		if (content != null) {
-			viewport.getElement().appendChild(content.getElement());
-		}
+		return vl;
 	}
 
 }

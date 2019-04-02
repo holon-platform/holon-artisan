@@ -68,6 +68,7 @@
 		<module>core</module>
 		<module>vaadin-flow-components</module>
 		<module>vaadin-flow-export</module>
+		<module>vaadin-flow-app-layout</module>
 		<module>demo</module>
 	</modules>
 
