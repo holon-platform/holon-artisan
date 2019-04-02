@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.app.layout.components;
 
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.Tag;
@@ -128,33 +129,18 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 	}
 
 	@Override
-	public void setTitleContent(Component component) {
-		titleSlot.removeAll();
-		if (component != null) {
-			titleSlot.add(component);
-		}
+	public HasComponents getHeaderTitle() {
+		return titleSlot;
 	}
 
 	@Override
-	public void addToTitle(Component component) {
-		if (component != null) {
-			titleSlot.add(component);
-		}
+	public HasComponents getHeaderContextActions() {
+		return contextActionsSlot;
 	}
 
 	@Override
-	public void setActionsContent(Component component) {
-		actionsSlot.removeAll();
-		if (component != null) {
-			actionsSlot.add(component);
-		}
-	}
-
-	@Override
-	public void addToActions(Component component) {
-		if (component != null) {
-			actionsSlot.add(component);
-		}
+	public HasComponents getHeaderActions() {
+		return actionsSlot;
 	}
 
 }

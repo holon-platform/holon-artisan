@@ -23,10 +23,12 @@ public class Menu extends AppRouterLayout {
 	public Menu() {
 		super();
 
-		addToTitle(Components.label().text("Demo").build());
-		
-		addToActions(Components.button().icon(VaadinIcon.BELL).withThemeVariants(ButtonVariant.LUMO_ICON).build());
-		
+		getHeaderTitle().add(Components.label().text("Demo").build());
+		getHeaderContextActions().add(Components.button().icon(VaadinIcon.CHECK).text("Save")
+				.withThemeVariants(ButtonVariant.LUMO_ICON).build());
+		getHeaderActions().add(Components.button().icon(VaadinIcon.BELL)
+				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY).build());
+
 		setDrawerContent(getMenuContent());
 	}
 

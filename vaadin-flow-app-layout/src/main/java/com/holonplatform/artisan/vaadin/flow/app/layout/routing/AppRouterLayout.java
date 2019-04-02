@@ -21,6 +21,7 @@ import com.holonplatform.artisan.vaadin.flow.app.layout.components.AppLayout;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.RouterLayout;
@@ -98,23 +99,18 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 	}
 
 	@Override
-	public void setTitleContent(Component component) {
-		getApplicationLayout().setTitleContent(component);
+	public HasComponents getHeaderTitle() {
+		return getApplicationLayout().getHeaderTitle();
 	}
 
 	@Override
-	public void addToTitle(Component component) {
-		getApplicationLayout().addToTitle(component);
+	public HasComponents getHeaderContextActions() {
+		return getApplicationLayout().getHeaderContextActions();
 	}
 
 	@Override
-	public void setActionsContent(Component component) {
-		getApplicationLayout().setActionsContent(component);
-	}
-
-	@Override
-	public void addToActions(Component component) {
-		getApplicationLayout().addToActions(component);
+	public HasComponents getHeaderActions() {
+		return getApplicationLayout().getHeaderActions();
 	}
 
 }

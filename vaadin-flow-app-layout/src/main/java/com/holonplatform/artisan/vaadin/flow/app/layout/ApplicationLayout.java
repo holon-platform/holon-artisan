@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.app.layout;
 import java.io.Serializable;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 
 public interface ApplicationLayout extends Serializable {
@@ -63,27 +64,21 @@ public interface ApplicationLayout extends Serializable {
 	void setContent(HasElement content);
 
 	/**
-	 * Set the content of the <em>title</em> application header slot.
-	 * @param component The content to set
+	 * Get the application header <em>title</em> slot.
+	 * @return The application header <em>title</em> slot {@link HasComponents} reference
 	 */
-	void setTitleContent(Component component);
+	HasComponents getHeaderTitle();
 
 	/**
-	 * Add given <code>component</code> to the <em>title</em> application header slot.
-	 * @param component The component to add
+	 * Get the application header <em>context actions</em> slot.
+	 * @return The application header <em>context actions</em> slot {@link HasComponents} reference
 	 */
-	void addToTitle(Component component);
-	
-	/**
-	 * Set the content of the <em>actions</em> application header slot.
-	 * @param component The content to set
-	 */
-	void setActionsContent(Component component);
+	HasComponents getHeaderContextActions();
 
 	/**
-	 * Add given <code>component</code> to the <em>actions</em> application header slot.
-	 * @param component The component to add
+	 * Get the application header <em>actions</em> slot.
+	 * @return The application header <em>actions</em> slot {@link HasComponents} reference
 	 */
-	void addToActions(Component component);
+	HasComponents getHeaderActions();
 
 }
