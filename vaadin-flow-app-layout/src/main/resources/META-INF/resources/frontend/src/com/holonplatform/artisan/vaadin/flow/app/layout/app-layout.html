@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 --paper-badge-background: var(--app-layout-badge-background);
                 --paper-badge-text-color: var(--app-layout-badge-font-color);
                 --primary-color: var(--app-layout-primary-color);
+                --app-drawer-scrim-background: rgba(0, 0, 0, 0);
             }
 
             app-header {
@@ -42,14 +43,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 box-shadow: var(--app-layout-bar-shadow);
                 color: var(--app-layout-bar-font-color);
                 padding: 0 0 0 16px;
-            }
-
-            /* non-overlay */
-            :root {
-                --app-drawer-scrim-background: rgba(0, 0, 0, 0);
-            }
-
-            app-toolbar {
                 z-index: 1;
                 position: absolute;
                 top: 0px;
@@ -65,17 +58,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 height: 100%;
                 width: 100%;
                 background: var(--app-layout-drawer-background-color);
-            }
-
-            /* non-overlay */
-            #drawer {
-                --app-drawer-content-container: {
-                    box-shadow: var(--app-layout-drawer-shadow);
-                    background-color: var(--app-layout-drawer-background-base-color);
-                    max-width: 100%;
-                };
+                box-shadow: var(--app-layout-drawer-shadow);
+                background-color: var(--app-layout-drawer-background-base-color);
+                max-width: 100%;
                 transition: 1s width;
-                --expand-icon-fill-color: var(--iron-icon-fill-color, currentcolor) !important;
             }
 
             #toggle-menu {
@@ -101,7 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </style>
         <app-header-layout id="layout-wrapper" fullbleed>
             <app-header fixed part="app-bar" slot="header">
-                <app-toolbar style="height: var(--app-layout-bar-height);">
+                <app-toolbar>
 					<paper-icon-button id="toggle-menu" icon="vaadin:menu" on-tap="toggleDrawer"></paper-icon-button>
                     <div class="app-bar-content" id="app-bar-elements" style="width: 100%;height: 100%;">
                         <slot name="app-bar-content"></slot>
