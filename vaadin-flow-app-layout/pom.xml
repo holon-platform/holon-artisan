@@ -38,13 +38,7 @@
 			<artifactId>app-layout</artifactId>
 			<version>2.1.1</version>
 		</dependency>
-		<!-- Polymer iron-icons -->
-		<dependency>
-			<groupId>org.webjars.bowergithub.polymerelements</groupId>
-			<artifactId>iron-icons</artifactId>
-			<version>2.1.1</version>
-		</dependency>
-		<!-- Polymer paper-iron-button -->
+		<!-- Polymer paper-icon-button -->
 		<dependency>
 			<groupId>org.webjars.bowergithub.polymerelements</groupId>
 			<artifactId>paper-icon-button</artifactId>
@@ -63,24 +57,6 @@
 					<archive>
 						<manifestEntries>
 							<Automatic-Module-Name>com.holonplatform.artisan.vaadin.flow.app.layout</Automatic-Module-Name>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.0.2</version>
-				<configuration>
-					<archive>
-						<index>true</index>
-						<manifest>
-							<addClasspath>false</addClasspath>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-						</manifest>
-						<manifestEntries>
-							<Vaadin-Package-Version>1</Vaadin-Package-Version>
 						</manifestEntries>
 					</archive>
 				</configuration>
