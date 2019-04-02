@@ -10,4 +10,6 @@ import com.vaadin.flow.component.dependency.HtmlImport;
 @HtmlImport("bower_components/app-layout/app-toolbar/app-toolbar.html")
 public class AppToolbar extends Component implements HasSize, HasComponents {
 
+	private static final long serialVersionUID = -463058617434464359L;
+
 }

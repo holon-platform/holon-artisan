@@ -10,6 +10,8 @@ import com.vaadin.flow.component.dependency.HtmlImport;
 @HtmlImport("bower_components/app-layout/app-drawer/app-drawer.html")
 public class AppDrawer extends Component implements HasSize, HasComponents {
 
+	private static final long serialVersionUID = 1986845206843732975L;
+
 }
 
 
