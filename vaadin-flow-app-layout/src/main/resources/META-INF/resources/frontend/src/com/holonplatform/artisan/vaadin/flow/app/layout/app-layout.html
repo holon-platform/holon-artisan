@@ -45,7 +45,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background: var(--app-layout-header-background-color);
                 box-shadow: var(--app-layout-header-shadow);
                 color: var(--app-layout-header-font-color);
-                padding: 0 0 0 16px;
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 16px;
+                padding-right: var(--app-layout-header-padding-right);
                 z-index: 1;
                 position: absolute;
                 top: 0px;
@@ -80,9 +83,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 display: none; 
             }
             
-            #header-content {
-                width: 100%;
+            #header-title {
                 height: 100%;
+                flex-grow: 1;
+                overflow: hidden;
+            }
+            
+            #header-context-actions {
+                height: 100%;
+                overflow: hidden;
+            }
+            
+            #header-actions {
+                height: 100%;
+                overflow: hidden;
             }
             
             #application-content {
@@ -98,8 +112,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <app-header fixed part="header" slot="header">
                 <app-toolbar>
 					<paper-icon-button id="toggle-menu" icon="vaadin:menu" on-tap="toggleDrawer"></paper-icon-button>
-                    <div id="header-content">
-                        <slot name="header-content"></slot>
+                    <div id="header-title">
+                        <slot name="header-title"></slot>
+                    </div>
+                    <div id="header-context-actions">
+                        <slot name="header-context-actions"></slot>
+                    </div>
+                    <div id="header-actions">
+                        <slot name="header-actions"></slot>
                     </div>
                 </app-toolbar>
             </app-header>

@@ -35,31 +35,39 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 
 	private static final long serialVersionUID = 8796069540985099702L;
 
-	private final HorizontalLayout appBarElementWrapper = new HorizontalLayout();
 	private final HorizontalLayout titleSlot;
-
-	private final Div drawerContent;
-	private final Div applicationContent;
+	private final HorizontalLayout contextActionsSlot;
+	private final HorizontalLayout actionsSlot;
 
 	@Id("drawer")
 	private AppDrawer drawer;
+
+	private final Div drawerContent;
+	private final Div applicationContent;
 
 	public AppLayout() {
 		super();
 
 		titleSlot = new HorizontalLayout();
-		titleSlot.addClassName("application-title-slot");
 		titleSlot.setPadding(false);
 		titleSlot.setMargin(false);
-		titleSlot.setHeight("100%");
+		titleSlot.setHeightFull();
 		titleSlot.setAlignItems(FlexComponent.Alignment.CENTER);
-		titleSlot.getElement().getStyle().set("flex", "1 1 100px").set("overflow", "hidden");
-		titleSlot.setWidth("0px");
+		titleSlot.getElement().setAttribute("slot", "header-title");
 
-		final HorizontalLayout headerContent = new HorizontalLayout(titleSlot, appBarElementWrapper);
-		headerContent.setSizeFull();
-		headerContent.setSpacing(false);
-		headerContent.getElement().setAttribute("slot", "header-content");
+		actionsSlot = new HorizontalLayout();
+		actionsSlot.setPadding(false);
+		actionsSlot.setMargin(false);
+		actionsSlot.setHeightFull();
+		actionsSlot.setAlignItems(FlexComponent.Alignment.CENTER);
+		actionsSlot.getElement().setAttribute("slot", "header-actions");
+
+		contextActionsSlot = new HorizontalLayout();
+		contextActionsSlot.setPadding(false);
+		contextActionsSlot.setMargin(false);
+		contextActionsSlot.setHeightFull();
+		contextActionsSlot.setAlignItems(FlexComponent.Alignment.CENTER);
+		contextActionsSlot.getElement().setAttribute("slot", "header-context-actions");
 
 		drawerContent = new Div();
 		drawerContent.setHeight("100%");
@@ -70,8 +78,8 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 		applicationContent.setWidth("100%");
 		applicationContent.getElement().setAttribute("slot", "application-content");
 
-		getElement().appendChild(headerContent.getElement(), drawerContent.getElement(),
-				applicationContent.getElement());
+		getElement().appendChild(titleSlot.getElement(), actionsSlot.getElement(), contextActionsSlot.getElement(),
+				drawerContent.getElement(), applicationContent.getElement());
 	}
 
 	protected AppDrawer getDrawer() {
@@ -84,11 +92,6 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 		if (content != null) {
 			this.applicationContent.getElement().appendChild(content.getElement());
 		}
-	}
-
-	public void setAppBar(Component component) {
-		appBarElementWrapper.removeAll();
-		appBarElementWrapper.add(component);
 	}
 
 	@Override
@@ -136,6 +139,21 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 	public void addToTitle(Component component) {
 		if (component != null) {
 			titleSlot.add(component);
+		}
+	}
+
+	@Override
+	public void setActionsContent(Component component) {
+		actionsSlot.removeAll();
+		if (component != null) {
+			actionsSlot.add(component);
+		}
+	}
+
+	@Override
+	public void addToActions(Component component) {
+		if (component != null) {
+			actionsSlot.add(component);
 		}
 	}
 

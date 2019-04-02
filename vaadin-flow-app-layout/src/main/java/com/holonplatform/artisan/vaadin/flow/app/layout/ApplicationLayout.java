@@ -73,5 +73,17 @@ public interface ApplicationLayout extends Serializable {
 	 * @param component The component to add
 	 */
 	void addToTitle(Component component);
+	
+	/**
+	 * Set the content of the <em>actions</em> application header slot.
+	 * @param component The content to set
+	 */
+	void setActionsContent(Component component);
+
+	/**
+	 * Add given <code>component</code> to the <em>actions</em> application header slot.
+	 * @param component The component to add
+	 */
+	void addToActions(Component component);
 
 }

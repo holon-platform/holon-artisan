@@ -107,4 +107,14 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 		getApplicationLayout().addToTitle(component);
 	}
 
+	@Override
+	public void setActionsContent(Component component) {
+		getApplicationLayout().setActionsContent(component);
+	}
+
+	@Override
+	public void addToActions(Component component) {
+		getApplicationLayout().addToActions(component);
+	}
+
 }
