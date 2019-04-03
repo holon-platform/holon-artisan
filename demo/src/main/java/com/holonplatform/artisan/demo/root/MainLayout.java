@@ -7,7 +7,7 @@ import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
-@Theme(value = Lumo.class, variant = Lumo.LIGHT)
+@Theme(Lumo.class)
 @Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes")
 @HtmlImport("frontend://styles/shared-styles.html")
 public class MainLayout extends Div implements RouterLayout {
