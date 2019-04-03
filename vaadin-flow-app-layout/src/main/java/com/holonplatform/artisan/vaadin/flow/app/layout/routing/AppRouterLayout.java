@@ -15,16 +15,12 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout.routing;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.holonplatform.artisan.vaadin.flow.app.layout.components.AppLayout;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.ApplicationContentChangeEvent;
+import com.holonplatform.artisan.vaadin.flow.app.layout.events.AppLayoutNarrowStateChangeListener;
 import com.holonplatform.artisan.vaadin.flow.app.layout.events.ApplicationContentChangeListener;
-import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultApplicationContentChangeEvent;
 import com.holonplatform.core.Registration;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
@@ -46,8 +42,6 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 
 	private final ApplicationLayout applicationLayout;
 
-	private final List<ApplicationContentChangeListener> applicationContentChangeListeners = new LinkedList<>();
-
 	public AppRouterLayout() {
 		this(new AppLayout());
 	}
@@ -63,17 +57,6 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 
 	protected ApplicationLayout getApplicationLayout() {
 		return applicationLayout;
-	}
-
-	/**
-	 * Add an {@link ApplicationContentChangeListener} to listen for application content changes.
-	 * @param listener The listener to add (not null)
-	 * @return Listener handler
-	 */
-	public Registration addApplicationContentChangeListener(ApplicationContentChangeListener listener) {
-		Obj.argumentNotNull(listener, "ApplicationContentChangeListener must be not null");
-		applicationContentChangeListeners.add(listener);
-		return () -> applicationContentChangeListeners.remove(listener);
 	}
 
 	@Override
@@ -98,9 +81,6 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 	@Override
 	public void setContent(HasElement content) {
 		getApplicationLayout().setContent(content);
-		// fire listeners
-		final ApplicationContentChangeEvent event = new DefaultApplicationContentChangeEvent(this, content);
-		applicationContentChangeListeners.forEach(l -> l.applicationContentChange(event));
 	}
 
 	@Override
@@ -196,6 +176,16 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 	@Override
 	public void removeThemeNames(String... themeNames) {
 		getApplicationLayout().removeThemeNames(themeNames);
+	}
+
+	@Override
+	public Registration addApplicationContentChangeListener(ApplicationContentChangeListener listener) {
+		return getApplicationLayout().addApplicationContentChangeListener(listener);
+	}
+
+	@Override
+	public Registration addAppLayoutNarrowStateChangeListener(AppLayoutNarrowStateChangeListener listener) {
+		return getApplicationLayout().addAppLayoutNarrowStateChangeListener(listener);
 	}
 
 }
