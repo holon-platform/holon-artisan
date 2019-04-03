@@ -20,6 +20,11 @@ import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.HasTheme;
 
+/**
+ * Application layout API.
+ *
+ * @since 1.0.2
+ */
 public interface ApplicationLayout extends HasTheme {
 
 	/**

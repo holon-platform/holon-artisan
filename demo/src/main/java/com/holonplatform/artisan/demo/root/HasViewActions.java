@@ -13,33 +13,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.app.layout;
+package com.holonplatform.artisan.demo.root;
 
-/**
- * The variants for app layout.
- * 
- * @since 1.0.2
- */
-public enum AppLayoutVariant {
+import java.util.List;
 
-	/**
-	 * App layout drawer small width.
-	 */
-	SMALL("small");
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
+import com.vaadin.flow.component.Component;
 
-	private final String variant;
+@FunctionalInterface
+public interface HasViewActions {
 
-	AppLayoutVariant(String variant) {
-		this.variant = variant;
-	}
-
-	/**
-	 * Gets the variant name.
-	 *
-	 * @return variant name
-	 */
-	public String getVariantName() {
-		return variant;
-	}
-
+	List<Component> getActions(ApplicationLayout applicationLayout);
+	
 }

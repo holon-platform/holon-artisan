@@ -13,33 +13,31 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.app.layout;
+package com.holonplatform.artisan.vaadin.flow.app.layout.events;
+
+import java.io.Serializable;
+import java.util.Optional;
+
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
+import com.vaadin.flow.component.HasElement;
 
 /**
- * The variants for app layout.
- * 
+ * Application content change event.
+ *
  * @since 1.0.2
  */
-public enum AppLayoutVariant {
+public interface ApplicationContentChangeEvent extends Serializable {
 
 	/**
-	 * App layout drawer small width.
+	 * Get the {@link ApplicationLayout} which triggered the event.
+	 * @return Event source
 	 */
-	SMALL("small");
-
-	private final String variant;
-
-	AppLayoutVariant(String variant) {
-		this.variant = variant;
-	}
+	ApplicationLayout getApplicationLayout();
 
 	/**
-	 * Gets the variant name.
-	 *
-	 * @return variant name
+	 * Get the new application layout content, if available.
+	 * @return Optional application layout content
 	 */
-	public String getVariantName() {
-		return variant;
-	}
+	Optional<HasElement> getContent();
 
 }

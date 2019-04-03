@@ -1,17 +1,21 @@
 package com.holonplatform.artisan.demo.root;
 
+import java.util.Collections;
+
 import com.holonplatform.artisan.demo.components.ExportPage;
 import com.holonplatform.artisan.demo.components.HomePage;
 import com.holonplatform.artisan.demo.components.InputFiltersPage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
-import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
 import com.holonplatform.artisan.vaadin.flow.app.layout.routing.AppRouterLayout;
 import com.holonplatform.vaadin.flow.components.Components;
+import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.ParentLayout;
@@ -21,22 +25,33 @@ public class Menu extends AppRouterLayout {
 
 	private static final long serialVersionUID = 1L;
 
+	private final Div title;
+
 	public Menu() {
 		super();
 
-		getHeaderTitle().add(Components.label().text("Demo").build());
-		getHeaderContextActions().add(Components.button().icon(VaadinIcon.PADDING_RIGHT).text("Normal")
-				.withThemeVariants(ButtonVariant.LUMO_ICON).onClick(e -> {
-					removeThemeVariants(AppLayoutVariant.SMALL);
-				}).build());
-		getHeaderContextActions().add(Components.button().icon(VaadinIcon.PADDING_LEFT).text("Small")
-				.withThemeVariants(ButtonVariant.LUMO_ICON).onClick(e -> {
-					addThemeVariants(AppLayoutVariant.SMALL);
-				}).build());
+		final Icon logo = VaadinIcon.CUBES.create();
+		logo.setColor("#0000ff");
+		getHeaderTitle().add(logo);
+
+		this.title = Components.label().text("Demo").build();
+		getHeaderTitle().add(title);
+
 		getHeaderActions().add(Components.button().icon(VaadinIcon.BELL)
 				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY).build());
 
 		setDrawerContent(getMenuContent());
+
+		addApplicationContentChangeListener(event -> {
+			// title
+			title.setText(event.getContent().filter(c -> c instanceof HasViewTitle)
+					.map(c -> ((HasViewTitle) c).getTitle()).flatMap(t -> LocalizationProvider.localize(t)).orElse(""));
+			// actions
+			event.getApplicationLayout().getHeaderContextActions().removeAll();
+			event.getContent().filter(c -> c instanceof HasViewActions).map(c -> ((HasViewActions) c).getActions(this))
+					.orElse(Collections.emptyList())
+					.forEach(a -> event.getApplicationLayout().getHeaderContextActions().add(a));
+		});
 	}
 
 	private Component getMenuContent() {

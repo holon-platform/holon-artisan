@@ -26,33 +26,40 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
+import com.holonplatform.artisan.demo.root.HasViewActions;
+import com.holonplatform.artisan.demo.root.HasViewTitle;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.demo.servlet.FileDownloadServlet;
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
 import com.holonplatform.core.datastore.Datastore;
+import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 @Route(value = "export", layout = Menu.class)
-public class ExportPage extends VerticalLayout {
+public class ExportPage extends VerticalLayout implements HasViewTitle, HasViewActions {
 
 	private static final long serialVersionUID = 1L;
 
+	private final Input<String> fltCategory;
 	private final PropertyListing listing;
 
 	@Autowired
@@ -60,17 +67,9 @@ public class ExportPage extends VerticalLayout {
 		super();
 		setSizeFull();
 
-		final HorizontalLayout top = new HorizontalLayout();
-		top.setWidth("100%");
-
-		top.add(Components.button().text("Export").onClick(e -> export()).build());
-
-		final Input<String> fltCategory = Input.singleSelect(String.class).items(
+		fltCategory = Input.singleSelect(String.class).items(
 				datastore.query(TARGET).filter(CATEGORY.isNotNull()).sort(CATEGORY.asc()).distinct().list(CATEGORY))
 				.placeholder("Category").build();
-		top.add(fltCategory.getComponent());
-
-		add(top);
 
 		listing = Components.listing.properties(PRODUCT).dataSource(datastore, TARGET)
 				// fixed filter
@@ -134,6 +133,17 @@ public class ExportPage extends VerticalLayout {
 			e.printStackTrace();
 			Notification.show("ERROR: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public List<Component> getActions(ApplicationLayout applicationLayout) {
+		return Arrays.asList(fltCategory.getComponent(),
+				Components.button().text("Export").onClick(e -> export()).build());
+	}
+
+	@Override
+	public Localizable getTitle() {
+		return Localizable.of("Export");
 	}
 
 }
