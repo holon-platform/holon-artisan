@@ -8,7 +8,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../../../../../../../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../../../../../../../bower_components/polymer/lib/elements/custom-style.html">
 <link rel="import" href="../../../../../../../../bower_components/vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="../../../../../../../../bower_components/vaadin-icons/vaadin-icons.html">
 <link rel="import" href="../../../../../../../../bower_components/app-layout/app-drawer/app-drawer.html">
@@ -114,12 +113,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             :host(:not([narrow])[theme~="small"]) #drawer-layout {
                 --app-drawer-width: var(--app-layout-drawer-small-width);
             }
+            
+            :host(:not([footer])) #application-footer {
+              display: none;
+            }
+            
+            :host([footer]) #application-footer {
+              position: absolute;
+              bottom: 0px;
+              left: 0px;
+              right: 0px; 
+              height: var(--app-layout-footer-height);
+              box-shadow: var(--app-layout-footer-shadow);
+              background: var(--app-layout-footer-background-color);
+              color: var(--app-layout-footer-font-color);
+              padding-top: 0;
+              padding-bottom: 0;
+              padding-left: var(--app-layout-footer-padding);
+              padding-right: var(--app-layout-footer-padding);
+              overflow: hidden;
+            }
+            
+            :host(:not([narrow])[footer]) #application-footer {
+              display: none;
+            }
+            
+            :host([narrow][footer]) #application-footer {
+              display: block;
+            }
+            
+            :host([narrow][footer]) #application-content {
+              padding-bottom: var(--app-layout-footer-height);
+            }
       
         </style>
         <app-header-layout id="layout-wrapper" fullbleed>
             <app-header fixed part="header" slot="header">
                 <app-toolbar>
-					<paper-icon-button id="toggle-menu" icon="vaadin:menu" on-tap="toggle"></paper-icon-button>
+					<paper-icon-button id="toggle-menu" icon="vaadin:menu" on-tap="_toggle"></paper-icon-button>
                     <div id="header-title">
                         <slot name="header-title"></slot>
                     </div>
@@ -140,6 +171,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div id="application-content" size="100" part="application-content">
                     <slot name="application-content"></slot>
                 </div>
+                <div id="application-footer" part="application-footer">
+                  <slot name="application-footer"></slot>
+                </div>
             </app-drawer-layout>
         </app-header-layout>
         <iron-media-query query="[[_computeMediaQuery(responsiveWidth)]]" on-query-matches-changed="_onQueryMatchesChanged"></iron-media-query>
@@ -156,37 +190,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         type: String,
                         value: "640px",
                         observer: "_responsiveWidthChanged"
-                    },
-                    
-                    drawerOpened: {
-                        type: Boolean,
-                        value: true,
-                        reflectToAttribute: true
                     }
                 };
             }
-            
-            open() {
-                Polymer.dom(this.root).querySelector("#drawer").open();
-                this.drawerOpened = true;
-            }
-            
-            close() {
-                Polymer.dom(this.root).querySelector("#drawer").close();
-                this.drawerOpened = false;
-            }
 
-            toggle() {
+            _toggle() {
                Polymer.dom(this.root).querySelector("#drawer").toggle();
-               this.drawerOpened = !this.drawerOpened;
             }
-
+            
             closeIfNotPersistent() {
-                var drawer = Polymer.dom(this.root).querySelector("#drawer");
-                if (!drawer.persistent) {
-                    drawer.close();
-                    this.drawerOpened = false;
-                }
+            	 var drawer = Polymer.dom(this.root).querySelector("#drawer");
+                 if (!drawer.persistent) {
+                	 drawer.close();
+                 }
             }
 
             _responsiveWidthChanged() {

@@ -69,7 +69,7 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 		super.onAttach(attachEvent);
 		// after navigation listener to close the drawer if not persistent
 		getUI().ifPresent(ui -> ui.addAfterNavigationListener(event -> {
-			closeDrawerIfNotPersistent();
+			closeDrawer();
 		}));
 	}
 
@@ -84,23 +84,8 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 	}
 
 	@Override
-	public void toggleDrawer() {
-		getApplicationLayout().toggleDrawer();
-	}
-
-	@Override
-	public void openDrawer() {
-		getApplicationLayout().openDrawer();
-	}
-
-	@Override
 	public void closeDrawer() {
 		getApplicationLayout().closeDrawer();
-	}
-
-	@Override
-	public void closeDrawerIfNotPersistent() {
-		getApplicationLayout().closeDrawerIfNotPersistent();
 	}
 
 	@Override
@@ -176,6 +161,16 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 	@Override
 	public void removeThemeNames(String... themeNames) {
 		getApplicationLayout().removeThemeNames(themeNames);
+	}
+
+	@Override
+	public boolean isResponsiveFooter() {
+		return getApplicationLayout().isResponsiveFooter();
+	}
+
+	@Override
+	public void setResponsiveFooter(boolean responsiveFooter) {
+		getApplicationLayout().setResponsiveFooter(responsiveFooter);
 	}
 
 	@Override

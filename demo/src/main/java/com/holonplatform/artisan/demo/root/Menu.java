@@ -53,9 +53,10 @@ public class Menu extends AppRouterLayout {
 					.forEach(a -> event.getApplicationLayout().getHeaderContextActions().add(a));
 		});
 
+		/*
 		addAppLayoutNarrowStateChangeListener(event -> {
 			System.err.println("-------> NARROW state changed: " + event.isNarrow());
-		});
+		});*/
 	}
 
 	private Component getMenuContent() {

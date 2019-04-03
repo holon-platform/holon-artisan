@@ -69,6 +69,8 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 	public AppLayout() {
 		super();
 
+		setResponsiveFooter(true);
+
 		titleSlot = new HorizontalLayout();
 		titleSlot.setPadding(false);
 		titleSlot.setMargin(false);
@@ -125,28 +127,28 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 
 	@EventHandler
 	public void onNarrowStateChange(@EventData("event.detail.value") boolean narrow) {
+		contextActionsSlot.getElement().setAttribute("slot", narrow ? "application-footer" : "header-context-actions");
 		// fire listeners
 		final AppLayoutNarrowStateChangeEvent event = new DefaultAppLayoutNarrowStateChangeEvent(this, narrow);
 		appLayoutNarrowStateChangeListeners.forEach(l -> l.appLayoutNarrowStateChange(event));
 	}
 
 	@Override
-	public void toggleDrawer() {
-		getElement().callFunction("toggle");
+	public boolean isResponsiveFooter() {
+		return getElement().hasAttribute("footer");
 	}
 
 	@Override
-	public void openDrawer() {
-		getElement().callFunction("open");
+	public void setResponsiveFooter(boolean responsiveFooter) {
+		if (responsiveFooter) {
+			getElement().setAttribute("footer", "");
+		} else {
+			getElement().removeAttribute("footer");
+		}
 	}
 
 	@Override
 	public void closeDrawer() {
-		getElement().callFunction("close");
-	}
-
-	@Override
-	public void closeDrawerIfNotPersistent() {
 		getElement().callFunction("closeIfNotPersistent");
 	}
 

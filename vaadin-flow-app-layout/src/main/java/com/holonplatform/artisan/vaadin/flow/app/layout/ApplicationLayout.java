@@ -35,28 +35,11 @@ public interface ApplicationLayout extends HasTheme {
 	 * @param width The responsive width (default il <code>640px</code>)
 	 */
 	void setResponsiveWidth(String width);
-
+	
 	/**
-	 * Toggle (open if closed, close if opened) the application drawer, i.e. the left layout side which typically
-	 * contains the application menu.
-	 */
-	void toggleDrawer();
-
-	/**
-	 * Open the application drawer, i.e. the left layout side which typically contains the application menu.
-	 */
-	void openDrawer();
-
-	/**
-	 * Close the application drawer, i.e. the left layout side which typically contains the application menu.
+	 * Closes the drawer, only if not persistent (i.e. only if app layout is in narrow state).
 	 */
 	void closeDrawer();
-
-	/**
-	 * Close the application drawer (i.e. the left layout side which typically contains the application menu) if in
-	 * collapsible mode.
-	 */
-	void closeDrawerIfNotPersistent();
 
 	/**
 	 * Set the application drawer (i.e. the left layout side which typically contains the application menu) content.
@@ -87,6 +70,18 @@ public interface ApplicationLayout extends HasTheme {
 	 * @return The application header <em>actions</em> slot {@link HasComponents} reference
 	 */
 	HasComponents getHeaderActions();
+
+	/**
+	 * Get whether to move context actions in application footer when in narrow state.
+	 * @return Whether to move context actions in application footer when in narrow state
+	 */
+	boolean isResponsiveFooter();
+
+	/**
+	 * Set whether to move context actions in application footer when in narrow state.
+	 * @param responsiveFooter Whether to move context actions in application footer when in narrow state
+	 */
+	void setResponsiveFooter(boolean responsiveFooter);
 
 	/**
 	 * Adds theme variants to the component.
