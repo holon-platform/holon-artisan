@@ -15,6 +15,10 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout.components;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
@@ -141,6 +145,17 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 	@Override
 	public HasComponents getHeaderActions() {
 		return actionsSlot;
+	}
+
+	@Override
+	public void addThemeVariants(AppLayoutVariant... variants) {
+		getThemeNames().addAll(Stream.of(variants).map(AppLayoutVariant::getVariantName).collect(Collectors.toList()));
+	}
+
+	@Override
+	public void removeThemeVariants(AppLayoutVariant... variants) {
+		getThemeNames()
+				.removeAll(Stream.of(variants).map(AppLayoutVariant::getVariantName).collect(Collectors.toList()));
 	}
 
 }

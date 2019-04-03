@@ -6,6 +6,7 @@ import com.holonplatform.artisan.demo.components.InputFiltersPage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
+import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
 import com.holonplatform.artisan.vaadin.flow.app.layout.routing.AppRouterLayout;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.vaadin.flow.component.Component;
@@ -24,8 +25,14 @@ public class Menu extends AppRouterLayout {
 		super();
 
 		getHeaderTitle().add(Components.label().text("Demo").build());
-		getHeaderContextActions().add(Components.button().icon(VaadinIcon.CHECK).text("Save")
-				.withThemeVariants(ButtonVariant.LUMO_ICON).build());
+		getHeaderContextActions().add(Components.button().icon(VaadinIcon.PADDING_RIGHT).text("Normal")
+				.withThemeVariants(ButtonVariant.LUMO_ICON).onClick(e -> {
+					removeThemeVariants(AppLayoutVariant.SMALL);
+				}).build());
+		getHeaderContextActions().add(Components.button().icon(VaadinIcon.PADDING_LEFT).text("Small")
+				.withThemeVariants(ButtonVariant.LUMO_ICON).onClick(e -> {
+					addThemeVariants(AppLayoutVariant.SMALL);
+				}).build());
 		getHeaderActions().add(Components.button().icon(VaadinIcon.BELL)
 				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY).build());
 

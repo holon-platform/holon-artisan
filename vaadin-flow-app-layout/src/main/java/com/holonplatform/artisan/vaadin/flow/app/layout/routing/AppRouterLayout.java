@@ -16,6 +16,7 @@
 package com.holonplatform.artisan.vaadin.flow.app.layout.routing;
 
 import com.holonplatform.artisan.core.utils.Obj;
+import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.holonplatform.artisan.vaadin.flow.app.layout.components.AppLayout;
 import com.vaadin.flow.component.AttachEvent;
@@ -24,6 +25,7 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.dom.ThemeList;
 import com.vaadin.flow.router.RouterLayout;
 
 public class AppRouterLayout extends Composite<Div> implements ApplicationLayout, RouterLayout {
@@ -111,6 +113,61 @@ public class AppRouterLayout extends Composite<Div> implements ApplicationLayout
 	@Override
 	public HasComponents getHeaderActions() {
 		return getApplicationLayout().getHeaderActions();
+	}
+
+	@Override
+	public void addThemeVariants(AppLayoutVariant... variants) {
+		getApplicationLayout().addThemeVariants(variants);
+	}
+
+	@Override
+	public void removeThemeVariants(AppLayoutVariant... variants) {
+		getApplicationLayout().removeThemeVariants(variants);
+	}
+
+	@Override
+	public void addThemeName(String themeName) {
+		getApplicationLayout().addThemeName(themeName);
+	}
+
+	@Override
+	public boolean removeThemeName(String themeName) {
+		return getApplicationLayout().removeThemeName(themeName);
+	}
+
+	@Override
+	public void setThemeName(String themeName) {
+		getApplicationLayout().setThemeName(themeName);
+	}
+
+	@Override
+	public String getThemeName() {
+		return getApplicationLayout().getThemeName();
+	}
+
+	@Override
+	public ThemeList getThemeNames() {
+		return getApplicationLayout().getThemeNames();
+	}
+
+	@Override
+	public void setThemeName(String themeName, boolean set) {
+		getApplicationLayout().setThemeName(themeName, set);
+	}
+
+	@Override
+	public boolean hasThemeName(String themeName) {
+		return getApplicationLayout().hasThemeName(themeName);
+	}
+
+	@Override
+	public void addThemeNames(String... themeNames) {
+		getApplicationLayout().addThemeNames(themeNames);
+	}
+
+	@Override
+	public void removeThemeNames(String... themeNames) {
+		getApplicationLayout().removeThemeNames(themeNames);
 	}
 
 }

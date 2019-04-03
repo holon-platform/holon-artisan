@@ -15,13 +15,12 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout;
 
-import java.io.Serializable;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
+import com.vaadin.flow.component.HasTheme;
 
-public interface ApplicationLayout extends Serializable {
+public interface ApplicationLayout extends HasTheme {
 
 	/**
 	 * Set the width limit for which the application menu becomes collapsed.
@@ -80,5 +79,17 @@ public interface ApplicationLayout extends Serializable {
 	 * @return The application header <em>actions</em> slot {@link HasComponents} reference
 	 */
 	HasComponents getHeaderActions();
+
+	/**
+	 * Adds theme variants to the component.
+	 * @param variants theme variants to add
+	 */
+	void addThemeVariants(AppLayoutVariant... variants);
+
+	/**
+	 * Removes theme variants from the component.
+	 * @param variants theme variants to remove
+	 */
+	void removeThemeVariants(AppLayoutVariant... variants);
 
 }
