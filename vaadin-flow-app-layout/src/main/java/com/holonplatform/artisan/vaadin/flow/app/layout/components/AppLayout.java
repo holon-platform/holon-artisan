@@ -132,17 +132,17 @@ public class AppLayout extends PolymerTemplate<TemplateModel> implements Applica
 
 	@Override
 	public void toggleDrawer() {
-		getDrawer().getElement().callFunction("toggle");
+		getElement().callFunction("toggle");
 	}
 
 	@Override
 	public void openDrawer() {
-		getDrawer().getElement().callFunction("open");
+		getElement().callFunction("open");
 	}
 
 	@Override
 	public void closeDrawer() {
-		getDrawer().getElement().callFunction("close");
+		getElement().callFunction("close");
 	}
 
 	@Override

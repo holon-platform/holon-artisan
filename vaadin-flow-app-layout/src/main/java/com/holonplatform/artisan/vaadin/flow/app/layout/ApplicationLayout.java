@@ -99,14 +99,14 @@ public interface ApplicationLayout extends HasTheme {
 	 * @param variants theme variants to remove
 	 */
 	void removeThemeVariants(AppLayoutVariant... variants);
-	
+
 	/**
 	 * Add an {@link ApplicationContentChangeListener} to listen for application content changes.
 	 * @param listener The listener to add (not null)
 	 * @return Listener handler
 	 */
 	Registration addApplicationContentChangeListener(ApplicationContentChangeListener listener);
-	
+
 	/**
 	 * Add an {@link AppLayoutNarrowStateChangeListener} to listen for narrow state changes.
 	 * @param listener The listener to add (not null)

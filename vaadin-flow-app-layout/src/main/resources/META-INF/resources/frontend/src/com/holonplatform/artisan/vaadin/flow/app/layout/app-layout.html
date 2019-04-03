@@ -114,11 +114,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             :host(:not([narrow])[theme~="small"]) #drawer-layout {
                 --app-drawer-width: var(--app-layout-drawer-small-width);
             }
+      
         </style>
         <app-header-layout id="layout-wrapper" fullbleed>
             <app-header fixed part="header" slot="header">
                 <app-toolbar>
-					<paper-icon-button id="toggle-menu" icon="vaadin:menu" on-tap="toggleDrawer"></paper-icon-button>
+					<paper-icon-button id="toggle-menu" icon="vaadin:menu" on-tap="toggle"></paper-icon-button>
                     <div id="header-title">
                         <slot name="header-title"></slot>
                     </div>
@@ -151,22 +152,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             static get properties() {
                 return {
-                     responsiveWidth: {
+                    responsiveWidth: {
                         type: String,
                         value: "640px",
                         observer: "_responsiveWidthChanged"
                     },
+                    
+                    drawerOpened: {
+                        type: Boolean,
+                        value: true,
+                        reflectToAttribute: true
+                    }
                 };
             }
+            
+            open() {
+                Polymer.dom(this.root).querySelector("#drawer").open();
+                this.drawerOpened = true;
+            }
+            
+            close() {
+                Polymer.dom(this.root).querySelector("#drawer").close();
+                this.drawerOpened = false;
+            }
 
-            toggleDrawer() {
+            toggle() {
                Polymer.dom(this.root).querySelector("#drawer").toggle();
+               this.drawerOpened = !this.drawerOpened;
             }
 
             closeIfNotPersistent() {
                 var drawer = Polymer.dom(this.root).querySelector("#drawer");
                 if (!drawer.persistent) {
                     drawer.close();
+                    this.drawerOpened = false;
                 }
             }
 
