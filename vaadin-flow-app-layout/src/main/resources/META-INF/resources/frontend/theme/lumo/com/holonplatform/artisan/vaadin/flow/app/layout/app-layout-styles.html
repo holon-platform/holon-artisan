@@ -1,0 +1,32 @@
+<link href="../../../../../../bower_components/polymer/lib/elements/custom-style.html" rel="import">
+<custom-styles>
+    <style>
+        html {
+            --app-layout-primary-color: var(--lumo-primary-color);
+            --app-layout-background: var(--lumo-base-color);
+            --app-layout-font-size-header: var(--lumo-font-size-m);
+            --app-layout-header-height: calc(var(--lumo-size-s) * 2.1);
+            --app-layout-header-background-base-color: var(--lumo-base-color);
+            --app-layout-header-background-color: var(--lumo-base-color);
+            --app-layout-header-font-color: var(--lumo-contrast-70pct);
+            --app-layout-header-shadow: var(--lumo-box-shadow-s);
+            --app-layout-header-padding-right: var(--lumo-space-m);
+            --app-layout-header-actions-space: var(--lumo-space-m);
+            --app-layout-drawer-shadow: var(--lumo-box-shadow-xs);
+            --app-layout-drawer-background-base-color: var(--lumo-base-color);
+            --app-layout-drawer-background-color: var(--lumo-base-color);
+            --app-layout-drawer-width: calc(var(--lumo-size-xl) * 4.6);
+            --app-layout-drawer-small-width: calc(var(--app-layout-header-height) - 1px);
+            /* webcomponents */
+            --paper-icon-button-ink-color: var(--lumo-contrast);
+            --app-drawer-width: var(--app-layout-drawer-width);
+        }
+
+        html[theme~="dark"] {
+            --app-layout-header-background-color: var(--lumo-contrast-10pct);
+            --app-layout-header-font-color: var(--lumo-contrast-90);
+            --app-layout-drawer-background-color: var(--lumo-contrast-5pct);
+        }
+
+    </style>
+</custom-styles>
