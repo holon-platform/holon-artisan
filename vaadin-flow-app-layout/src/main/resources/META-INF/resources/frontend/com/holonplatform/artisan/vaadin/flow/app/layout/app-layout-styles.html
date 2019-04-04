@@ -44,8 +44,13 @@
 
 <custom-style>
   <style>
+    [slot="navbar"][part="header-start"] {
+      flex-grow: 1;
+    }
+    
     [slot="navbar"][part="header-end"] {
       padding-left: var(--app-layout-header-slots-spacing, 1em);
+      flex-stretch: 0;
     }
   </style>
 </custom-style>

@@ -18,6 +18,8 @@ package com.holonplatform.artisan.vaadin.flow.app.layout.components;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
@@ -36,7 +38,7 @@ import com.vaadin.flow.dom.PropertyChangeEvent;
 public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 
 	private static final long serialVersionUID = 8726407799332318387L;
-	
+
 	private final HorizontalLayout headerStart;
 	private final HorizontalLayout headerContent;
 	private final HorizontalLayout headerEnd;
@@ -49,7 +51,7 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		getElement().setAttribute("app-router-layout", "");
 
 		getElement().addPropertyChangeListener("overlay", evt -> onDrawerOverlayChangeEvent(evt));
-		
+
 		final DrawerToggle toggle = new DrawerToggle();
 		toggle.getElement().setAttribute("app-router-layout-toggle", "");
 		toggle.getElement().setAttribute("hide-when-not-overlay", "");
@@ -57,12 +59,10 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 
 		headerStart = createHeaderSlot();
 		headerStart.getElement().setAttribute("part", "header-start");
-		headerStart.getStyle().set("flex-grow", "1"); // TODO move in styles
 		headerContent = createHeaderSlot();
 		headerContent.getElement().setAttribute("part", "header-content");
 		headerEnd = createHeaderSlot();
 		headerEnd.getElement().setAttribute("part", "header-end");
-		headerEnd.getStyle().set("flex-stretch", "0"); // TODO move in styles
 
 		addToNavbar(headerStart, headerContent, headerEnd);
 	}
@@ -102,14 +102,13 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 
 	@Override
 	public void addThemeVariants(AppLayoutVariant... variants) {
-		// TODO Auto-generated method stub
-
+		getThemeNames().addAll(Stream.of(variants).map(AppLayoutVariant::getVariantName).collect(Collectors.toList()));
 	}
 
 	@Override
 	public void removeThemeVariants(AppLayoutVariant... variants) {
-		// TODO Auto-generated method stub
-
+		getThemeNames()
+				.removeAll(Stream.of(variants).map(AppLayoutVariant::getVariantName).collect(Collectors.toList()));
 	}
 
 	@Override
