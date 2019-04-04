@@ -8,7 +8,7 @@ import com.holonplatform.artisan.demo.components.InputFiltersPage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
-import com.holonplatform.artisan.vaadin.flow.app.layout.routing.AppRouterLayout;
+import com.holonplatform.artisan.vaadin.flow.app.layout.components.AppRouterLayout;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;
@@ -40,7 +40,7 @@ public class Menu extends AppRouterLayout {
 		getHeaderActions().add(Components.button().icon(VaadinIcon.BELL)
 				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY).build());
 
-		setDrawerContent(getMenuContent());
+		addToDrawer(getMenuContent());
 
 		addApplicationContentChangeListener(event -> {
 			// title

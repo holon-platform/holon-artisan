@@ -15,12 +15,13 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout;
 
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.AppLayoutNarrowStateChangeListener;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.ApplicationContentChangeListener;
+import java.io.Serializable;
+import java.util.EventListener;
+import java.util.Optional;
+
 import com.holonplatform.core.Registration;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
-import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.HasTheme;
 
 /**
@@ -31,27 +32,22 @@ import com.vaadin.flow.component.HasTheme;
 public interface ApplicationLayout extends HasTheme {
 
 	/**
-	 * Set the width limit for which the application menu becomes collapsed.
-	 * @param width The responsive width (default il <code>640px</code>)
-	 */
-	void setResponsiveWidth(String width);
-	
-	/**
-	 * Closes the drawer, only if not persistent (i.e. only if app layout is in narrow state).
-	 */
-	void closeDrawer();
-
-	/**
-	 * Set the application drawer (i.e. the left layout side which typically contains the application menu) content.
-	 * @param component The content to set
-	 */
-	void setDrawerContent(Component component);
-
-	/**
 	 * Set the application layout content.
-	 * @param content The content to set in the application layout viewport
+	 * @param content The content to set in the application layout viewport (may be null)
 	 */
-	void setContent(HasElement content);
+	void setContent(Component content);
+
+	/**
+	 * Add one or more components to the drawer slot.
+	 * @param components The components to add
+	 */
+	void addToDrawer(Component... components);
+
+	/**
+	 * Remove one or more components from the application layout (any slot).
+	 * @param components The components to remove
+	 */
+	void remove(Component... components);
 
 	/**
 	 * Get the application header <em>title</em> slot.
@@ -70,18 +66,6 @@ public interface ApplicationLayout extends HasTheme {
 	 * @return The application header <em>actions</em> slot {@link HasComponents} reference
 	 */
 	HasComponents getHeaderActions();
-
-	/**
-	 * Get whether to move context actions in application footer when in narrow state.
-	 * @return Whether to move context actions in application footer when in narrow state
-	 */
-	boolean isResponsiveFooter();
-
-	/**
-	 * Set whether to move context actions in application footer when in narrow state.
-	 * @param responsiveFooter Whether to move context actions in application footer when in narrow state
-	 */
-	void setResponsiveFooter(boolean responsiveFooter);
 
 	/**
 	 * Adds theme variants to the component.
@@ -103,10 +87,85 @@ public interface ApplicationLayout extends HasTheme {
 	Registration addApplicationContentChangeListener(ApplicationContentChangeListener listener);
 
 	/**
-	 * Add an {@link AppLayoutNarrowStateChangeListener} to listen for narrow state changes.
+	 * Add an {@link DrawerStateChangeEventListener} to listen for drawer state changes.
 	 * @param listener The listener to add (not null)
 	 * @return Listener handler
 	 */
-	Registration addAppLayoutNarrowStateChangeListener(AppLayoutNarrowStateChangeListener listener);
+	Registration addDrawerStateChangeEventListener(DrawerStateChangeEventListener listener);
+
+	// ------- events
+
+	/**
+	 * A listener to listen for application content change events.
+	 */
+	@FunctionalInterface
+	public interface ApplicationContentChangeListener extends EventListener, Serializable {
+
+		/**
+		 * Invoked when the application content changes.
+		 * @param event The application content change event
+		 */
+		void applicationContentChange(ApplicationContentChangeEvent event);
+
+	}
+
+	/**
+	 * Application content change event.
+	 */
+	public interface ApplicationContentChangeEvent extends Serializable {
+
+		/**
+		 * Get the {@link ApplicationLayout} which triggered the event.
+		 * @return Event source
+		 */
+		ApplicationLayout getApplicationLayout();
+
+		/**
+		 * Get the new application layout content, if available.
+		 * @return Optional application layout content
+		 */
+		Optional<Component> getContent();
+
+	}
+
+	/**
+	 * A listener to listen for app layout drawer state change events.
+	 */
+	@FunctionalInterface
+	public interface DrawerStateChangeEventListener extends EventListener, Serializable {
+
+		/**
+		 * Invoked when the app layout drawer state changes.
+		 * @param event The app layout drawer state change event
+		 */
+		void drawerStateChange(DrawerStateChangeEvent event);
+
+	}
+
+	/**
+	 * App layout drawer state change event.
+	 */
+	public interface DrawerStateChangeEvent extends Serializable {
+
+		/**
+		 * Get the {@link ApplicationLayout} which triggered the event.
+		 * @return Event source
+		 */
+		ApplicationLayout getApplicationLayout();
+
+		/**
+		 * Get whether the drawer is in <em>overlay</em> state, i.e. is hidden by default and opens as an overlay.
+		 * @return Whether the drawer is in <em>overlay</em> state
+		 */
+		boolean isOverlay();
+
+		/**
+		 * Get whether the drawer is in <em>collapsed</em> state, i.e. with a small width when not in <em>overlay</em>
+		 * state.
+		 * @return Whether the drawer is in <em>collapsed</em> state
+		 */
+		boolean isCollapsed();
+
+	}
 
 }

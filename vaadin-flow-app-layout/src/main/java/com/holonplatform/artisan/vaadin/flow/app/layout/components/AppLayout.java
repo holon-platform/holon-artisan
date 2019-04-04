@@ -15,189 +15,122 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout.components;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.holonplatform.artisan.core.utils.Obj;
-import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
-import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.AppLayoutNarrowStateChangeEvent;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.AppLayoutNarrowStateChangeListener;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.ApplicationContentChangeEvent;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.ApplicationContentChangeListener;
-import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultAppLayoutNarrowStateChangeEvent;
-import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultApplicationContentChangeEvent;
-import com.holonplatform.core.Registration;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.EventData;
-import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasElement;
-import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.PropertyDescriptor;
+import com.vaadin.flow.component.PropertyDescriptors;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.polymertemplate.EventHandler;
-import com.vaadin.flow.component.polymertemplate.Id;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.templatemodel.TemplateModel;
+import com.vaadin.flow.router.RouterLayout;
 
-@Tag("holon-app-layout")
-@HtmlImport("frontend://src/com/holonplatform/artisan/vaadin/flow/app/layout/app-layout.html")
-@HtmlImport("frontend://src/com/holonplatform/artisan/vaadin/flow/app/layout/app-layout-styles.html")
-public class AppLayout extends PolymerTemplate<TemplateModel> implements ApplicationLayout, HasStyle {
+@Tag("vaadin-app-layout")
+@HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-app-layout.html")
+public class AppLayout extends Component implements RouterLayout {
+	
+	private static final long serialVersionUID = -5362534160619464636L;
+	
+	private static final PropertyDescriptor<Boolean, Boolean> drawerFirstProperty = PropertyDescriptors
+			.propertyWithDefault("drawerFirst", false);
+	private static final PropertyDescriptor<Boolean, Boolean> drawerOpenedProperty = PropertyDescriptors
+			.propertyWithDefault("drawerOpened", true);
+	private static final PropertyDescriptor<Boolean, Boolean> overlayProperty = PropertyDescriptors
+			.propertyWithDefault("overlay", false);
 
-	private static final long serialVersionUID = 8796069540985099702L;
+	private Component content;
 
-	private final HorizontalLayout titleSlot;
-	private final HorizontalLayout contextActionsSlot;
-	private final HorizontalLayout actionsSlot;
-
-	@Id("drawer")
-	private AppDrawer drawer;
-
-	private final Div drawerContent;
-	private final Div applicationContent;
-
-	private final List<ApplicationContentChangeListener> applicationContentChangeListeners = new LinkedList<>();
-
-	private final List<AppLayoutNarrowStateChangeListener> appLayoutNarrowStateChangeListeners = new LinkedList<>();
-
-	public AppLayout() {
-		super();
-
-		setResponsiveFooter(true);
-
-		titleSlot = new HorizontalLayout();
-		titleSlot.setPadding(false);
-		titleSlot.setMargin(false);
-		titleSlot.setHeightFull();
-		titleSlot.setAlignItems(FlexComponent.Alignment.CENTER);
-		titleSlot.getElement().setAttribute("slot", "header-title");
-
-		actionsSlot = new HorizontalLayout();
-		actionsSlot.setPadding(false);
-		actionsSlot.setMargin(false);
-		actionsSlot.setHeightFull();
-		actionsSlot.setAlignItems(FlexComponent.Alignment.CENTER);
-		actionsSlot.getElement().setAttribute("slot", "header-actions");
-
-		contextActionsSlot = new HorizontalLayout();
-		contextActionsSlot.setPadding(false);
-		contextActionsSlot.setMargin(false);
-		contextActionsSlot.setHeightFull();
-		contextActionsSlot.setAlignItems(FlexComponent.Alignment.CENTER);
-		contextActionsSlot.getElement().setAttribute("slot", "header-context-actions");
-
-		drawerContent = new Div();
-		drawerContent.setHeight("100%");
-		drawerContent.getElement().setAttribute("slot", "drawer-content");
-
-		applicationContent = new Div();
-		applicationContent.setHeight("100%");
-		applicationContent.setWidth("100%");
-		applicationContent.getElement().setAttribute("slot", "application-content");
-
-		getElement().appendChild(titleSlot.getElement(), actionsSlot.getElement(), contextActionsSlot.getElement(),
-				drawerContent.getElement(), applicationContent.getElement());
+	public boolean isDrawerFirst() {
+		return drawerFirstProperty.get(this);
 	}
 
-	protected AppDrawer getDrawer() {
-		return drawer;
+	public void setDrawerFirst(boolean drawerFirst) {
+		drawerFirstProperty.set(this, drawerFirst);
 	}
 
-	@Override
-	public void setContent(HasElement content) {
-		this.applicationContent.getElement().removeAllChildren();
+	public boolean isDrawerOpened() {
+		return drawerOpenedProperty.get(this);
+	}
+
+	public void setDrawerOpened(boolean drawerOpened) {
+		drawerOpenedProperty.set(this, drawerOpened);
+	}
+
+	public boolean isOverlay() {
+		return overlayProperty.get(this);
+	}
+
+	/**
+	 * Returns the displayed content
+	 */
+	public Component getContent() {
+		return content;
+	}
+
+	/**
+	 * Sets the displayed content.
+	 *
+	 * @param content {@link Component} to display in the content area
+	 */
+	public void setContent(Component content) {
+
+		removeContent();
+
 		if (content != null) {
-			this.applicationContent.getElement().appendChild(content.getElement());
-		}
-		// fire listeners
-		final ApplicationContentChangeEvent event = new DefaultApplicationContentChangeEvent(this, content);
-		applicationContentChangeListeners.forEach(l -> l.applicationContentChange(event));
-	}
-
-	@Override
-	public void setResponsiveWidth(String width) {
-		getElement().setProperty("responsiveWidth", width);
-	}
-
-	@EventHandler
-	public void onNarrowStateChange(@EventData("event.detail.value") boolean narrow) {
-		contextActionsSlot.getElement().setAttribute("slot", narrow ? "application-footer" : "header-context-actions");
-		// fire listeners
-		final AppLayoutNarrowStateChangeEvent event = new DefaultAppLayoutNarrowStateChangeEvent(this, narrow);
-		appLayoutNarrowStateChangeListeners.forEach(l -> l.appLayoutNarrowStateChange(event));
-	}
-
-	@Override
-	public boolean isResponsiveFooter() {
-		return getElement().hasAttribute("footer");
-	}
-
-	@Override
-	public void setResponsiveFooter(boolean responsiveFooter) {
-		if (responsiveFooter) {
-			getElement().setAttribute("footer", "");
-		} else {
-			getElement().removeAttribute("footer");
+			this.content = content;
+			content.getElement().removeAttribute("slot");
+			add(content);
 		}
 	}
 
-	@Override
-	public void closeDrawer() {
-		getElement().callFunction("closeIfNotPersistent");
+	public void addToDrawer(Component... components) {
+		addToSlot("drawer", components);
 	}
 
-	@Override
-	public void setDrawerContent(Component component) {
-		drawerContent.removeAll();
+	public void addToNavbar(Component... components) {
+		addToSlot("navbar", components);
+	}
+
+	public void remove(Component... components) {
+		for (Component component : components) {
+			remove(component);
+		}
+	}
+
+	private void addToSlot(String slot, Component... components) {
+		for (Component component : components) {
+			setSlot(component, slot);
+			add(component);
+		}
+	}
+
+	private void add(Component component) {
+		getElement().appendChild(component.getElement());
+	}
+
+	private static void setSlot(Component component, String slot) {
+		component.getElement().setAttribute("slot", slot);
+	}
+
+	/**
+	 * Removes the displayed content.
+	 */
+	private void removeContent() {
+		remove(this.content);
+		this.content = null;
+	}
+
+	@SuppressWarnings("static-method")
+	private void remove(Component component) {
 		if (component != null) {
-			drawerContent.add(component);
+			component.getElement().removeFromParent();
 		}
 	}
 
 	@Override
-	public HasComponents getHeaderTitle() {
-		return titleSlot;
-	}
+	public void showRouterLayoutContent(HasElement content) {
+		final Component target = content.getElement().getComponent()
+				.orElseThrow(() -> new IllegalArgumentException("AppLayout content must be a Component"));
 
-	@Override
-	public HasComponents getHeaderContextActions() {
-		return contextActionsSlot;
-	}
-
-	@Override
-	public HasComponents getHeaderActions() {
-		return actionsSlot;
-	}
-
-	@Override
-	public void addThemeVariants(AppLayoutVariant... variants) {
-		getThemeNames().addAll(Stream.of(variants).map(AppLayoutVariant::getVariantName).collect(Collectors.toList()));
-	}
-
-	@Override
-	public void removeThemeVariants(AppLayoutVariant... variants) {
-		getThemeNames()
-				.removeAll(Stream.of(variants).map(AppLayoutVariant::getVariantName).collect(Collectors.toList()));
-	}
-
-	@Override
-	public Registration addApplicationContentChangeListener(ApplicationContentChangeListener listener) {
-		Obj.argumentNotNull(listener, "ApplicationContentChangeListener must be not null");
-		applicationContentChangeListeners.add(listener);
-		return () -> applicationContentChangeListeners.remove(listener);
-	}
-
-	@Override
-	public Registration addAppLayoutNarrowStateChangeListener(AppLayoutNarrowStateChangeListener listener) {
-		Obj.argumentNotNull(listener, "AppLayoutNarrowStateChangeListener must be not null");
-		appLayoutNarrowStateChangeListeners.add(listener);
-		return () -> appLayoutNarrowStateChangeListeners.remove(listener);
+		setContent(target);
 	}
 
 }

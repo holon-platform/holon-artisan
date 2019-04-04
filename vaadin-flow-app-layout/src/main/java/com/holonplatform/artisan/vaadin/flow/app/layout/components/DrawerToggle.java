@@ -13,27 +13,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.holonplatform.artisan.vaadin.flow.app.layout.events;
+package com.holonplatform.artisan.vaadin.flow.app.layout.components;
 
-import java.io.Serializable;
-import java.util.EventListener;
-
-import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.dependency.HtmlImport;
 
 /**
- * A listener to listen for app layout narrow state change events.
- *
- * @see ApplicationLayout
+ * Application layout drawer toggle button.
  * 
  * @since 1.0.2
  */
-@FunctionalInterface
-public interface AppLayoutNarrowStateChangeListener extends EventListener, Serializable {
-
-	/**
-	 * Invoked when the app layout narrow state changes.
-	 * @param event The app layout narrow state change event
-	 */
-	void appLayoutNarrowStateChange(AppLayoutNarrowStateChangeEvent event);
-
+@Tag("vaadin-drawer-toggle")
+@HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-drawer-toggle.html")
+public class DrawerToggle extends Component {
 }

@@ -16,24 +16,27 @@
 package com.holonplatform.artisan.vaadin.flow.app.layout.internal;
 
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.AppLayoutNarrowStateChangeEvent;
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout.DrawerStateChangeEvent;
 
 /**
- * Default {@link AppLayoutNarrowStateChangeEvent} implementation.
+ * Default {@link DrawerStateChangeEvent} implementation.
  *
  * @since 1.0.2
  */
-public class DefaultAppLayoutNarrowStateChangeEvent implements AppLayoutNarrowStateChangeEvent {
+public class DefaultDrawerStateChangeEvent implements DrawerStateChangeEvent {
 
 	private static final long serialVersionUID = -1275277951317879819L;
 
 	private final ApplicationLayout applicationLayout;
-	private final boolean narrow;
+	private final boolean overlay;
+	private final boolean collapsed;
 
-	public DefaultAppLayoutNarrowStateChangeEvent(ApplicationLayout applicationLayout, boolean narrow) {
+	public DefaultDrawerStateChangeEvent(ApplicationLayout applicationLayout, boolean overlay,
+			boolean collapsed) {
 		super();
 		this.applicationLayout = applicationLayout;
-		this.narrow = narrow;
+		this.overlay = overlay;
+		this.collapsed = collapsed;
 	}
 
 	@Override
@@ -42,8 +45,13 @@ public class DefaultAppLayoutNarrowStateChangeEvent implements AppLayoutNarrowSt
 	}
 
 	@Override
-	public boolean isNarrow() {
-		return narrow;
+	public boolean isOverlay() {
+		return overlay;
+	}
+
+	@Override
+	public boolean isCollapsed() {
+		return collapsed;
 	}
 
 }

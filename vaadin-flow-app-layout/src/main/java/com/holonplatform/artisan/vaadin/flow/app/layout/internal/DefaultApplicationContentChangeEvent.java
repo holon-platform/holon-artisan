@@ -18,8 +18,8 @@ package com.holonplatform.artisan.vaadin.flow.app.layout.internal;
 import java.util.Optional;
 
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
-import com.holonplatform.artisan.vaadin.flow.app.layout.events.ApplicationContentChangeEvent;
-import com.vaadin.flow.component.HasElement;
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout.ApplicationContentChangeEvent;
+import com.vaadin.flow.component.Component;
 
 /**
  * Default {@link ApplicationContentChangeEvent} implementation.
@@ -31,9 +31,9 @@ public class DefaultApplicationContentChangeEvent implements ApplicationContentC
 	private static final long serialVersionUID = -808826828658992399L;
 
 	private final ApplicationLayout applicationLayout;
-	private final HasElement content;
+	private final Component content;
 
-	public DefaultApplicationContentChangeEvent(ApplicationLayout applicationLayout, HasElement content) {
+	public DefaultApplicationContentChangeEvent(ApplicationLayout applicationLayout, Component content) {
 		super();
 		this.applicationLayout = applicationLayout;
 		this.content = content;
@@ -45,7 +45,7 @@ public class DefaultApplicationContentChangeEvent implements ApplicationContentC
 	}
 
 	@Override
-	public Optional<HasElement> getContent() {
+	public Optional<Component> getContent() {
 		return Optional.ofNullable(content);
 	}
 
