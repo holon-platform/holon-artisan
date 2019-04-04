@@ -67,7 +67,7 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		addToNavbar(headerStart, headerContent, headerEnd);
 	}
 
-	private HorizontalLayout createHeaderSlot() {
+	private static HorizontalLayout createHeaderSlot() {
 		final HorizontalLayout slot = new HorizontalLayout();
 		slot.addClassName("app-layout-header-slot");
 		slot.setMargin(false);

@@ -27,4 +27,7 @@ import com.vaadin.flow.component.dependency.HtmlImport;
 @Tag("vaadin-drawer-toggle")
 @HtmlImport("frontend://bower_components/vaadin-app-layout/src/vaadin-drawer-toggle.html")
 public class DrawerToggle extends Component {
+
+	private static final long serialVersionUID = -2597101031998871232L;
+	
 }
