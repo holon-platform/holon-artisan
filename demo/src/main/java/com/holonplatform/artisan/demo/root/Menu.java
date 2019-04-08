@@ -2,6 +2,7 @@ package com.holonplatform.artisan.demo.root;
 
 import java.util.Collections;
 
+import com.holonplatform.artisan.demo.components.DownloadLinkPage;
 import com.holonplatform.artisan.demo.components.ExportPage;
 import com.holonplatform.artisan.demo.components.HomePage;
 import com.holonplatform.artisan.demo.components.InputFiltersPage;
@@ -54,9 +55,9 @@ public class Menu extends AppRouterLayout {
 		});
 
 		/*
-		addAppLayoutNarrowStateChangeListener(event -> {
-			System.err.println("-------> NARROW state changed: " + event.isNarrow());
-		});*/
+		 * addAppLayoutNarrowStateChangeListener(event -> { System.err.println("-------> NARROW state changed: " +
+		 * event.isNarrow()); });
+		 */
 	}
 
 	private Component getMenuContent() {
@@ -96,6 +97,12 @@ public class Menu extends AppRouterLayout {
 		btn = new Button("Input filters");
 		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		btn.addClickListener(event -> getUI().get().navigate(InputFiltersPage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
+
+		btn = new Button("Download link");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btn.addClickListener(event -> getUI().get().navigate(DownloadLinkPage.class));
 		btn.setWidth("100%");
 		vl.add(btn);
 
