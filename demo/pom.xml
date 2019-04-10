@@ -23,6 +23,12 @@
 		<dependency>
 			<groupId>com.holon-platform.vaadin</groupId>
 			<artifactId>holon-starter-vaadin-flow</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-app-layout-flow</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- JDBC Datastore with HikariCP starter -->
@@ -36,11 +42,23 @@
 			<groupId>com.holon-platform.artisan</groupId>
 			<artifactId>holon-artisan-vaadin-flow-components</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-app-layout-flow</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.holon-platform.artisan</groupId>
 			<artifactId>holon-artisan-vaadin-flow-export</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-app-layout-flow</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.holon-platform.artisan</groupId>

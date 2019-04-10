@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.app.layout;
 import java.io.Serializable;
 import java.util.EventListener;
 import java.util.Optional;
+import java.util.Set;
 
 import com.holonplatform.core.Registration;
 import com.vaadin.flow.component.Component;
@@ -78,6 +79,50 @@ public interface ApplicationLayout extends HasTheme {
 	 * @param variants theme variants to remove
 	 */
 	void removeThemeVariants(AppLayoutVariant... variants);
+
+	/**
+	 * Get the theme variants.
+	 * @return the theme variants, empty if none
+	 */
+	Set<AppLayoutVariant> getThemeVariants();
+
+	/**
+	 * Get whether the app layout drawer is opened.
+	 * @return whether the app layout drawer is opened
+	 */
+	boolean isDrawerOpened();
+
+	/**
+	 * Set the app layout drawer opened or closed.
+	 * @param drawerOpened whether the app layout drawer is opened
+	 */
+	void setDrawerOpened(boolean drawerOpened);
+
+	/**
+	 * Get whether the app layout is in overlay mode, i.e. the drawer opens as an overlay on the app layout.
+	 * @return whether the app layout is in overlay mode
+	 */
+	boolean isOverlay();
+
+	/**
+	 * Get the whether to automatically close the app layout drawer after a routing event if the app layout is in
+	 * overlay mode.
+	 * <p>
+	 * Default is <code>true</code>.
+	 * </p>
+	 * @return whether to automatically close the app layout drawer after a routing event
+	 */
+	boolean isAutoCloseDrawer();
+
+	/**
+	 * Set the whether to automatically close the app layout drawer after a routing event if the app layout is in
+	 * overlay mode.
+	 * <p>
+	 * Default is <code>true</code>.
+	 * </p>
+	 * @param autoCloseDrawer whether to automatically close the app layout drawer after a routing event
+	 */
+	void setAutoCloseDrawer(boolean autoCloseDrawer);
 
 	/**
 	 * Add an {@link ApplicationContentChangeListener} to listen for application content changes.
@@ -160,11 +205,10 @@ public interface ApplicationLayout extends HasTheme {
 		boolean isOverlay();
 
 		/**
-		 * Get whether the drawer is in <em>collapsed</em> state, i.e. with a small width when not in <em>overlay</em>
-		 * state.
-		 * @return Whether the drawer is in <em>collapsed</em> state
+		 * Get whether the drawer is opened.
+		 * @return Whether the drawer opened
 		 */
-		boolean isCollapsed();
+		boolean isDrawerOpened();
 
 	}
 

@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.vaadin.flow.app.layout;
 
+import java.util.Optional;
+
 /**
  * The variants for app layout.
  * 
@@ -35,11 +37,21 @@ public enum AppLayoutVariant {
 
 	/**
 	 * Gets the variant name.
-	 *
 	 * @return variant name
 	 */
 	public String getVariantName() {
 		return variant;
+	}
+
+	public static Optional<AppLayoutVariant> fromThemeName(String name) {
+		if (name != null) {
+			for (AppLayoutVariant variant : values()) {
+				if (name.equals(variant.getVariantName())) {
+					return Optional.of(variant);
+				}
+			}
+		}
+		return Optional.empty();
 	}
 
 }

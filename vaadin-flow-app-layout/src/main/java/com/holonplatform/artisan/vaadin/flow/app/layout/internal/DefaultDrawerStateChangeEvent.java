@@ -29,14 +29,13 @@ public class DefaultDrawerStateChangeEvent implements DrawerStateChangeEvent {
 
 	private final ApplicationLayout applicationLayout;
 	private final boolean overlay;
-	private final boolean collapsed;
+	private final boolean drawerOpened;
 
-	public DefaultDrawerStateChangeEvent(ApplicationLayout applicationLayout, boolean overlay,
-			boolean collapsed) {
+	public DefaultDrawerStateChangeEvent(ApplicationLayout applicationLayout, boolean overlay, boolean drawerOpened) {
 		super();
 		this.applicationLayout = applicationLayout;
 		this.overlay = overlay;
-		this.collapsed = collapsed;
+		this.drawerOpened = drawerOpened;
 	}
 
 	@Override
@@ -50,8 +49,8 @@ public class DefaultDrawerStateChangeEvent implements DrawerStateChangeEvent {
 	}
 
 	@Override
-	public boolean isCollapsed() {
-		return collapsed;
+	public boolean isDrawerOpened() {
+		return drawerOpened;
 	}
 
 }

@@ -18,6 +18,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.ParentLayout;
 
@@ -39,7 +40,10 @@ public class Menu extends AppRouterLayout {
 		getHeaderTitle().add(title);
 
 		getHeaderActions().add(Components.button().icon(VaadinIcon.BELL)
-				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY).build());
+				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY)
+				.onClick(
+						event -> Notification.show("Overlay: " + isOverlay() + " - Drawer opened: " + isDrawerOpened()))
+				.build());
 
 		addToDrawer(getMenuContent());
 
@@ -54,10 +58,10 @@ public class Menu extends AppRouterLayout {
 					.forEach(a -> event.getApplicationLayout().getHeaderContextActions().add(a));
 		});
 
-		/*
-		 * addAppLayoutNarrowStateChangeListener(event -> { System.err.println("-------> NARROW state changed: " +
-		 * event.isNarrow()); });
-		 */
+		addDrawerStateChangeEventListener(evt -> {
+			System.err.println("-------> Overlay: " + evt.isOverlay());
+			System.err.println("-------> Drawer opened: " + evt.isDrawerOpened());
+		});
 	}
 
 	private Component getMenuContent() {
