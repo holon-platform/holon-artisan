@@ -53,7 +53,7 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	public AppRouterLayout() {
 		super();
 		getElement().setAttribute("app-router-layout", "");
-		
+
 		getElement().addPropertyChangeListener("overlay", evt -> onDrawerOverlayChangeEvent(evt));
 		getElement().addPropertyChangeListener("drawerOpened", evt -> onDrawerOverlayChangeEvent(evt));
 
