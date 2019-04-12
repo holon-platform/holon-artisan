@@ -67,15 +67,17 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		navbarStart.getElement().setAttribute("part", "navbar-start");
 		navbarContent = createNavbarSlot();
 		navbarContent.getElement().setAttribute("part", "navbar-content");
+		navbarContent.addClassName("navbar-content");
 		navbarEnd = createNavbarSlot();
 		navbarEnd.getElement().setAttribute("part", "navbar-end");
 
 		addToNavbar(navbarStart, navbarContent, navbarEnd);
+
 	}
 
 	private static HorizontalLayout createNavbarSlot() {
 		final HorizontalLayout slot = new HorizontalLayout();
-		slot.addClassName("app-layout-navbar-slot");
+		slot.addClassName("navbar-slot");
 		slot.setMargin(false);
 		slot.setPadding(false);
 		slot.setSpacing(true);

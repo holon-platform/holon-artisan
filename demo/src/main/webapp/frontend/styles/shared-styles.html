@@ -1,13 +1,22 @@
+<dom-module id="com-holonplatform-artisan-demo-app-layout-styles" theme-for="vaadin-app-layout">
+  <template>
+    <style>
+    
+      :host {
+        --vaadin-app-layout-touch-optimized: true;
+      }
+      
+    </style>
+  </template>
+</dom-module>
+
 <custom-style>
 	<style>
 			
-    	/*vaadin-dialog-overlay flow-component-renderer > div span.h-window-title {
-      		color: red;
-    	}  
-    	
-    	vaadin-dialog-overlay flow-component-renderer > div vaadin-horizontal-layout.h-window-footer vaadin-button {
-      		background-color: #ffe000;
-    	}*/
+    	vaadin-app-layout [slot="navbar"][part="navbar-start"] .app-title {
+    		font-size: var(--lumo-font-size-l);
+    		color: #999;
+    	}
     	
 	</style>
 </custom-style>

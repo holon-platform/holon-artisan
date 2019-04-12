@@ -36,7 +36,7 @@ public class Menu extends AppRouterLayout {
 		logo.setColor("#0000ff");
 		getNavbarStart().add(logo);
 
-		this.title = Components.label().text("Demo").build();
+		this.title = Components.label().text("Demo").styleName("app-title").build();
 		getNavbarStart().add(title);
 
 		getNavbarEnd().add(Components.button().icon(VaadinIcon.BELL)
