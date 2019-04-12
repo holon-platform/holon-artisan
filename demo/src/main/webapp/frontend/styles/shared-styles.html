@@ -1,9 +1,12 @@
 <dom-module id="com-holonplatform-artisan-demo-app-layout-styles" theme-for="vaadin-app-layout">
   <template>
     <style>
-    
-      :host {
-        --vaadin-app-layout-touch-optimized: true;
+
+      @media (max-width: 800px),
+      (max-height: 600px) {
+        :host {
+          --vaadin-app-layout-touch-optimized: true;
+        }
       }
       
     </style>

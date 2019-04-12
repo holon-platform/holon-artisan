@@ -161,8 +161,21 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		return () -> overlayStateChangeEventListeners.remove(listener);
 	}
 
+	/**
+	 * Invoked when the overlay property value changes.
+	 * @param event Property value change event
+	 */
 	protected void onOverlayChangeEvent(PropertyChangeEvent event) {
-		final OverlayStateChangeEvent evt = new DefaultOveralyStateChangeEvent(this, getBooleanValue(event.getValue()));
+		final boolean overlay = getBooleanValue(event.getValue());
+		// ensure drawer opened when not overlay
+		/*// TODO check
+		if (isAutoCloseDrawer() && !overlay) {
+			if (!isDrawerOpened()) {
+				setDrawerOpened(true);
+			}
+		} */
+		// fire listeners
+		final OverlayStateChangeEvent evt = new DefaultOveralyStateChangeEvent(this, overlay);
 		overlayStateChangeEventListeners.forEach(l -> l.overlayStateChange(evt));
 	}
 
