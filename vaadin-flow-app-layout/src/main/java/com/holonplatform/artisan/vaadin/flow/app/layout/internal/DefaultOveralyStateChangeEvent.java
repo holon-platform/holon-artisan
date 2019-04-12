@@ -16,26 +16,24 @@
 package com.holonplatform.artisan.vaadin.flow.app.layout.internal;
 
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
-import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout.DrawerStateChangeEvent;
+import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout.OverlayStateChangeEvent;
 
 /**
- * Default {@link DrawerStateChangeEvent} implementation.
+ * Default {@link OverlayStateChangeEvent} implementation.
  *
  * @since 1.0.2
  */
-public class DefaultDrawerStateChangeEvent implements DrawerStateChangeEvent {
+public class DefaultOveralyStateChangeEvent implements OverlayStateChangeEvent {
 
 	private static final long serialVersionUID = -1275277951317879819L;
 
 	private final ApplicationLayout applicationLayout;
 	private final boolean overlay;
-	private final boolean drawerOpened;
 
-	public DefaultDrawerStateChangeEvent(ApplicationLayout applicationLayout, boolean overlay, boolean drawerOpened) {
+	public DefaultOveralyStateChangeEvent(ApplicationLayout applicationLayout, boolean overlay) {
 		super();
 		this.applicationLayout = applicationLayout;
 		this.overlay = overlay;
-		this.drawerOpened = drawerOpened;
 	}
 
 	@Override
@@ -46,11 +44,6 @@ public class DefaultDrawerStateChangeEvent implements DrawerStateChangeEvent {
 	@Override
 	public boolean isOverlay() {
 		return overlay;
-	}
-
-	@Override
-	public boolean isDrawerOpened() {
-		return drawerOpened;
 	}
 
 }

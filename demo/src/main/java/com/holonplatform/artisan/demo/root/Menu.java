@@ -58,9 +58,8 @@ public class Menu extends AppRouterLayout {
 					.forEach(a -> event.getApplicationLayout().getHeaderContextActions().add(a));
 		});
 
-		addDrawerStateChangeEventListener(evt -> {
+		addOverlayStateChangeEventListener(evt -> {
 			System.err.println("-------> Overlay: " + evt.isOverlay());
-			System.err.println("-------> Drawer opened: " + evt.isDrawerOpened());
 		});
 	}
 

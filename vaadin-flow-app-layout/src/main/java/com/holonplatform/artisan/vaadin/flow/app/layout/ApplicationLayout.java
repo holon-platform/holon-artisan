@@ -132,11 +132,11 @@ public interface ApplicationLayout extends HasTheme {
 	Registration addApplicationContentChangeListener(ApplicationContentChangeListener listener);
 
 	/**
-	 * Add an {@link DrawerStateChangeEventListener} to listen for drawer state changes.
+	 * Add an {@link OverlayStateChangeEventListener} to listen for overlay state changes.
 	 * @param listener The listener to add (not null)
 	 * @return Listener handler
 	 */
-	Registration addDrawerStateChangeEventListener(DrawerStateChangeEventListener listener);
+	Registration addOverlayStateChangeEventListener(OverlayStateChangeEventListener listener);
 
 	// ------- events
 
@@ -174,23 +174,23 @@ public interface ApplicationLayout extends HasTheme {
 	}
 
 	/**
-	 * A listener to listen for app layout drawer state change events.
+	 * A listener to listen for app layout overlay state change events.
 	 */
 	@FunctionalInterface
-	public interface DrawerStateChangeEventListener extends EventListener, Serializable {
+	public interface OverlayStateChangeEventListener extends EventListener, Serializable {
 
 		/**
-		 * Invoked when the app layout drawer state changes.
-		 * @param event The app layout drawer state change event
+		 * Invoked when the app layout overlay state changes.
+		 * @param event The app layout overlay state change event
 		 */
-		void drawerStateChange(DrawerStateChangeEvent event);
+		void overlayStateChange(OverlayStateChangeEvent event);
 
 	}
 
 	/**
-	 * App layout drawer state change event.
+	 * App layout overlay state change event.
 	 */
-	public interface DrawerStateChangeEvent extends Serializable {
+	public interface OverlayStateChangeEvent extends Serializable {
 
 		/**
 		 * Get the {@link ApplicationLayout} which triggered the event.
@@ -199,16 +199,11 @@ public interface ApplicationLayout extends HasTheme {
 		ApplicationLayout getApplicationLayout();
 
 		/**
-		 * Get whether the drawer is in <em>overlay</em> state, i.e. is hidden by default and opens as an overlay.
-		 * @return Whether the drawer is in <em>overlay</em> state
+		 * Get whether the app layout is in <em>overlay</em> state, i.e. the drawer is hidden by default and opens as an
+		 * overlay.
+		 * @return Whether the app layout is in <em>overlay</em> state
 		 */
 		boolean isOverlay();
-
-		/**
-		 * Get whether the drawer is opened.
-		 * @return Whether the drawer opened
-		 */
-		boolean isDrawerOpened();
 
 	}
 

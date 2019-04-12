@@ -26,11 +26,13 @@ import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.app.layout.AppLayoutVariant;
 import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultApplicationContentChangeEvent;
-import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultDrawerStateChangeEvent;
+import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultOveralyStateChangeEvent;
 import com.holonplatform.core.Registration;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -46,7 +48,7 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	private final HorizontalLayout headerEnd;
 
 	private final List<ApplicationContentChangeListener> applicationContentChangeListeners = new LinkedList<>();
-	private final List<DrawerStateChangeEventListener> drawerStateChangeEventListeners = new LinkedList<>();
+	private final List<OverlayStateChangeEventListener> overlayStateChangeEventListeners = new LinkedList<>();
 
 	private boolean autoCloseDrawer = true;
 
@@ -54,8 +56,7 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		super();
 		getElement().setAttribute("app-router-layout", "");
 
-		getElement().addPropertyChangeListener("overlay", evt -> onDrawerOverlayChangeEvent(evt));
-		getElement().addPropertyChangeListener("drawerOpened", evt -> onDrawerOverlayChangeEvent(evt));
+		getElement().addPropertyChangeListener("overlay", evt -> onOverlayChangeEvent(evt));
 
 		final DrawerToggle toggle = new DrawerToggle();
 		toggle.getElement().setAttribute("app-router-layout-toggle", "");
@@ -86,7 +87,7 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	protected void onAttach(AttachEvent attachEvent) {
 		super.onAttach(attachEvent);
 		getUI().ifPresent(ui -> ui.addAfterNavigationListener(event -> {
-			if (isAutoCloseDrawer()) { // TODO isOverlay seems not to work as expected
+			if (isAutoCloseDrawer()) {
 				if (isOverlay() && isDrawerOpened()) {
 					setDrawerOpened(false);
 				}
@@ -152,18 +153,15 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	}
 
 	@Override
-	public Registration addDrawerStateChangeEventListener(DrawerStateChangeEventListener listener) {
+	public Registration addOverlayStateChangeEventListener(OverlayStateChangeEventListener listener) {
 		Obj.argumentNotNull(listener, "Listener must be not null");
-		drawerStateChangeEventListeners.add(listener);
-		return () -> drawerStateChangeEventListeners.remove(listener);
+		overlayStateChangeEventListeners.add(listener);
+		return () -> overlayStateChangeEventListeners.remove(listener);
 	}
 
-	protected void onDrawerOverlayChangeEvent(PropertyChangeEvent event) {
-		boolean overlay = ("overlay".equals(event.getPropertyName())) ? getBooleanValue(event.getValue()) : isOverlay();
-		boolean drawerOpened = ("drawerOpened".equals(event.getPropertyName())) ? getBooleanValue(event.getValue())
-				: isDrawerOpened();
-		final DrawerStateChangeEvent evt = new DefaultDrawerStateChangeEvent(this, overlay, drawerOpened);
-		drawerStateChangeEventListeners.forEach(l -> l.drawerStateChange(evt));
+	protected void onOverlayChangeEvent(PropertyChangeEvent event) {
+		final OverlayStateChangeEvent evt = new DefaultOveralyStateChangeEvent(this, getBooleanValue(event.getValue()));
+		overlayStateChangeEventListeners.forEach(l -> l.overlayStateChange(evt));
 	}
 
 	private static boolean getBooleanValue(Serializable value) {
