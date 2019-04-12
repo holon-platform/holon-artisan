@@ -4,6 +4,7 @@
     
       :root {
         --app-layout-navbar-slots-spacing: 1em;
+        --app-layout-navbar-drawer-small-width: 4em;
       }
       
       :host([app-router-layout]) {
@@ -11,8 +12,16 @@
         --safe-area-inset-right: 1em;
       }
       
+      :host([app-router-layout]) [part="drawer"] {
+        padding-left: 0;
+      }
+      
       :host([app-router-layout][overlay]) {
         --safe-area-inset-left: 0;
+      }
+      
+      :host(:not([overlay])[app-router-layout][theme~="small"]) [part="drawer"] {
+        width: var(--app-layout-navbar-drawer-small-width, 4em);
       }
       
     </style>
