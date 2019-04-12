@@ -34,12 +34,12 @@ public class Menu extends AppRouterLayout {
 
 		final Icon logo = VaadinIcon.CUBES.create();
 		logo.setColor("#0000ff");
-		getHeaderTitle().add(logo);
+		getNavbarStart().add(logo);
 
 		this.title = Components.label().text("Demo").build();
-		getHeaderTitle().add(title);
+		getNavbarStart().add(title);
 
-		getHeaderActions().add(Components.button().icon(VaadinIcon.BELL)
+		getNavbarEnd().add(Components.button().icon(VaadinIcon.BELL)
 				.withThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_PRIMARY)
 				.onClick(
 						event -> Notification.show("Overlay: " + isOverlay() + " - Drawer opened: " + isDrawerOpened()))
@@ -52,10 +52,10 @@ public class Menu extends AppRouterLayout {
 			title.setText(event.getContent().filter(c -> c instanceof HasViewTitle)
 					.map(c -> ((HasViewTitle) c).getTitle()).flatMap(t -> LocalizationProvider.localize(t)).orElse(""));
 			// actions
-			event.getApplicationLayout().getHeaderContextActions().removeAll();
+			event.getApplicationLayout().getNavbarContent().removeAll();
 			event.getContent().filter(c -> c instanceof HasViewActions).map(c -> ((HasViewActions) c).getActions(this))
 					.orElse(Collections.emptyList())
-					.forEach(a -> event.getApplicationLayout().getHeaderContextActions().add(a));
+					.forEach(a -> event.getApplicationLayout().getNavbarContent().add(a));
 		});
 
 		addOverlayStateChangeEventListener(evt -> {

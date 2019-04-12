@@ -3,7 +3,7 @@
     <style>
     
       :root {
-        --app-layout-header-slots-spacing: 1em;
+        --app-layout-navbar-slots-spacing: 1em;
       }
       
       :host([app-router-layout]) {
@@ -44,12 +44,12 @@
 
 <custom-style>
   <style>
-    [slot="navbar"][part="header-start"] {
+    [slot="navbar"][part="navbar-start"] {
       flex-grow: 1;
     }
     
-    [slot="navbar"][part="header-end"] {
-      padding-left: var(--app-layout-header-slots-spacing, 1em);
+    [slot="navbar"][part="navbar-end"] {
+      padding-left: var(--app-layout-navbar-slots-spacing, 1em);
       flex-stretch: 0;
     }
   </style>

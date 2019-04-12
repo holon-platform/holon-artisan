@@ -51,22 +51,22 @@ public interface ApplicationLayout extends HasTheme {
 	void remove(Component... components);
 
 	/**
-	 * Get the application header <em>title</em> slot.
-	 * @return The application header <em>title</em> slot {@link HasComponents} reference
+	 * Get the application navbar <em>start</em> slot, which can be used for example for application title and logo.
+	 * @return The application navbar <em>start</em> slot {@link HasComponents} reference
 	 */
-	HasComponents getHeaderTitle();
+	HasComponents getNavbarStart();
 
 	/**
-	 * Get the application header <em>context actions</em> slot.
-	 * @return The application header <em>context actions</em> slot {@link HasComponents} reference
+	 * Get the application navbar <em>content</em> slot, which can be used for example for application context actions.
+	 * @return The application navbar <em>content</em> slot {@link HasComponents} reference
 	 */
-	HasComponents getHeaderContextActions();
+	HasComponents getNavbarContent();
 
 	/**
-	 * Get the application header <em>actions</em> slot.
-	 * @return The application header <em>actions</em> slot {@link HasComponents} reference
+	 * Get the application navbar <em>end</em> slot, which can be used for example for fixed/common application actions.
+	 * @return The application navbar <em>end</em> slot {@link HasComponents} reference
 	 */
-	HasComponents getHeaderActions();
+	HasComponents getNavbarEnd();
 
 	/**
 	 * Adds theme variants to the component.

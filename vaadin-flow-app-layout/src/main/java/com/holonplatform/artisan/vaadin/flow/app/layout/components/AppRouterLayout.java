@@ -43,9 +43,9 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 
 	private static final long serialVersionUID = 8726407799332318387L;
 
-	private final HorizontalLayout headerStart;
-	private final HorizontalLayout headerContent;
-	private final HorizontalLayout headerEnd;
+	private final HorizontalLayout navbarStart;
+	private final HorizontalLayout navbarContent;
+	private final HorizontalLayout navbarEnd;
 
 	private final List<ApplicationContentChangeListener> applicationContentChangeListeners = new LinkedList<>();
 	private final List<OverlayStateChangeEventListener> overlayStateChangeEventListeners = new LinkedList<>();
@@ -63,19 +63,19 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		toggle.getElement().setAttribute("hide-when-not-overlay", "");
 		addToNavbar(toggle);
 
-		headerStart = createHeaderSlot();
-		headerStart.getElement().setAttribute("part", "header-start");
-		headerContent = createHeaderSlot();
-		headerContent.getElement().setAttribute("part", "header-content");
-		headerEnd = createHeaderSlot();
-		headerEnd.getElement().setAttribute("part", "header-end");
+		navbarStart = createNavbarSlot();
+		navbarStart.getElement().setAttribute("part", "navbar-start");
+		navbarContent = createNavbarSlot();
+		navbarContent.getElement().setAttribute("part", "navbar-content");
+		navbarEnd = createNavbarSlot();
+		navbarEnd.getElement().setAttribute("part", "navbar-end");
 
-		addToNavbar(headerStart, headerContent, headerEnd);
+		addToNavbar(navbarStart, navbarContent, navbarEnd);
 	}
 
-	private static HorizontalLayout createHeaderSlot() {
+	private static HorizontalLayout createNavbarSlot() {
 		final HorizontalLayout slot = new HorizontalLayout();
-		slot.addClassName("app-layout-header-slot");
+		slot.addClassName("app-layout-navbar-slot");
 		slot.setMargin(false);
 		slot.setPadding(false);
 		slot.setSpacing(true);
@@ -114,18 +114,18 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	}
 
 	@Override
-	public HasComponents getHeaderTitle() {
-		return headerStart;
+	public HasComponents getNavbarStart() {
+		return navbarStart;
 	}
 
 	@Override
-	public HasComponents getHeaderContextActions() {
-		return headerContent;
+	public HasComponents getNavbarContent() {
+		return navbarContent;
 	}
 
 	@Override
-	public HasComponents getHeaderActions() {
-		return headerEnd;
+	public HasComponents getNavbarEnd() {
+		return navbarEnd;
 	}
 
 	@Override
