@@ -16,14 +16,13 @@
 package com.holonplatform.artisan.demo.config;
 
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSPropertyValueContext;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
-import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration;
-import com.holonplatform.core.property.Property;
 
 public class CategoryXLSValueProvider implements PropertyXLSValueProvider<String> {
 
 	@Override
-	public XLSValue<?> provide(Property<String> property, XLSPropertyConfiguration configuration, String value) {
+	public XLSValue<?> provide(XLSPropertyValueContext<String> context, String value) {
 		return XLSValue.stringValue("[" + value + "]");
 	}
 

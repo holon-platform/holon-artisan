@@ -63,6 +63,7 @@ import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProviderRegistry;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSDataType;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSExporter;
+import com.holonplatform.artisan.vaadin.flow.export.xls.XLSPropertyValueContext;
 import com.holonplatform.artisan.vaadin.flow.export.xls.XLSValue;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellAlignment;
 import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSCellBorder;
@@ -484,7 +485,9 @@ public class DefaultXLSExporter implements XLSExporter {
 				}
 			}
 			// get XLS value using provider
-			XLSValue<?> xlsv = provider.provide(property, propertyConfiguration, propertyValue);
+			final XLSPropertyValueContext<Object> ctx = new DefaultXLSPropertyValueContext<>(property,
+					propertyConfiguration, value);
+			XLSValue<?> xlsv = provider.provide(ctx, propertyValue);
 			if (xlsv == null) {
 				// fallback to default
 				xlsv = XLSValue.stringValue((propertyValue == null) ? null : String.valueOf(propertyValue));
@@ -904,23 +907,21 @@ public class DefaultXLSExporter implements XLSExporter {
 			if (field.isAnnotationPresent(Caption.class)) {
 				String captionMessage = getStringValue(field.getAnnotation(Caption.class).value());
 				return Localizable.builder().message((captionMessage != null) ? captionMessage : value.name())
-						.messageCode(getStringValue(field.getAnnotation(Caption.class).messageCode()))
-						.build();
+						.messageCode(getStringValue(field.getAnnotation(Caption.class).messageCode())).build();
 			}
 		} catch (@SuppressWarnings("unused") NoSuchFieldException | SecurityException e) {
 			return Localizable.of(value.name());
 		}
 		return Localizable.of(value.name());
 	}
-	
+
 	/**
 	 * Read a string annotation value, treating empty strings as <code>null</code> values
 	 * @param annotationValue Annotation string value
 	 * @return String value, or <code>null</code> if <code>annotationValue</code> is an empty string
 	 */
 	private static String getStringValue(String annotationValue) {
-		return (annotationValue != null && !annotationValue.equals("")) ? annotationValue
-				: null;
+		return (annotationValue != null && !annotationValue.equals("")) ? annotationValue : null;
 	}
 
 	/**

@@ -17,7 +17,6 @@ package com.holonplatform.artisan.vaadin.flow.export.xls;
 
 import javax.annotation.Priority;
 
-import com.holonplatform.artisan.vaadin.flow.export.xls.config.XLSPropertyConfiguration;
 import com.holonplatform.core.property.Property;
 
 /**
@@ -41,11 +40,9 @@ public interface PropertyXLSValueProvider<T> {
 
 	/**
 	 * Get the {@link XLSValue} representation for given property bound value.
-	 * @param property The property to which the value refers (never null)
-	 * @param configuration Export property configuration (never null)
-	 * @param value The property value (may be null)
+	 * @param context The property export context
 	 * @return The {@link XLSValue} representation of the property value
 	 */
-	XLSValue<?> provide(Property<T> property, XLSPropertyConfiguration configuration, T value);
+	XLSValue<?> provide(XLSPropertyValueContext<T> context, T value);
 
 }
