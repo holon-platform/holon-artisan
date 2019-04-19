@@ -58,9 +58,9 @@ public class Menu extends AppRouterLayout {
 					.forEach(a -> event.getApplicationLayout().getNavbarContent().add(a));
 		});
 
-		addOverlayStateChangeEventListener(evt -> {
-			System.err.println("-------> Overlay: " + evt.isOverlay());
-		});
+//		addOverlayStateChangeEventListener(evt -> {
+//			System.err.println("-------> Overlay: " + evt.isOverlay());
+//		});
 	}
 
 	private Component getMenuContent() {

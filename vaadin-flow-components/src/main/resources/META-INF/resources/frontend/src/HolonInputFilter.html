@@ -1,0 +1,52 @@
+<!-- Dependency resources -->
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<!-- Element definition -->
+<dom-module id="holon-input-filter">
+    <template>
+    	<style>
+    		:host {
+    			display: flex;
+    			display: -webkit-box;
+    			display: -webkit-flex;
+    			display: -moz-box;
+    			display: -ms-flexbox;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				-moz-flex-direction: row;
+				-ms-flex-direction: row;
+				-o-flex-direction: row;
+    			justify-content: center;
+    			align-items: center;
+    		}
+    		
+    		[part="operator"] {
+    			display: inline-flex;
+    			flex-grow: 0;
+    			flex-shrink: 0;
+    			margin-right: 1px;
+    		}
+    		
+    		[part="input"] {
+    			display: inline-flex;
+    			flex-grow: 1;
+    		}
+    	</style>
+    	<div part="operator">
+    		<slot name="operator"></slot>
+    	</div>
+    	<div part="input">
+    		<slot name="input"></slot>
+    	</div>
+    </template>
+    
+    <!-- Register the element -->
+    <script>
+        class HolonInputFilter extends Polymer.Element {
+            static get is() {
+                return 'holon-input-filter'
+            }
+        }
+        customElements.define(HolonInputFilter.is, HolonInputFilter);
+    </script>
+</dom-module>

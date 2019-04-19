@@ -29,6 +29,7 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFi
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorChangeListener;
 import com.holonplatform.artisan.vaadin.flow.components.builders.OperatorInputFilterConfigurator.FilterOperatorSelectConfigurator;
 import com.holonplatform.artisan.vaadin.flow.components.internal.builders.DefaultFilterOperatorSelectConfigurator;
+import com.holonplatform.artisan.vaadin.flow.components.templates.HolonInputFilter;
 import com.holonplatform.core.Registration;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
@@ -79,6 +80,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		getElement().setAttribute("operator-input-filter", "");
 		// operator select
 		this.operatorSelect = new FilterOperatorSelect(operators);
+		this.operatorSelect.getElement().setAttribute("operator-input-filter-select", "");
 		this.operatorSelect.addValueChangeListener(e -> {
 			// check operator
 			getInput().ifPresent(i -> i.setReadOnly((e.getValue() != null
@@ -99,18 +101,14 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	public void build(Input<T> input) {
 		Obj.argumentNotNull(input, "Input must be not null");
 		this.input = input;
-
+		// ensure no children
 		getChildren().forEach(c -> remove(c));
-
-		final FilterOperatorSelect operatorSelect = getOperatorSelect();
-		operatorSelect.getElement().setAttribute("operator-filter-slot", "operator");
-		add(operatorSelect);
-
-		final Component inputComponent = input.getComponent();
-		inputComponent.getElement().setAttribute("operator-filter-slot", "operator");
-		add(inputComponent);
-
-		inputComponent.getElement().getStyle().set("flex-grow", "1");
+		// add components
+		final HolonInputFilter filter = new HolonInputFilter();
+		filter.setOperatorComponent(getOperatorSelect());
+		filter.setInputComponent(input.getComponent());
+		filter.getElement().getStyle().set("flex-grow", "1");
+		add(filter);
 	}
 
 	/**

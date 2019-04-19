@@ -1,11 +1,8 @@
-<dom-module id="com-holonplatform-operator-input-filter" theme-for="vaadin-custom-field">
+ <dom-module id="com-holonplatform-operator-input-filter" theme-for="vaadin-custom-field">
   <template>
     <style>
-      :host([operator-input-filter]) div.inputs-wrapper {
-        display: flex;
-      }
-      :host([operator-input-filter]) [part="label"] {
-         padding-bottom: 0.25em;
+      :host([operator-input-filter]) .container {
+        flex-grow: 1;
       }
     </style>
   </template>
@@ -14,9 +11,8 @@
 <dom-module id="com-holonplatform-operator-input-filter-operator-select" theme-for="vaadin-select">
   <template>
     <style>
-      :host([operator-filter-slot="operator"]) {
-        width: 4.2em;
-        margin-right: 2px;
+      :host([operator-input-filter-select]) {
+        width: 4.3em;
       }
     </style>
   </template>
