@@ -405,6 +405,9 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 			// configuration
 			setEmptySelectionAllowed(false);
 
+			// default width
+			setWidth("4.3em");
+
 			// labels
 			setItemLabelGenerator(operator -> operator.getSymbol());
 
