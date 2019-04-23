@@ -16,7 +16,7 @@
 package com.holonplatform.artisan.vaadin.flow.components.builders;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterComponent;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasElement;
 
 /**
  * {@link InputFilterComponent} builder.
@@ -25,9 +25,8 @@ import com.vaadin.flow.component.Component;
  *
  * @since 1.0.0
  */
-public interface InputFilterComponentBuilder<C extends Component>
-		extends InputFilterComponentConfigurator<C, InputFilterComponentBuilder<C>>,
-		InputFilterGroupConfigurator<InputFilterComponentBuilder<C>> {
+public interface InputFilterComponentBuilder<C extends HasElement>
+		extends InputFilterComponentConfigurator<C, InputFilterComponentBuilder<C>> {
 
 	/**
 	 * Build the {@link InputFilterComponent}.

@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.communication.PushMode;
 
 /**
@@ -51,6 +52,18 @@ public final class UIUtils implements Serializable {
 				ui.push();
 			}
 		});
+	}
+
+	/**
+	 * Check whether the current browser is running on a touch device.
+	 * @return Whether the current browser is running on a touch device
+	 */
+	public static boolean isTouchDevice() {
+		final VaadinSession session = VaadinSession.getCurrent();
+		if (session != null) {
+			return session.getBrowser().isTouchDevice();
+		}
+		return false;
 	}
 
 }

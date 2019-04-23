@@ -21,6 +21,7 @@ import java.util.function.Function;
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.builders.EnumInputFilterBuilder.EnumSingleSelectInputFilterBuilder;
+import com.holonplatform.artisan.vaadin.flow.components.utils.UIUtils;
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.query.QueryFilter;
@@ -38,7 +39,6 @@ import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectConfigurator.SingleSelectInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectableInputConfigurator;
-import com.holonplatform.vaadin.flow.device.DeviceInfo;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
@@ -75,12 +75,10 @@ public class DefaultEnumSingleSelectInputFilterBuilder<T extends Enum<T>>
 		Obj.argumentNotNull(property, "Property must be not null");
 		this.property = property;
 
-		final boolean mobile = DeviceInfo.get().map(di -> di.isMobile()).orElse(false);
-
 		@SuppressWarnings("unchecked")
 		final Class<T> enumType = (Class<T>) property.getType();
 
-		if (mobile) {
+		if (UIUtils.isTouchDevice()) {
 			final SingleSelectInputBuilder<T, T> builder = Input.singleSimpleSelect(enumType)
 					.items(enumType.getEnumConstants()).itemCaptionGenerator(ItemSetConfigurator.enumCaptionGenerator())
 					.emptySelectionAllowed(true);
