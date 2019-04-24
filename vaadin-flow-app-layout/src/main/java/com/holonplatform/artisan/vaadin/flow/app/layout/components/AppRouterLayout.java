@@ -51,8 +51,12 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	private final List<OverlayStateChangeEventListener> overlayStateChangeEventListeners = new LinkedList<>();
 
 	private boolean autoCloseDrawer = true;
-
+	
 	public AppRouterLayout() {
+		this(true);
+	}
+
+	public AppRouterLayout(boolean touchOptimized) {
 		super();
 		getElement().setAttribute("app-router-layout", "");
 
@@ -71,7 +75,9 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		navbarEnd = createNavbarSlot();
 		navbarEnd.getElement().setAttribute("part", "navbar-end");
 
-		addToNavbar(navbarStart, navbarContent, navbarEnd);
+		addToNavbar(navbarStart);
+		addToNavbar(touchOptimized, navbarContent);
+		addToNavbar(navbarEnd);
 
 	}
 
