@@ -28,7 +28,6 @@ import com.holonplatform.artisan.vaadin.flow.app.layout.ApplicationLayout;
 import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultApplicationContentChangeEvent;
 import com.holonplatform.artisan.vaadin.flow.app.layout.internal.DefaultOveralyStateChangeEvent;
 import com.holonplatform.core.Registration;
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -50,8 +49,6 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	private final List<ApplicationContentChangeListener> applicationContentChangeListeners = new LinkedList<>();
 	private final List<OverlayStateChangeEventListener> overlayStateChangeEventListeners = new LinkedList<>();
 
-	private boolean autoCloseDrawer = true;
-	
 	public AppRouterLayout() {
 		this(true);
 	}
@@ -89,28 +86,6 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		slot.setSpacing(true);
 		slot.setAlignItems(Alignment.CENTER);
 		return slot;
-	}
-
-	@Override
-	protected void onAttach(AttachEvent attachEvent) {
-		super.onAttach(attachEvent);
-		getUI().ifPresent(ui -> ui.addAfterNavigationListener(event -> {
-			if (isAutoCloseDrawer()) {
-				if (isOverlay() && isDrawerOpened()) {
-					setDrawerOpened(false);
-				}
-			}
-		}));
-	}
-
-	@Override
-	public boolean isAutoCloseDrawer() {
-		return autoCloseDrawer;
-	}
-
-	@Override
-	public void setAutoCloseDrawer(boolean autoCloseDrawer) {
-		this.autoCloseDrawer = autoCloseDrawer;
 	}
 
 	@Override
@@ -173,13 +148,6 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 	 */
 	protected void onOverlayChangeEvent(PropertyChangeEvent event) {
 		final boolean overlay = getBooleanValue(event.getValue());
-		// ensure drawer opened when not overlay
-		/*// TODO check
-		if (isAutoCloseDrawer() && !overlay) {
-			if (!isDrawerOpened()) {
-				setDrawerOpened(true);
-			}
-		} */
 		// fire listeners
 		final OverlayStateChangeEvent evt = new DefaultOveralyStateChangeEvent(this, overlay);
 		overlayStateChangeEventListeners.forEach(l -> l.overlayStateChange(evt));

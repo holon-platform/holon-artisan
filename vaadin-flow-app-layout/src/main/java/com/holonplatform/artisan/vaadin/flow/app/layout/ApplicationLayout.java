@@ -105,26 +105,6 @@ public interface ApplicationLayout extends HasTheme {
 	boolean isOverlay();
 
 	/**
-	 * Get the whether to automatically close the app layout drawer after a routing event if the app layout is in
-	 * overlay mode.
-	 * <p>
-	 * Default is <code>true</code>.
-	 * </p>
-	 * @return whether to automatically close the app layout drawer after a routing event
-	 */
-	boolean isAutoCloseDrawer();
-
-	/**
-	 * Set the whether to automatically close the app layout drawer after a routing event if the app layout is in
-	 * overlay mode.
-	 * <p>
-	 * Default is <code>true</code>.
-	 * </p>
-	 * @param autoCloseDrawer whether to automatically close the app layout drawer after a routing event
-	 */
-	void setAutoCloseDrawer(boolean autoCloseDrawer);
-
-	/**
 	 * Add an {@link ApplicationContentChangeListener} to listen for application content changes.
 	 * @param listener The listener to add (not null)
 	 * @return Listener handler
