@@ -26,6 +26,8 @@ import com.holonplatform.core.property.Property;
  * registration and returns a suitable provider for a {@link Property}, relying on the conditions with which the
  * providers were registered.
  * </p>
+ * 
+ * @param <T> Value type
  *
  * @since 1.0.0
  * 
@@ -41,6 +43,7 @@ public interface PropertyXLSValueProvider<T> {
 	/**
 	 * Get the {@link XLSValue} representation for given property bound value.
 	 * @param context The property export context
+	 * @param value The value to export
 	 * @return The {@link XLSValue} representation of the property value
 	 */
 	XLSValue<?> provide(XLSPropertyValueContext<T> context, T value);

@@ -23,7 +23,7 @@ import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 @Tag("holon-input-filter")
-@HtmlImport("frontend://src/HolonInputFilter.html")
+@HtmlImport("frontend://src/holon-input-filter.html")
 public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 
 	private static final long serialVersionUID = -8446468454355099170L;

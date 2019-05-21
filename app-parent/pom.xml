@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.holon-platform.artisan</groupId>
+	<artifactId>holon-artisan-app-parent</artifactId>
+	<version>1.0.10-SNAPSHOT</version>
+
+	<packaging>pom</packaging>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>Holon Artisan Vaadin App parent pom</description>
+
+	<url>https://holon-platform.com</url>
+
+	<properties>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- Holon Platform -->
+		<holon.platform.version>5.2.9</holon.platform.version>
+
+		<!-- Spring Boot -->
+		<spring.boot.version>2.1.5.RELEASE</spring.boot.version>
+
+		<!-- Vaadin -->
+		<vaadin.version>13.0.7</vaadin.version>
+
+		<!-- JUnit 5 -->
+		<junit.jupiter.version>5.4.2</junit.jupiter.version>
+
+		<!-- Logback -->
+		<logback.version>1.2.3</logback.version>
+
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<!-- Spring Boot maven plugin -->
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+				</plugin>
+				<plugin>
+					<!-- Vaadin maven plugin -->
+					<groupId>com.vaadin</groupId>
+					<artifactId>vaadin-maven-plugin</artifactId>
+					<version>${vaadin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Holon Platform BOM -->
+			<dependency>
+				<groupId>com.holon-platform</groupId>
+				<artifactId>bom</artifactId>
+				<version>${holon.platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Logback -->
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<!-- JUnit 5 tests -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-api</artifactId>
+				<version>${junit.jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter-engine</artifactId>
+				<version>${junit.jupiter.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

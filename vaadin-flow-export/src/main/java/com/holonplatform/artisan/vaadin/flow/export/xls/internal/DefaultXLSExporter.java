@@ -531,14 +531,13 @@ public class DefaultXLSExporter implements XLSExporter {
 					sb.append(")");
 
 					final Cell cell = footerRow.createCell(i);
-					cell.setCellType(CellType.FORMULA);
 					cell.setCellFormula(sb.toString());
 					cell.setCellStyle(totalStyle);
 
 				} else {
 					// empty total cell
 					final Cell cell = footerRow.createCell(i);
-					cell.setCellType(CellType.BLANK);
+					cell.setBlank();
 					cell.setCellStyle(totalStyle);
 				}
 			}
@@ -737,7 +736,7 @@ public class DefaultXLSExporter implements XLSExporter {
 			break;
 		}
 		if (!valueSetted.isPresent()) {
-			cell.setCellType(CellType.BLANK);
+			cell.setBlank();
 			return CellType.BLANK;
 		}
 		return valueSetted.get();
@@ -755,7 +754,6 @@ public class DefaultXLSExporter implements XLSExporter {
 			XLSPropertyConfiguration propertyConfiguration) {
 		if (!Obj.isBoolean(xlsValue.getValueType())) {
 			// fallback to string
-			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(xlsValue.getValue().orElse(null)));
 			return Optional.of(CellType.STRING);
 		}
@@ -764,7 +762,6 @@ public class DefaultXLSExporter implements XLSExporter {
 		// check configuration
 		if (propertyConfiguration.getBooleanExportMode() == BooleanExportMode.DEFAULT
 				&& configuration.getDefaultBooleanExportMode() == BooleanExportMode.DEFAULT) {
-			cell.setCellType(CellType.BOOLEAN);
 			cell.setCellValue(booleanValue);
 			return Optional.of(CellType.BOOLEAN);
 		}
@@ -777,7 +774,6 @@ public class DefaultXLSExporter implements XLSExporter {
 			text = propertyConfiguration.getBooleanTextForFalse().orElseGet(() -> localize(Localizable
 					.of(BooleanExportMode.DEFAULT_FALSE_TEXT, BooleanExportMode.DEFAULT_FALSE_TEXT_MESSAGE_CODE)));
 		}
-		cell.setCellType(CellType.STRING);
 		cell.setCellValue(text);
 		return Optional.of(CellType.STRING);
 	}
@@ -792,11 +788,9 @@ public class DefaultXLSExporter implements XLSExporter {
 		return xlsValue.getValue().map(v -> {
 			if (!Obj.isNumber(xlsValue.getValueType())) {
 				// fallback to string
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
 				return CellType.STRING;
 			}
-			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(ConversionUtils.convertNumberToTargetClass((Number) v, Double.class));
 			return CellType.NUMERIC;
 		});
@@ -840,7 +834,6 @@ public class DefaultXLSExporter implements XLSExporter {
 				return CellType._NONE;
 			}
 			// fallback to string
-			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(v));
 			return CellType.STRING;
 		});
@@ -856,12 +849,10 @@ public class DefaultXLSExporter implements XLSExporter {
 		return xlsValue.getValue().map(v -> {
 			if (!Obj.isEnum(xlsValue.getValueType())) {
 				// fallback to string
-				cell.setCellType(CellType.STRING);
 				cell.setCellValue(String.valueOf(v));
 				return CellType.STRING;
 			}
 			Enum<?> ev = (Enum<?>) v;
-			cell.setCellType(CellType.STRING);
 			cell.setCellValue(localize(getEnumCaption(ev), ev.name()));
 			return CellType.STRING;
 		});
@@ -875,7 +866,6 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected Optional<CellType> setStringValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
-			cell.setCellType(CellType.STRING);
 			cell.setCellValue(String.valueOf(v));
 			return CellType.STRING;
 		});
@@ -889,7 +879,6 @@ public class DefaultXLSExporter implements XLSExporter {
 	 */
 	protected Optional<CellType> setFormulaValue(Cell cell, XLSValue<?> xlsValue) {
 		return xlsValue.getValue().map(v -> {
-			cell.setCellType(CellType.FORMULA);
 			cell.setCellFormula(String.valueOf(v));
 			return CellType.FORMULA;
 		});
