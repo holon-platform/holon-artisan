@@ -102,6 +102,25 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
+	 * Create an {@link InputFilter} from given <code>input</code> with a different value type, using given
+	 * {@link Converter} to perform value conversions.
+	 * <p>
+	 * The {@link QueryFilter} provider uses the original <code>input</code> value type.
+	 * </p>
+	 * @param <T> New value type
+	 * @param <V> Original value type
+	 * @param input The {@link Input} component (not null)
+	 * @param converter Value converter (not null)
+	 * @param filterProvider The function to provide a {@link QueryFilter} according to the original {@link Input}
+	 *        value, or <code>null</code> if none (not null)
+	 * @return A new {@link InputFilter} of the converted value type
+	 */
+	static <T, V> InputFilter<T> from(Input<V> input, Converter<V, T> converter,
+			Function<V, QueryFilter> filterProvider) {
+		return from(Input.from(input, converter), v -> filterProvider.apply(input.getValue()));
+	}
+
+	/**
 	 * Create an {@link InputFilter} from given {@link HasValue} component.
 	 * @param <F> {@link HasValue} component type
 	 * @param <T> Value type
@@ -130,6 +149,26 @@ public interface InputFilter<T> extends Input<T> {
 	static <F extends Component & HasValue<?, V>, T, V> InputFilter<T> from(F field,
 			Function<T, QueryFilter> filterProvider, Converter<V, T> converter) {
 		return from(Input.from(field, converter), filterProvider);
+	}
+
+	/**
+	 * Create an {@link InputFilter} from given {@link HasValue} component with a different value type, using given
+	 * {@link Converter} to perform value conversions.
+	 * <p>
+	 * The {@link QueryFilter} provider uses the original <code>field</code> value type.
+	 * </p>
+	 * @param <F> {@link HasValue} component type
+	 * @param <T> New value type
+	 * @param <V> Original value type
+	 * @param field The field instance (not null)
+	 * @param converter Value converter (not null)
+	 * @param filterProvider The function to provide a {@link QueryFilter} according to the original field value, or
+	 *        <code>null</code> if none (not null)
+	 * @return A new {@link InputFilter} which wraps the given <code>field</code>
+	 */
+	static <F extends Component & HasValue<?, V>, T, V> InputFilter<T> from(F field, Converter<V, T> converter,
+			Function<V, QueryFilter> filterProvider) {
+		return from(Input.from(field, converter), v -> filterProvider.apply(field.getValue()));
 	}
 
 	/**
