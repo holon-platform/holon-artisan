@@ -62,9 +62,13 @@ public class DefaultTabLayout implements TabLayout {
 		this.layout = new TabsContent<>(layout);
 		// tabs
 		this.tabsComponent = new Tabs();
-		this.tabsComponent.setWidth("100%");
 		if (orientation != null) {
 			this.tabsComponent.setOrientation(orientation);
+			if (orientation.equals(Orientation.HORIZONTAL)) {
+				this.tabsComponent.setWidth("100%");
+			}
+		} else {
+			this.tabsComponent.setWidth("100%");
 		}
 		this.tabsComponent.addSelectedChangeListener(event -> {
 			onTabSelectionChange(event.getSource().getSelectedIndex());

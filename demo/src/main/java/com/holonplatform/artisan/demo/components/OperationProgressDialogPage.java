@@ -15,10 +15,13 @@
  */
 package com.holonplatform.artisan.demo.components;
 
+import java.util.concurrent.Callable;
+
 import com.holonplatform.artisan.core.exceptions.OperationExecutionException;
 import com.holonplatform.artisan.core.operation.Operation;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.OperationProgressDialog;
+import com.holonplatform.vaadin.flow.components.Components;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -65,6 +68,15 @@ public class OperationProgressDialogPage extends VerticalLayout {
 		}
 	};
 
+	private static final Callable<String> OPERATION4 = () -> {
+		try {
+			Thread.sleep(4000);
+			return "Callable DONE";
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	};
+
 	public OperationProgressDialogPage() {
 		super();
 
@@ -90,6 +102,12 @@ public class OperationProgressDialogPage extends VerticalLayout {
 		btn.addClickListener(e -> {
 			OperationProgressDialog.builder(OPERATION3).text("Operation running...").execute(r -> Notification.show(r));
 		});
+		add(btn);
+
+		btn = Components.button("Operation callable without progress",
+				e -> OperationProgressDialog.builder(OPERATION4).text("Callable operation running...").abortable(true)
+						.abortButtonConfigurator(bbc -> bbc.text("Abort operation").description("Click to abort"))
+						.execute(r -> Notification.show(r)));
 		add(btn);
 	}
 

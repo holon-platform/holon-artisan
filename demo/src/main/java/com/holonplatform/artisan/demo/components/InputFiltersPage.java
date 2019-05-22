@@ -16,6 +16,8 @@
 package com.holonplatform.artisan.demo.components;
 
 import com.holonplatform.artisan.demo.root.Menu;
+import com.holonplatform.vaadin.flow.components.Components;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
@@ -29,6 +31,13 @@ public class InputFiltersPage extends VerticalLayout {
 		super();
 		add(new RouterLink("Input filter components", InputFilterComponentsPage.class));
 		add(new RouterLink("Input filter group", InputFilterGroupPage.class));
+		add(new RouterLink("Input filter vertical", InputFilterVerticalPage.class));
+		add(new RouterLink("Input filter horizontal", InputFilterHorizontalPage.class));
+		add(Components.button().text("Input filter window").withThemeVariants(ButtonVariant.LUMO_TERTIARY)
+				.onClick(evt -> {
+					InputFilterWindow wnd = new InputFilterWindow();
+					wnd.open();
+				}).build());
 	}
 
 }
