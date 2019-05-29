@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.demo.model;
 
+import java.time.LocalDate;
+
 import com.holonplatform.core.Validator;
 import com.holonplatform.core.datastore.DataTarget;
 import com.holonplatform.core.property.BooleanProperty;
@@ -23,6 +25,7 @@ import com.holonplatform.core.property.PropertyBox;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.core.property.PropertyValueConverter;
 import com.holonplatform.core.property.StringProperty;
+import com.holonplatform.core.property.TemporalProperty;
 
 public interface Product {
 
@@ -48,9 +51,12 @@ public interface Product {
 			.message("Withdrawn").messageCode("product.withdrawn")
 			.converter(PropertyValueConverter.numericBoolean(Integer.class));
 
+	public static final TemporalProperty<LocalDate> DATE = TemporalProperty.localDate("production_date") // Date
+			.message("Date").messageCode("product.date");
+
 	// Product property set with the ID property as identifier property
-	public static final PropertySet<?> PRODUCT = PropertySet.builderOf(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN)
-			.identifier(ID).build();
+	public static final PropertySet<?> PRODUCT = PropertySet
+			.builderOf(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN, DATE).identifier(ID).build();
 
 	public static final DataTarget<?> TARGET = DataTarget.named("products");
 

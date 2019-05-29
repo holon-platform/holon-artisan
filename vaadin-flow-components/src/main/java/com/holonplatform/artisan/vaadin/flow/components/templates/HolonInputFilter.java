@@ -42,7 +42,8 @@ public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 	public void setInputComponent(Component input) {
 		Obj.argumentNotNull(input, "Component must be not null");
 		if (input != null) {
-			input.getElement().getStyle().set("flex-grow", "1");
+			//input.getElement().getStyle().set("flex-grow", "1");
+			input.getElement().getStyle().set("width", "100%");
 			addToSlot("input", input);
 		}
 	}
@@ -50,7 +51,8 @@ public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 	public void setAdditionalInputComponent(Component input) {
 		Obj.argumentNotNull(input, "Component must be not null");
 		if (input != null) {
-			input.getElement().getStyle().set("flex-grow", "1");
+			//input.getElement().getStyle().set("flex-grow", "1");
+			input.getElement().getStyle().set("width", "100%");
 			addToSlot("additional-input", input);
 		}
 	}

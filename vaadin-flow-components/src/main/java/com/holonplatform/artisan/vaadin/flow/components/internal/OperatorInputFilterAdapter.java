@@ -128,7 +128,6 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		filterComponent = new HolonInputFilter();
 		filterComponent.setOperatorComponent(getOperatorSelect());
 		filterComponent.setInputComponent(input.getComponent());
-		filterComponent.getElement().getStyle().set("flex-grow", "1");
 		// check between input
 		if (isSupportsBetween()) {
 			Obj.argumentNotNull(additionalInput, "Additional Input must be not null");
