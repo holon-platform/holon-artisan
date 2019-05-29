@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.time.LocalDate;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -44,12 +45,14 @@ public class DefaultLocalDateInputFilterBuilder
 		implements LocalDateInputFilterBuilder {
 
 	private final LocalDateInputBuilder inputBuilder;
+	private final LocalDateInputBuilder additionalInputBuilder;
 
 	public DefaultLocalDateInputFilterBuilder(Property<? super LocalDate> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
-				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
+				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY, InputFilterOperator.BETWEEN);
 		this.inputBuilder = LocalDateInputBuilder.create();
+		this.additionalInputBuilder = LocalDateInputBuilder.create();
 		label(property);
 	}
 
@@ -63,48 +66,56 @@ public class DefaultLocalDateInputFilterBuilder
 	@Override
 	public LocalDateInputFilterBuilder locale(Locale locale) {
 		inputBuilder.locale(locale);
+		additionalInputBuilder.locale(locale);
 		return this;
 	}
 
 	@Override
 	public LocalDateInputFilterBuilder updateLocaleOnAttach(boolean updateLocaleOnAttach) {
 		inputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
+		additionalInputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
 		return this;
 	}
 
 	@Override
 	public LocalDateInputFilterBuilder min(LocalDate min) {
 		inputBuilder.min(min);
+		additionalInputBuilder.min(min);
 		return this;
 	}
 
 	@Override
 	public LocalDateInputFilterBuilder max(LocalDate max) {
 		inputBuilder.max(max);
+		additionalInputBuilder.max(max);
 		return this;
 	}
 
 	@Override
 	public LocalDateInputFilterBuilder initialPosition(LocalDate initialPosition) {
 		inputBuilder.initialPosition(initialPosition);
+		additionalInputBuilder.initialPosition(initialPosition);
 		return this;
 	}
 
 	@Override
 	public LocalDateInputFilterBuilder weekNumbersVisible(boolean weekNumbersVisible) {
 		inputBuilder.weekNumbersVisible(weekNumbersVisible);
+		additionalInputBuilder.weekNumbersVisible(weekNumbersVisible);
 		return this;
 	}
 
 	@Override
 	public LocalDateInputFilterBuilder localization(CalendarLocalization localization) {
 		inputBuilder.localization(localization);
+		additionalInputBuilder.localization(localization);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<LocalDate, LocalDateInputFilterBuilder> localization() {
-		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(), this);
+		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(),
+				additionalInputBuilder.localization(), this);
 	}
 
 	@Override
@@ -139,6 +150,7 @@ public class DefaultLocalDateInputFilterBuilder
 	@Override
 	public LocalDateInputFilterBuilder placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		additionalInputBuilder.placeholder(placeholder);
 		return this;
 	}
 
@@ -151,6 +163,11 @@ public class DefaultLocalDateInputFilterBuilder
 	@Override
 	protected Input<LocalDate> buildInput() {
 		return inputBuilder.build();
+	}
+
+	@Override
+	protected Optional<Input<LocalDate>> buildAdditionalInput() {
+		return Optional.of(additionalInputBuilder.build());
 	}
 
 	@Override

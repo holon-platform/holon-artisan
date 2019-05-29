@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -45,12 +46,14 @@ public class DefaultDateTimeInputFilterBuilder extends
 		AbstractOperatorInputFilterBuilder<Date, DateTimeInputFilterBuilder> implements DateTimeInputFilterBuilder {
 
 	private final DateTimeInputBuilder inputBuilder;
+	private final DateTimeInputBuilder additionalInputBuilder;
 
 	public DefaultDateTimeInputFilterBuilder(Property<? super Date> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
-				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
+				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY, InputFilterOperator.BETWEEN);
 		this.inputBuilder = DateTimeInputBuilder.create();
+		this.additionalInputBuilder = DateTimeInputBuilder.create();
 		label(property);
 	}
 
@@ -64,54 +67,63 @@ public class DefaultDateTimeInputFilterBuilder extends
 	@Override
 	public DateTimeInputFilterBuilder timeZone(ZoneId zone) {
 		inputBuilder.timeZone(zone);
+		additionalInputBuilder.timeZone(zone);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder locale(Locale locale) {
 		inputBuilder.locale(locale);
+		additionalInputBuilder.locale(locale);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder updateLocaleOnAttach(boolean updateLocaleOnAttach) {
 		inputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
+		additionalInputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder min(Date min) {
 		inputBuilder.min(min);
+		additionalInputBuilder.min(min);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder max(Date max) {
 		inputBuilder.max(max);
+		additionalInputBuilder.max(max);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder initialPosition(Date initialPosition) {
 		inputBuilder.initialPosition(initialPosition);
+		additionalInputBuilder.initialPosition(initialPosition);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder weekNumbersVisible(boolean weekNumbersVisible) {
 		inputBuilder.weekNumbersVisible(weekNumbersVisible);
+		additionalInputBuilder.weekNumbersVisible(weekNumbersVisible);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder localization(CalendarLocalization localization) {
 		inputBuilder.localization(localization);
+		additionalInputBuilder.localization(localization);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<Date, DateTimeInputFilterBuilder> localization() {
-		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(), this);
+		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(),
+				additionalInputBuilder.localization(), this);
 	}
 
 	@Override
@@ -146,24 +158,28 @@ public class DefaultDateTimeInputFilterBuilder extends
 	@Override
 	public DateTimeInputFilterBuilder placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		additionalInputBuilder.placeholder(placeholder);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder spacing(boolean spacing) {
 		inputBuilder.spacing(spacing);
+		additionalInputBuilder.spacing(spacing);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder timeInputWidth(String timeInputWidth) {
 		inputBuilder.timeInputWidth(timeInputWidth);
+		additionalInputBuilder.timeInputWidth(timeInputWidth);
 		return this;
 	}
 
 	@Override
 	public DateTimeInputFilterBuilder timeStep(Duration step) {
 		inputBuilder.timeStep(step);
+		additionalInputBuilder.timeStep(step);
 		return this;
 	}
 
@@ -176,6 +192,11 @@ public class DefaultDateTimeInputFilterBuilder extends
 	@Override
 	protected Input<Date> buildInput() {
 		return inputBuilder.build();
+	}
+
+	@Override
+	protected Optional<Input<Date>> buildAdditionalInput() {
+		return Optional.of(additionalInputBuilder.build());
 	}
 
 	@Override

@@ -31,12 +31,25 @@
     			display: inline-flex;
     			flex-grow: 1;
     		}
+    		
+    		[part="additional-input"] {
+    			display: none;
+    		}
+    		
+    		:host([with-additional-input]) [part="additional-input"] {
+    			display: inline-flex;
+    			flex-grow: 1;
+    			margin-left: 1px;
+    		}
     	</style>
     	<div part="operator">
     		<slot name="operator"></slot>
     	</div>
     	<div part="input">
     		<slot name="input"></slot>
+    	</div>
+    	<div part="additional-input">
+    		<slot name="additional-input"></slot>
     	</div>
     </template>
     

@@ -33,67 +33,79 @@ public class DelegatedCalendarLocalizationBuilder<D, C extends BaseTemporalInput
 		implements CalendarLocalizationBuilder<D, C> {
 
 	private final CalendarLocalizationBuilder<D, ?> delegate;
+	private final CalendarLocalizationBuilder<D, ?> additionalDelegate;
 	private final C parent;
 
-	public DelegatedCalendarLocalizationBuilder(CalendarLocalizationBuilder<D, ?> delegate, C parent) {
+	public DelegatedCalendarLocalizationBuilder(CalendarLocalizationBuilder<D, ?> delegate,
+			CalendarLocalizationBuilder<D, ?> additionalDelegate, C parent) {
 		super();
 		Obj.argumentNotNull(delegate, "Delegate configurator must be not null");
 		Obj.argumentNotNull(parent, "Parent configurator must be not null");
 		this.delegate = delegate;
+		this.additionalDelegate = (additionalDelegate != null) ? additionalDelegate : delegate;
 		this.parent = parent;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> monthNames(List<Localizable> monthNames) {
 		delegate.monthNames(monthNames);
+		additionalDelegate.monthNames(monthNames);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> weekDays(List<Localizable> weekDays) {
 		delegate.weekDays(weekDays);
+		additionalDelegate.weekDays(weekDays);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> weekDaysShort(List<Localizable> weekDaysShort) {
 		delegate.weekDaysShort(weekDaysShort);
+		additionalDelegate.weekDaysShort(weekDaysShort);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> firstDayOfWeek(int firstDayOfWeek) {
 		delegate.firstDayOfWeek(firstDayOfWeek);
+		additionalDelegate.firstDayOfWeek(firstDayOfWeek);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> week(Localizable message) {
 		delegate.week(message);
+		additionalDelegate.week(message);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> calendar(Localizable message) {
 		delegate.calendar(message);
+		additionalDelegate.calendar(message);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> clear(Localizable message) {
 		delegate.clear(message);
+		additionalDelegate.clear(message);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> today(Localizable message) {
 		delegate.today(message);
+		additionalDelegate.today(message);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<D, C> cancel(Localizable message) {
 		delegate.cancel(message);
+		additionalDelegate.cancel(message);
 		return this;
 	}
 

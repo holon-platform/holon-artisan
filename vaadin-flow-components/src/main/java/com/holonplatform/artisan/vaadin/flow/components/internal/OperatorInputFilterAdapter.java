@@ -63,8 +63,11 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	private final Property<? super T> property;
 	private final FilterOperatorSelect operatorSelect;
+	private final boolean supportsBetween;
 
 	private Input<T> input;
+
+	private Input<T> betweenInput;
 
 	private Supplier<Boolean> ignoreCaseSupplier = () -> false;
 
@@ -72,16 +75,22 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	private final InputAdaptersContainer<T> adapters = InputAdaptersContainer.create();
 
+	private HolonInputFilter filterComponent;
+
 	public OperatorInputFilterAdapter(Property<? super T> property, InputFilterOperator... operators) {
 		super();
 		Obj.argumentNotNull(property, "Property must be not null");
 		this.property = property;
 		// config
 		getElement().setAttribute("operator-input-filter", "");
+		// check between supported
+		supportsBetween = operators != null && Arrays.asList(operators).contains(InputFilterOperator.BETWEEN);
 		// operator select
 		this.operatorSelect = new FilterOperatorSelect(operators);
 		this.operatorSelect.getElement().setAttribute("operator-input-filter-select", "");
 		this.operatorSelect.addValueChangeListener(e -> {
+			// check between
+			setAdditionalInputVisible(InputFilterOperator.BETWEEN == e.getValue());
 			// check operator
 			getInput().ifPresent(i -> i.setReadOnly((e.getValue() != null
 					&& (e.getValue() == InputFilterOperator.EMPTY || e.getValue() == InputFilterOperator.NOT_EMPTY))));
@@ -94,21 +103,39 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		});
 	}
 
+	protected void setAdditionalInputVisible(boolean visible) {
+		if (betweenInput != null && filterComponent != null) {
+			if (visible && !filterComponent.isAdditionalInputVisible()) {
+				filterComponent.setAdditionalInputVisible(true);
+			}
+			if (!visible && filterComponent.isAdditionalInputVisible()) {
+				filterComponent.setAdditionalInputVisible(false);
+			}
+		}
+	}
+
 	/**
 	 * Build the component.
-	 * @param input The input component to use (not null)
+	 * @param input The input component (not null)
+	 * @param additionalInput Optional additional input is the between operator is supported
 	 */
-	public void build(Input<T> input) {
+	public void build(Input<T> input, Input<T> additionalInput) {
 		Obj.argumentNotNull(input, "Input must be not null");
 		this.input = input;
 		// ensure no children
 		getChildren().forEach(c -> remove(c));
 		// add components
-		final HolonInputFilter filter = new HolonInputFilter();
-		filter.setOperatorComponent(getOperatorSelect());
-		filter.setInputComponent(input.getComponent());
-		filter.getElement().getStyle().set("flex-grow", "1");
-		add(filter);
+		filterComponent = new HolonInputFilter();
+		filterComponent.setOperatorComponent(getOperatorSelect());
+		filterComponent.setInputComponent(input.getComponent());
+		filterComponent.getElement().getStyle().set("flex-grow", "1");
+		// check between input
+		if (isSupportsBetween()) {
+			Obj.argumentNotNull(additionalInput, "Additional Input must be not null");
+			this.betweenInput = additionalInput;
+			filterComponent.setAdditionalInputComponent(betweenInput.getComponent());
+		}
+		add(filterComponent);
 	}
 
 	/**
@@ -135,10 +162,29 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		return operatorSelect;
 	}
 
+	/**
+	 * Get whether the between operator is supported.
+	 * @return Whether the between operator is supported
+	 */
+	protected boolean isSupportsBetween() {
+		return supportsBetween;
+	}
+
+	/**
+	 * Get the between range end {@link Input}, if supported.
+	 * @return Optional between range end input
+	 */
+	protected Optional<Input<T>> getBetweenInput() {
+		return Optional.ofNullable(betweenInput);
+	}
+
 	@Override
 	public Optional<QueryFilter> getFilter() {
 		return Optional.ofNullable(
 				InputFilterOperator.getQueryFilter(getInput().map(i -> i.getValue()).orElseGet(() -> getValue()),
+						getFilterOperator().filter(o -> InputFilterOperator.BETWEEN.equals(o)).isPresent()
+								? getBetweenInput().map(i -> i.getValue()).orElse(null)
+								: null,
 						getProperty(), getFilterOperator().orElse(null), isIgnoreCase()));
 	}
 

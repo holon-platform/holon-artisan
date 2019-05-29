@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -89,6 +90,12 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 	 * @return The {@link Input} instance
 	 */
 	protected abstract Input<T> buildInput();
+
+	/**
+	 * Build the additional {@link Input} instance, if supported.
+	 * @return Optional additional {@link Input} instance
+	 */
+	protected abstract Optional<Input<T>> buildAdditionalInput();
 
 	/**
 	 * Get the ignore case mode supplier.
@@ -263,8 +270,7 @@ public abstract class AbstractOperatorInputFilterBuilder<T, B extends OperatorIn
 		if (filterOperatorSelectConfiguration != null) {
 			filterOperatorSelectConfiguration.accept(getComponent().getFilterOperatorSelectConfigurator());
 		}
-		final Input<T> input = buildInput();
-		getComponent().build(input);
+		getComponent().build(buildInput(), buildAdditionalInput().orElse(null));
 		getComponent().setIgnoreCaseSupplier(getIgnoreCaseSupplier());
 		return getComponent();
 	}

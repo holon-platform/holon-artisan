@@ -47,7 +47,9 @@ public enum InputFilterOperator {
 
 	EMPTY("{}", "Is null", "com.holonplatform.artisan.input.filter.operator.empty"),
 
-	NOT_EMPTY("*", "Is not null", "com.holonplatform.artisan.input.filter.operator.not_empty");
+	NOT_EMPTY("*", "Is not null", "com.holonplatform.artisan.input.filter.operator.not_empty"),
+
+	BETWEEN("[..]", "Between", "com.holonplatform.artisan.input.filter.operator.between");
 
 	private final String symbol;
 	private final Localizable caption;
@@ -81,13 +83,14 @@ public enum InputFilterOperator {
 	 * Get the {@link QueryFilter} according to given value, property and operator.
 	 * @param <T> Value type
 	 * @param value The input value
+	 * @param betweenValue The between range end value, if filter operator is {@link InputFilterOperator#BETWEEN}
 	 * @param property The property to use
 	 * @param operator The filter operator
 	 * @param ignoreCase Whether to ignore case
 	 * @return The {@link QueryFilter}, or <code>null</code> if value is <code>null</code> or empty
 	 */
-	public static <T> QueryFilter getQueryFilter(T value, Property<? super T> property, InputFilterOperator operator,
-			boolean ignoreCase) {
+	public static <T> QueryFilter getQueryFilter(T value, T betweenValue, Property<? super T> property,
+			InputFilterOperator operator, boolean ignoreCase) {
 		switch (operator) {
 		case EMPTY: {
 			return QueryFilter.isNull(property);
@@ -146,6 +149,16 @@ public enum InputFilterOperator {
 		}
 		case LESS_THAN: {
 			return ComponentUtils.isEmptyValue(value) ? null : QueryFilter.lt(property, value);
+		}
+		case BETWEEN: {
+			if (!ComponentUtils.isEmptyValue(value) && !ComponentUtils.isEmptyValue(betweenValue)) {
+				return QueryFilter.between(property, value, betweenValue);
+			} else if (!ComponentUtils.isEmptyValue(value) && ComponentUtils.isEmptyValue(betweenValue)) {
+				return QueryFilter.goe(property, value);
+			} else if (ComponentUtils.isEmptyValue(value) && !ComponentUtils.isEmptyValue(betweenValue)) {
+				return QueryFilter.loe(property, betweenValue);
+			}
+			return null;
 		}
 		default:
 			break;

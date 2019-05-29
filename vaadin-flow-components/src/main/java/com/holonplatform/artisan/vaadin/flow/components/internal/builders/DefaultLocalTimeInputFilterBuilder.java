@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -45,12 +46,14 @@ public class DefaultLocalTimeInputFilterBuilder
 		implements LocalTimeInputFilterBuilder {
 
 	private final LocalTimeInputBuilder inputBuilder;
+	private final LocalTimeInputBuilder additionalInputBuilder;
 
 	public DefaultLocalTimeInputFilterBuilder(Property<? super LocalTime> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
-				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
+				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY, InputFilterOperator.BETWEEN);
 		this.inputBuilder = LocalTimeInputBuilder.create();
+		this.additionalInputBuilder = LocalTimeInputBuilder.create();
 		label(property);
 	}
 
@@ -64,12 +67,14 @@ public class DefaultLocalTimeInputFilterBuilder
 	@Override
 	public LocalTimeInputFilterBuilder locale(Locale locale) {
 		inputBuilder.locale(locale);
+		additionalInputBuilder.locale(locale);
 		return this;
 	}
 
 	@Override
 	public LocalTimeInputFilterBuilder step(Duration step) {
 		inputBuilder.step(step);
+		additionalInputBuilder.step(step);
 		return this;
 	}
 
@@ -105,12 +110,14 @@ public class DefaultLocalTimeInputFilterBuilder
 	@Override
 	public LocalTimeInputFilterBuilder placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		additionalInputBuilder.placeholder(placeholder);
 		return this;
 	}
 
 	@Override
 	public LocalTimeInputFilterBuilder title(Localizable title) {
 		inputBuilder.title(title);
+		additionalInputBuilder.title(title);
 		return this;
 	}
 
@@ -123,6 +130,11 @@ public class DefaultLocalTimeInputFilterBuilder
 	@Override
 	protected Input<LocalTime> buildInput() {
 		return inputBuilder.build();
+	}
+
+	@Override
+	protected Optional<Input<LocalTime>> buildAdditionalInput() {
+		return Optional.of(additionalInputBuilder.build());
 	}
 
 	@Override

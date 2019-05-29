@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -114,6 +115,11 @@ public class DefaultStringInputFilterBuilder extends
 
 		}
 		return input;
+	}
+
+	@Override
+	protected Optional<Input<String>> buildAdditionalInput() {
+		return Optional.empty();
 	}
 
 	/*

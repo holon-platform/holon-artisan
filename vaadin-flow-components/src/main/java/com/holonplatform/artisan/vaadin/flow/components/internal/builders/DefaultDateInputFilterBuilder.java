@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -44,12 +45,14 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 		implements DateInputFilterBuilder {
 
 	private final DateInputBuilder inputBuilder;
+	private final DateInputBuilder additionalInputBuilder;
 
 	public DefaultDateInputFilterBuilder(Property<? super Date> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
-				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
+				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY, InputFilterOperator.BETWEEN);
 		this.inputBuilder = DateInputBuilder.create();
+		this.additionalInputBuilder = DateInputBuilder.create();
 		label(property);
 	}
 
@@ -62,54 +65,63 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 	@Override
 	public DateInputFilterBuilder timeZone(ZoneId zone) {
 		inputBuilder.timeZone(zone);
+		additionalInputBuilder.timeZone(zone);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder locale(Locale locale) {
 		inputBuilder.locale(locale);
+		additionalInputBuilder.locale(locale);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder updateLocaleOnAttach(boolean updateLocaleOnAttach) {
 		inputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
+		additionalInputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder min(Date min) {
 		inputBuilder.min(min);
+		additionalInputBuilder.min(min);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder max(Date max) {
 		inputBuilder.max(max);
+		additionalInputBuilder.max(max);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder initialPosition(Date initialPosition) {
 		inputBuilder.initialPosition(initialPosition);
+		additionalInputBuilder.initialPosition(initialPosition);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder weekNumbersVisible(boolean weekNumbersVisible) {
 		inputBuilder.weekNumbersVisible(weekNumbersVisible);
+		additionalInputBuilder.weekNumbersVisible(weekNumbersVisible);
 		return this;
 	}
 
 	@Override
 	public DateInputFilterBuilder localization(CalendarLocalization localization) {
 		inputBuilder.localization(localization);
+		additionalInputBuilder.localization(localization);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<Date, DateInputFilterBuilder> localization() {
-		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(), this);
+		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(),
+				additionalInputBuilder.localization(), this);
 	}
 
 	@Override
@@ -144,6 +156,7 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 	@Override
 	public DateInputFilterBuilder placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		additionalInputBuilder.placeholder(placeholder);
 		return this;
 	}
 
@@ -156,6 +169,11 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 	@Override
 	protected Input<Date> buildInput() {
 		return inputBuilder.build();
+	}
+
+	@Override
+	protected Optional<Input<Date>> buildAdditionalInput() {
+		return Optional.of(additionalInputBuilder.build());
 	}
 
 	@Override

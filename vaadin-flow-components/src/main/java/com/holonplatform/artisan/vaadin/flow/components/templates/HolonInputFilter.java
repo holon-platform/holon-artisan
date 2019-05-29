@@ -28,59 +28,58 @@ public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 
 	private static final long serialVersionUID = -8446468454355099170L;
 
-	private Component operator;
-	private Component input;
-
 	public HolonInputFilter() {
 		super();
 	}
 
 	public void setOperatorComponent(Component operator) {
 		Obj.argumentNotNull(operator, "Component must be not null");
-		removeOperator();
 		if (operator != null) {
 			addToSlot("operator", operator);
-        }
-	}
-	
-	public void setInputComponent(Component input) {
-		Obj.argumentNotNull(input, "Component must be not null");
-		removeInput();
-		if (input != null) {
-			input.getElement().getStyle().set("flex-grow", "1");
-			addToSlot("input", input);
-        }
-	}
-	
-	private void addToSlot(String slot, Component... components) {
-        for (Component component : components) {
-            setSlot(component, slot);
-            add(component);
-        }
-    }
-
-    private void add(Component component) {
-        getElement().appendChild(component.getElement());
-    }
-
-	private void removeOperator() {
-        remove(this.operator);
-        this.operator = null;
-    }
-	
-	private void removeInput() {
-        remove(this.input);
-        this.input = null;
-    }
-
-	private static void remove(Component component) {
-		if (component != null) {
-			component.getElement().removeFromParent();
 		}
 	}
 
-    private static void setSlot(Component component, String slot) {
-        component.getElement().setAttribute("slot", slot);
-    }
-	
+	public void setInputComponent(Component input) {
+		Obj.argumentNotNull(input, "Component must be not null");
+		if (input != null) {
+			input.getElement().getStyle().set("flex-grow", "1");
+			addToSlot("input", input);
+		}
+	}
+
+	public void setAdditionalInputComponent(Component input) {
+		Obj.argumentNotNull(input, "Component must be not null");
+		if (input != null) {
+			input.getElement().getStyle().set("flex-grow", "1");
+			addToSlot("additional-input", input);
+		}
+	}
+
+	public void setAdditionalInputVisible(boolean visible) {
+		if (visible) {
+			getElement().setAttribute("with-additional-input", "");
+		} else {
+			getElement().removeAttribute("with-additional-input");
+		}
+	}
+
+	public boolean isAdditionalInputVisible() {
+		return getElement().hasAttribute("with-additional-input");
+	}
+
+	private void addToSlot(String slot, Component... components) {
+		for (Component component : components) {
+			setSlot(component, slot);
+			add(component);
+		}
+	}
+
+	private void add(Component component) {
+		getElement().appendChild(component.getElement());
+	}
+
+	private static void setSlot(Component component, String slot) {
+		component.getElement().setAttribute("slot", slot);
+	}
+
 }

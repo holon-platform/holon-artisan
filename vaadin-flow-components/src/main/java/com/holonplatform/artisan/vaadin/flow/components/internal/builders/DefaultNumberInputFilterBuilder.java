@@ -17,6 +17,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -56,13 +57,15 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 		AbstractOperatorInputFilterBuilder<T, NumberInputFilterBuilder<T>> implements NumberInputFilterBuilder<T> {
 
 	private final NumberInputBuilder<T> inputBuilder;
+	private final NumberInputBuilder<T> additionalInputBuilder;
 
 	@SuppressWarnings("unchecked")
 	public DefaultNumberInputFilterBuilder(Property<T> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
-				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
+				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY, InputFilterOperator.BETWEEN);
 		this.inputBuilder = NumberInputBuilder.create((Class<T>) property.getType()).clearButtonVisible(true);
+		this.additionalInputBuilder = NumberInputBuilder.create((Class<T>) property.getType()).clearButtonVisible(true);
 		label(property);
 	}
 
@@ -80,6 +83,11 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	protected Input<T> buildInput() {
 		return inputBuilder.build();
+	}
+
+	@Override
+	protected Optional<Input<T>> buildAdditionalInput() {
+		return Optional.of(additionalInputBuilder.build());
 	}
 
 	/*
@@ -112,6 +120,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> autocomplete(Autocomplete autocomplete) {
 		inputBuilder.autocomplete(autocomplete);
+		additionalInputBuilder.autocomplete(autocomplete);
 		return this;
 	}
 
@@ -132,6 +141,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> clearButtonVisible(boolean clearButtonVisible) {
 		inputBuilder.clearButtonVisible(clearButtonVisible);
+		additionalInputBuilder.clearButtonVisible(clearButtonVisible);
 		return this;
 	}
 
@@ -144,6 +154,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> withInputListener(ComponentEventListener<InputEvent> listener) {
 		inputBuilder.withInputListener(listener);
+		additionalInputBuilder.withInputListener(listener);
 		return this;
 	}
 
@@ -156,6 +167,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> withKeyDownListener(ComponentEventListener<KeyDownEvent> listener) {
 		inputBuilder.withKeyDownListener(listener);
+		additionalInputBuilder.withKeyDownListener(listener);
 		return this;
 	}
 
@@ -168,6 +180,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> withKeyPressListener(ComponentEventListener<KeyPressEvent> listener) {
 		inputBuilder.withKeyPressListener(listener);
+		additionalInputBuilder.withKeyPressListener(listener);
 		return this;
 	}
 
@@ -179,6 +192,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> withKeyUpListener(ComponentEventListener<KeyUpEvent> listener) {
 		inputBuilder.withKeyUpListener(listener);
+		additionalInputBuilder.withKeyUpListener(listener);
 		return this;
 	}
 
@@ -192,6 +206,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	public NumberInputFilterBuilder<T> withKeyDownListener(Key key, ComponentEventListener<KeyDownEvent> listener,
 			KeyModifier... modifiers) {
 		inputBuilder.withKeyDownListener(key, listener, modifiers);
+		additionalInputBuilder.withKeyDownListener(key, listener, modifiers);
 		return this;
 	}
 
@@ -205,6 +220,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	public NumberInputFilterBuilder<T> withKeyPressListener(Key key, ComponentEventListener<KeyPressEvent> listener,
 			KeyModifier... modifiers) {
 		inputBuilder.withKeyPressListener(key, listener, modifiers);
+		additionalInputBuilder.withKeyPressListener(key, listener, modifiers);
 		return this;
 	}
 
@@ -217,6 +233,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	public NumberInputFilterBuilder<T> withKeyUpListener(Key key, ComponentEventListener<KeyUpEvent> listener,
 			KeyModifier... modifiers) {
 		inputBuilder.withKeyUpListener(key, listener, modifiers);
+		additionalInputBuilder.withKeyUpListener(key, listener, modifiers);
 		return this;
 	}
 
@@ -356,6 +373,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		additionalInputBuilder.placeholder(placeholder);
 		return this;
 	}
 
@@ -367,6 +385,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> title(Localizable title) {
 		inputBuilder.title(title);
+		additionalInputBuilder.title(title);
 		return this;
 	}
 
@@ -377,6 +396,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> pattern(String pattern) {
 		inputBuilder.pattern(pattern);
+		additionalInputBuilder.pattern(pattern);
 		return this;
 	}
 
@@ -387,6 +407,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> preventInvalidInput(boolean preventInvalidInput) {
 		inputBuilder.preventInvalidInput(preventInvalidInput);
+		additionalInputBuilder.preventInvalidInput(preventInvalidInput);
 		return this;
 	}
 
@@ -398,6 +419,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> withThemeVariants(TextFieldVariant... variants) {
 		inputBuilder.withThemeVariants(variants);
+		additionalInputBuilder.withThemeVariants(variants);
 		return this;
 	}
 
@@ -408,6 +430,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> locale(Locale locale) {
 		inputBuilder.locale(locale);
+		additionalInputBuilder.locale(locale);
 		return this;
 	}
 
@@ -419,6 +442,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> numberFormat(NumberFormat numberFormat) {
 		inputBuilder.numberFormat(numberFormat);
+		additionalInputBuilder.numberFormat(numberFormat);
 		return this;
 	}
 
@@ -430,6 +454,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> numberFormatPattern(String numberFormatPattern) {
 		inputBuilder.numberFormatPattern(numberFormatPattern);
+		additionalInputBuilder.numberFormatPattern(numberFormatPattern);
 		return this;
 	}
 
@@ -440,6 +465,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> allowNegative(boolean allowNegative) {
 		inputBuilder.allowNegative(allowNegative);
+		additionalInputBuilder.allowNegative(allowNegative);
 		return this;
 	}
 
@@ -450,6 +476,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> minDecimals(int minDecimals) {
 		inputBuilder.minDecimals(minDecimals);
+		additionalInputBuilder.minDecimals(minDecimals);
 		return this;
 	}
 
@@ -460,6 +487,7 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 	@Override
 	public NumberInputFilterBuilder<T> maxDecimals(int maxDecimals) {
 		inputBuilder.maxDecimals(maxDecimals);
+		additionalInputBuilder.maxDecimals(maxDecimals);
 		return this;
 	}
 

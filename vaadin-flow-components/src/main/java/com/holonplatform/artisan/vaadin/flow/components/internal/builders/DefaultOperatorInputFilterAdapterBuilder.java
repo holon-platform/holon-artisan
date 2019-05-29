@@ -15,6 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.core.utils.Obj;
@@ -48,6 +49,11 @@ public class DefaultOperatorInputFilterAdapterBuilder<T>
 	@Override
 	protected Input<T> buildInput() {
 		return input;
+	}
+
+	@Override
+	protected Optional<Input<T>> buildAdditionalInput() {
+		return Optional.empty();
 	}
 
 	@Override

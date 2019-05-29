@@ -18,6 +18,7 @@ package com.holonplatform.artisan.vaadin.flow.components.internal.builders;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Function;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
@@ -45,12 +46,14 @@ public class DefaultLocalDateTimeInputFilterBuilder
 		implements LocalDateTimeInputFilterBuilder {
 
 	private final LocalDateTimeInputBuilder inputBuilder;
+	private final LocalDateTimeInputBuilder additionalInputBuilder;
 
 	public DefaultLocalDateTimeInputFilterBuilder(Property<? super LocalDateTime> property) {
 		super(property, InputFilterOperator.EQUAL, InputFilterOperator.NOT_EQUAL, InputFilterOperator.GREATER_THAN,
 				InputFilterOperator.GREATER_OR_EQUAL, InputFilterOperator.LESS_THAN, InputFilterOperator.LESS_OR_EQUAL,
-				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY);
+				InputFilterOperator.EMPTY, InputFilterOperator.NOT_EMPTY, InputFilterOperator.BETWEEN);
 		this.inputBuilder = LocalDateTimeInputBuilder.create();
+		this.additionalInputBuilder = LocalDateTimeInputBuilder.create();
 		label(property);
 	}
 
@@ -64,48 +67,56 @@ public class DefaultLocalDateTimeInputFilterBuilder
 	@Override
 	public LocalDateTimeInputFilterBuilder locale(Locale locale) {
 		inputBuilder.locale(locale);
+		additionalInputBuilder.locale(locale);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder updateLocaleOnAttach(boolean updateLocaleOnAttach) {
 		inputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
+		additionalInputBuilder.updateLocaleOnAttach(updateLocaleOnAttach);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder min(LocalDateTime min) {
 		inputBuilder.min(min);
+		additionalInputBuilder.min(min);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder max(LocalDateTime max) {
 		inputBuilder.max(max);
+		additionalInputBuilder.max(max);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder initialPosition(LocalDateTime initialPosition) {
 		inputBuilder.initialPosition(initialPosition);
+		additionalInputBuilder.initialPosition(initialPosition);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder weekNumbersVisible(boolean weekNumbersVisible) {
 		inputBuilder.weekNumbersVisible(weekNumbersVisible);
+		additionalInputBuilder.weekNumbersVisible(weekNumbersVisible);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder localization(CalendarLocalization localization) {
 		inputBuilder.localization(localization);
+		additionalInputBuilder.localization(localization);
 		return this;
 	}
 
 	@Override
 	public CalendarLocalizationBuilder<LocalDateTime, LocalDateTimeInputFilterBuilder> localization() {
-		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(), this);
+		return new DelegatedCalendarLocalizationBuilder<>(inputBuilder.localization(),
+				additionalInputBuilder.localization(), this);
 	}
 
 	@Override
@@ -140,24 +151,28 @@ public class DefaultLocalDateTimeInputFilterBuilder
 	@Override
 	public LocalDateTimeInputFilterBuilder placeholder(Localizable placeholder) {
 		inputBuilder.placeholder(placeholder);
+		additionalInputBuilder.placeholder(placeholder);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder spacing(boolean spacing) {
 		inputBuilder.spacing(spacing);
+		additionalInputBuilder.spacing(spacing);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder timeInputWidth(String timeInputWidth) {
 		inputBuilder.timeInputWidth(timeInputWidth);
+		additionalInputBuilder.timeInputWidth(timeInputWidth);
 		return this;
 	}
 
 	@Override
 	public LocalDateTimeInputFilterBuilder timeStep(Duration step) {
 		inputBuilder.timeStep(step);
+		additionalInputBuilder.timeStep(step);
 		return this;
 	}
 
@@ -170,6 +185,11 @@ public class DefaultLocalDateTimeInputFilterBuilder
 	@Override
 	protected Input<LocalDateTime> buildInput() {
 		return inputBuilder.build();
+	}
+
+	@Override
+	protected Optional<Input<LocalDateTime>> buildAdditionalInput() {
+		return Optional.of(additionalInputBuilder.build());
 	}
 
 	@Override
