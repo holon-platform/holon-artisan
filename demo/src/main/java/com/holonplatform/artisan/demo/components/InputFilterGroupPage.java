@@ -21,14 +21,21 @@ import static com.holonplatform.artisan.demo.model.Product.DESCRIPTION;
 import static com.holonplatform.artisan.demo.model.Product.ID;
 import static com.holonplatform.artisan.demo.model.Product.PRODUCT;
 import static com.holonplatform.artisan.demo.model.Product.TARGET;
+import static com.holonplatform.artisan.demo.model.Product.UNIT_PRICE;
+import static com.holonplatform.artisan.demo.model.Product.WITHDRAWN;
+
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.holonplatform.artisan.demo.root.Menu;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterComponent;
 import com.holonplatform.core.datastore.Datastore;
+import com.holonplatform.core.property.SetPathProperty;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.components.PropertyListing;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -40,6 +47,8 @@ public class InputFilterGroupPage extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final SetPathProperty<Long> MULTI = SetPathProperty.create("multi", Long.class);
+
 	private final PropertyListing listing;
 	private final InputFilterComponent filters;
 
@@ -48,27 +57,38 @@ public class InputFilterGroupPage extends VerticalLayout {
 		super();
 		setSizeFull();
 
+		final CheckboxGroup<Long> rbg = new CheckboxGroup<>();
+		rbg.setLabel("Multi");
+		rbg.setItems(1L, 2L, 3L, 4L, 5L);
+		final InputFilter<Set<Long>> mf = InputFilter.from(rbg, value -> {
+			if (value != null && !value.isEmpty()) {
+				return ID.in(value);
+			}
+			return null;
+		});
+
 		// filters
-		filters = InputFilterComponent.formLayout(PRODUCT).initializer(l -> {
-			l.setWidth("100%");
-			l.setResponsiveSteps(new ResponsiveStep("0px", 1), new ResponsiveStep("500px", 2),
-					new ResponsiveStep("800px", 3));
-		}).withPostProcessor((p, i) -> {
-			if (DATE == p) {
-				i.hasEnabled().ifPresent(e -> e.setEnabled(false));
-			}
-		}).withValueChangeListener(CATEGORY, evt -> {
-			if (evt.getValue() != null && !evt.getValue().trim().equals("")) {
-				evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
-					i.hasEnabled().ifPresent(e -> e.setEnabled(true));
-				});
-			} else {
-				evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
-					i.clear();
-					i.hasEnabled().ifPresent(e -> e.setEnabled(false));
-				});
-			}
-		}).build();
+		filters = InputFilterComponent.formLayout(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN, DATE, MULTI)
+				.initializer(l -> {
+					l.setWidth("100%");
+					l.setResponsiveSteps(new ResponsiveStep("0px", 1), new ResponsiveStep("500px", 2),
+							new ResponsiveStep("800px", 3));
+				}).withPostProcessor((p, i) -> {
+					if (DATE == p) {
+						i.hasEnabled().ifPresent(e -> e.setEnabled(false));
+					}
+				}).withValueChangeListener(CATEGORY, evt -> {
+					if (evt.getValue() != null && !evt.getValue().trim().equals("")) {
+						evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
+							i.hasEnabled().ifPresent(e -> e.setEnabled(true));
+						});
+					} else {
+						evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
+							i.clear();
+							i.hasEnabled().ifPresent(e -> e.setEnabled(false));
+						});
+					}
+				}).bind(MULTI, mf).build();
 		add(filters.getComponent());
 
 		// listing
