@@ -31,12 +31,16 @@ import com.holonplatform.artisan.vaadin.flow.components.builders.InputFilterGrou
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyConfiguration;
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyConfigurationRegistry;
 import com.holonplatform.artisan.vaadin.flow.components.internal.support.InputFilterPropertyRegistry;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.property.PropertyRendererRegistry;
 import com.holonplatform.core.property.PropertyRendererRegistry.NoSuitableRendererAvailableException;
 import com.holonplatform.core.property.PropertySet;
 import com.holonplatform.core.query.QueryFilter;
+import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
+import com.holonplatform.vaadin.flow.components.events.GroupValueChangeEvent;
+import com.holonplatform.vaadin.flow.internal.components.events.DefaultGroupValueChangeEvent;
 
 /**
  * Default {@link InputFilterGroup} implementation.
@@ -215,6 +219,11 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 	 */
 	protected <T> InputFilter<T> configureInputFilter(final InputFilterPropertyConfiguration<T> configuration,
 			final InputFilter<T> input) {
+		// value change listeners
+		configuration.getValueChangeListeners().forEach(vcl -> input.addValueChangeListener(e -> {
+			vcl.valueChange(new DefaultGroupValueChangeEvent<>(this, e.getSource(), e.getOldValue(), e.getValue(),
+					e.isUserOriginated(), configuration.getProperty(), input));
+		}));
 		return input;
 	}
 
@@ -328,6 +337,15 @@ public class DefaultInputFilterGroup implements InputFilterGroup {
 		public B withPostProcessor(BiConsumer<Property<?>, InputFilter<?>> postProcessor) {
 			Obj.argumentNotNull(postProcessor, "Post processor must be not null");
 			instance.addPostProcessor(postProcessor);
+			return builder();
+		}
+
+		@Override
+		public <V> B withValueChangeListener(Property<V> property,
+				ValueChangeListener<V, GroupValueChangeEvent<V, Property<?>, InputFilter<?>, InputFilterGroup>> listener) {
+			ObjectUtils.argumentNotNull(property, "Property must be not null");
+			ObjectUtils.argumentNotNull(listener, "ValueChangeListener must be not null");
+			instance.getPropertyConfiguration(property).addValueChangeListener(listener);
 			return builder();
 		}
 

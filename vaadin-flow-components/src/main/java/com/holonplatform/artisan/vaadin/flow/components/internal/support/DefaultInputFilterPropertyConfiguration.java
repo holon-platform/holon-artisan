@@ -15,12 +15,18 @@
  */
 package com.holonplatform.artisan.vaadin.flow.components.internal.support;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilterGroup;
+import com.holonplatform.core.internal.utils.ObjectUtils;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
+import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
+import com.holonplatform.vaadin.flow.components.events.GroupValueChangeEvent;
 
 /**
  * Default {@link InputFilterPropertyConfiguration} implementation.
@@ -38,6 +44,8 @@ public class DefaultInputFilterPropertyConfiguration<T> implements InputFilterPr
 	private boolean hidden;
 
 	private PropertyRenderer<InputFilter<T>, T> renderer;
+
+	private List<ValueChangeListener<T, GroupValueChangeEvent<T, Property<?>, InputFilter<?>, InputFilterGroup>>> valueChangeListeners = new LinkedList<>();
 
 	public DefaultInputFilterPropertyConfiguration(Property<T> property) {
 		super();
@@ -68,6 +76,18 @@ public class DefaultInputFilterPropertyConfiguration<T> implements InputFilterPr
 	@Override
 	public void setRenderer(PropertyRenderer<InputFilter<T>, T> renderer) {
 		this.renderer = renderer;
+	}
+
+	@Override
+	public List<ValueChangeListener<T, GroupValueChangeEvent<T, Property<?>, InputFilter<?>, InputFilterGroup>>> getValueChangeListeners() {
+		return valueChangeListeners;
+	}
+
+	@Override
+	public void addValueChangeListener(
+			ValueChangeListener<T, GroupValueChangeEvent<T, Property<?>, InputFilter<?>, InputFilterGroup>> valueChangeListener) {
+		ObjectUtils.argumentNotNull(valueChangeListener, "ValueChangeListener must be not null");
+		this.valueChangeListeners.add(valueChangeListener);
 	}
 
 }

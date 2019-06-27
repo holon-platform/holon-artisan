@@ -28,6 +28,8 @@ import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.PropertyViewGroup;
+import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
+import com.holonplatform.vaadin.flow.components.events.GroupValueChangeEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.data.converter.Converter;
@@ -179,5 +181,15 @@ public interface InputFilterGroupConfigurator<C extends InputFilterGroupConfigur
 	 * @return this
 	 */
 	C withPostProcessor(BiConsumer<Property<?>, InputFilter<?>> postProcessor);
+	
+	/**
+	 * Add a {@link ValueChangeListener} to the {@link InputFilter} bound to given <code>property</code>.
+	 * @param <V> Property type
+	 * @param property The property (not null)
+	 * @param listener The ValueChangeListener to add (not null)
+	 * @return this
+	 */
+	<V> C withValueChangeListener(Property<V> property,
+			ValueChangeListener<V, GroupValueChangeEvent<V, Property<?>, InputFilter<?>, InputFilterGroup>> listener);
 
 }

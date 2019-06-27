@@ -16,11 +16,15 @@
 package com.holonplatform.artisan.vaadin.flow.components.internal.support;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilterGroup;
 import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
+import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
+import com.holonplatform.vaadin.flow.components.events.GroupValueChangeEvent;
 
 /**
  * Configuration for a {@link Property} bound to a {@link InputFilter}.
@@ -60,6 +64,19 @@ public interface InputFilterPropertyConfiguration<T> extends Serializable {
 	 * @param renderer The property renderer to set (may be null)
 	 */
 	void setRenderer(PropertyRenderer<InputFilter<T>, T> renderer);
+
+	/**
+	 * Get the property {@link ValueChangeListener}s.
+	 * @return the property value change listeners
+	 */
+	List<ValueChangeListener<T, GroupValueChangeEvent<T, Property<?>, InputFilter<?>, InputFilterGroup>>> getValueChangeListeners();
+
+	/**
+	 * Add a property {@link ValueChangeListener}.
+	 * @param valueChangeListener property value change listener (not null)
+	 */
+	void addValueChangeListener(
+			ValueChangeListener<T, GroupValueChangeEvent<T, Property<?>, InputFilter<?>, InputFilterGroup>> valueChangeListener);
 
 	/**
 	 * Create a new {@link InputFilterPropertyConfiguration} for given property.

@@ -33,7 +33,9 @@ import com.holonplatform.core.property.Property;
 import com.holonplatform.core.property.PropertyRenderer;
 import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Composable;
+import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator;
+import com.holonplatform.vaadin.flow.components.events.GroupValueChangeEvent;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
@@ -412,6 +414,13 @@ public class DefaultInputFilterComponent<C extends Component> implements InputFi
 			Obj.argumentNotNull(property, "Property must be not null");
 			Obj.argumentNotNull(caption, "Caption must be not null");
 			instance.setPropertyCaption(property, caption);
+			return this;
+		}
+
+		@Override
+		public <V> InputFilterComponentBuilder<C> withValueChangeListener(Property<V> property,
+				ValueChangeListener<V, GroupValueChangeEvent<V, Property<?>, InputFilter<?>, InputFilterGroup>> listener) {
+			groupBuilder.withValueChangeListener(property, listener);
 			return this;
 		}
 

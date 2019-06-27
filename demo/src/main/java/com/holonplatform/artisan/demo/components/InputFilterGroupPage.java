@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.demo.components;
 
+import static com.holonplatform.artisan.demo.model.Product.CATEGORY;
+import static com.holonplatform.artisan.demo.model.Product.DATE;
 import static com.holonplatform.artisan.demo.model.Product.DESCRIPTION;
 import static com.holonplatform.artisan.demo.model.Product.ID;
 import static com.holonplatform.artisan.demo.model.Product.PRODUCT;
@@ -51,6 +53,21 @@ public class InputFilterGroupPage extends VerticalLayout {
 			l.setWidth("100%");
 			l.setResponsiveSteps(new ResponsiveStep("0px", 1), new ResponsiveStep("500px", 2),
 					new ResponsiveStep("800px", 3));
+		}).withPostProcessor((p, i) -> {
+			if (DATE == p) {
+				i.hasEnabled().ifPresent(e -> e.setEnabled(false));
+			}
+		}).withValueChangeListener(CATEGORY, evt -> {
+			if (evt.getValue() != null && !evt.getValue().trim().equals("")) {
+				evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
+					i.hasEnabled().ifPresent(e -> e.setEnabled(true));
+				});
+			} else {
+				evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
+					i.clear();
+					i.hasEnabled().ifPresent(e -> e.setEnabled(false));
+				});
+			}
 		}).build();
 		add(filters.getComponent());
 
