@@ -38,6 +38,7 @@ import com.holonplatform.vaadin.flow.components.HasPlaceholder;
 import com.holonplatform.vaadin.flow.components.HasTitle;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;
@@ -380,6 +381,12 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	@Override
 	public boolean isReadOnly() {
 		return super.isReadOnly();
+	}
+
+	@Override
+	public Registration addReadonlyChangeListener(ReadonlyChangeListener listener) {
+		return getInput().map(i -> i.addReadonlyChangeListener(listener)).orElse(() -> {
+		});
 	}
 
 	@Override

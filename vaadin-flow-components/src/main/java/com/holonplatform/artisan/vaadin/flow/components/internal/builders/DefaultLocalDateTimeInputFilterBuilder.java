@@ -30,6 +30,7 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.LocalDateTimeInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -140,6 +141,12 @@ public class DefaultLocalDateTimeInputFilterBuilder
 	@Override
 	public LocalDateTimeInputFilterBuilder withBlurListener(ComponentEventListener<BlurEvent<Component>> listener) {
 		inputBuilder.withBlurListener(listener);
+		return this;
+	}
+
+	@Override
+	public LocalDateTimeInputFilterBuilder withReadonlyChangeListener(ReadonlyChangeListener listener) {
+		inputBuilder.withReadonlyChangeListener(listener);
 		return this;
 	}
 

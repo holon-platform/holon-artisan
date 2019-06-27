@@ -39,6 +39,7 @@ import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectConfigurator.SingleSelectInputBuilder;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectableInputConfigurator;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
 import com.vaadin.flow.component.Component;
@@ -127,6 +128,12 @@ public class DefaultEnumSingleSelectInputFilterBuilder<T extends Enum<T>>
 	@Override
 	public EnumSingleSelectInputFilterBuilder<T> readOnly(boolean readOnly) {
 		inputBuilder.readOnly(readOnly);
+		return this;
+	}
+
+	@Override
+	public EnumSingleSelectInputFilterBuilder<T> withReadonlyChangeListener(ReadonlyChangeListener listener) {
+		inputBuilder.withReadonlyChangeListener(listener);
 		return this;
 	}
 

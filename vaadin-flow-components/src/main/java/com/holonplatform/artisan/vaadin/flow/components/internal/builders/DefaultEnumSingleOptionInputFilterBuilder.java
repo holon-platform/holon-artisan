@@ -29,6 +29,7 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.OptionsSingleSelectConfigurator.OptionsSingleSelectInputBuilder;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.DetachEvent;
@@ -82,6 +83,12 @@ public class DefaultEnumSingleOptionInputFilterBuilder<T extends Enum<T>>
 	@Override
 	public EnumSingleOptionInputFilterBuilder<T> readOnly(boolean readOnly) {
 		inputBuilder.readOnly(readOnly);
+		return this;
+	}
+
+	@Override
+	public EnumSingleOptionInputFilterBuilder<T> withReadonlyChangeListener(ReadonlyChangeListener listener) {
+		inputBuilder.withReadonlyChangeListener(listener);
 		return this;
 	}
 

@@ -31,6 +31,7 @@ import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
 import com.holonplatform.vaadin.flow.components.builders.ItemSetConfigurator.ItemCaptionGenerator;
 import com.holonplatform.vaadin.flow.components.builders.ShortcutConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.SingleSelectConfigurator.SingleSelectInputBuilder;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.BlurNotifier.BlurEvent;
@@ -176,6 +177,12 @@ public class DefaultBooleanInputFilterBuilder implements BooleanInputFilterBuild
 	@Override
 	public BooleanInputFilterBuilder readOnly(boolean readOnly) {
 		inputBuilder.readOnly(readOnly);
+		return this;
+	}
+
+	@Override
+	public BooleanInputFilterBuilder withReadonlyChangeListener(ReadonlyChangeListener listener) {
+		inputBuilder.withReadonlyChangeListener(listener);
 		return this;
 	}
 

@@ -25,6 +25,7 @@ import com.holonplatform.core.property.Property;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeEvent;
 import com.holonplatform.vaadin.flow.components.ValueHolder.ValueChangeListener;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 
 /**
  * Default {@link OperatorInputFilterAdapterBuilder} implementation.
@@ -65,6 +66,12 @@ public class DefaultOperatorInputFilterAdapterBuilder<T>
 	public OperatorInputFilterAdapterBuilder<T> withValueChangeListener(
 			ValueChangeListener<T, ValueChangeEvent<T>> listener) {
 		input.addValueChangeListener(listener);
+		return this;
+	}
+
+	@Override
+	public OperatorInputFilterAdapterBuilder<T> withReadonlyChangeListener(ReadonlyChangeListener listener) {
+		input.addReadonlyChangeListener(listener);
 		return this;
 	}
 

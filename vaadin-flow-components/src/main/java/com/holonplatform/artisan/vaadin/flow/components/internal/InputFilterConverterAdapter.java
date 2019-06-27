@@ -28,6 +28,7 @@ import com.holonplatform.vaadin.flow.components.HasTitle;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.holonplatform.vaadin.flow.components.ValueHolder;
 import com.holonplatform.vaadin.flow.components.events.InvalidChangeEventNotifier;
+import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 import com.holonplatform.vaadin.flow.components.support.InputAdaptersContainer;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasEnabled;
@@ -133,6 +134,11 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	@Override
 	public boolean isReadOnly() {
 		return input.isReadOnly();
+	}
+
+	@Override
+	public Registration addReadonlyChangeListener(ReadonlyChangeListener listener) {
+		return input.addReadonlyChangeListener(listener);
 	}
 
 	/*
