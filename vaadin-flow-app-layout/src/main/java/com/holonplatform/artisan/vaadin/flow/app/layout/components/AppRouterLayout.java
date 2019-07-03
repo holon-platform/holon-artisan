@@ -60,7 +60,6 @@ public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 		getElement().addPropertyChangeListener("overlay", evt -> onOverlayChangeEvent(evt));
 
 		final DrawerToggle toggle = new DrawerToggle();
-		toggle.getElement().setAttribute("app-router-layout-toggle", "");
 		toggle.getElement().setAttribute("hide-when-not-overlay", "");
 		addToNavbar(toggle);
 
