@@ -476,6 +476,13 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 		return this;
 	}
 
+	@Override
+	public NumberInputFilterBuilder<T> useGrouping(boolean useGrouping) {
+		inputBuilder.useGrouping(useGrouping);
+		additionalInputBuilder.useGrouping(useGrouping);
+		return this;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.holonplatform.vaadin.flow.components.builders.NumberInputConfigurator#minDecimals(int)
