@@ -1,0 +1,3 @@
+:host([operator-input-filter]) .container {
+	flex-grow: 1;
+}

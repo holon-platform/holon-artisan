@@ -132,6 +132,12 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 	}
 
 	@Override
+	public DateInputFilterBuilder clearButtonVisible(boolean clearButtonVisible) {
+		inputBuilder.clearButtonVisible(clearButtonVisible);
+		return this;
+	}
+
+	@Override
 	public DateInputFilterBuilder tabIndex(int tabIndex) {
 		inputBuilder.tabIndex(tabIndex);
 		return this;

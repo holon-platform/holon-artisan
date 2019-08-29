@@ -69,8 +69,8 @@ public class TestXLSExporter {
 	private static final TemporalProperty<LocalTime> LTIME = TemporalProperty.localTime("ltime");
 
 	private static final PropertySet<?> SET = PropertySet
-			.builderOf(ID, TEXT, INTV, DBLV, ENMV, BOOL, PERC, DATE, DATE_TIME, LDATE, LDATETIME, LTIME).identifier(ID)
-			.build();
+			.builderOf(ID, TEXT, INTV, DBLV, ENMV, BOOL, PERC, DATE, DATE_TIME, LDATE, LDATETIME, LTIME)
+			.withIdentifier(ID).build();
 
 	private static final DataProvider<PropertyBox, ?> DATASOURCE = DataProvider.ofItems(new PropertyBox[] {
 			PropertyBox.builder(SET).set(ID, 1L).set(TEXT, "text1").set(INTV, 123).set(DBLV, 123456.78d)

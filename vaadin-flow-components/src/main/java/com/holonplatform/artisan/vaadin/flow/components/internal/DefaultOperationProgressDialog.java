@@ -45,8 +45,6 @@ import com.holonplatform.core.property.PropertyValuePresenterRegistry;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator;
 import com.holonplatform.vaadin.flow.components.builders.ButtonConfigurator.BaseButtonConfigurator;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
-import com.vaadin.external.org.slf4j.Logger;
-import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -71,8 +69,6 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 
 	private static final long serialVersionUID = 4036015960558648086L;
 
-	protected static final Logger LOGGER = LoggerFactory.getLogger(OperationProgressDialog.class);
-
 	private static final int DEFAULT_POLLING_INTERVAL = 200;
 
 	private static final Localizable ABORT_BUTTON_TEXT = Localizable.of("Abort",
@@ -88,8 +84,6 @@ public class DefaultOperationProgressDialog<T> extends Dialog implements Operati
 	private Consumer<BaseButtonConfigurator> abortConfigurator;
 
 	private Consumer<OperationExecutionException> operationExecutionExceptionHandler = e -> {
-		LOGGER.error("Operation execution failed", e);
-
 		Notification notification = new Notification(ExceptionUtils.getRootCauseMessage(e));
 		notification.setPosition(Position.MIDDLE);
 		notification.open();

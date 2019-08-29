@@ -1,0 +1,8 @@
+:host([slot="navbar"][part="navbar-start"]) {
+	flex-grow: 1;
+}
+      
+:host([slot="navbar"][part="navbar-end"]) {
+	padding-left: var(--app-layout-navbar-slots-spacing, 1em);
+	flex-stretch: 0;
+}

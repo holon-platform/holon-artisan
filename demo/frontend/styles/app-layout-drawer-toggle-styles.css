@@ -1,0 +1,10 @@
+:host([hide-when-not-overlay]) {
+	display: none;
+}
+      
+@media (max-width: 800px),
+(max-height: 600px) {
+	:host([hide-when-not-overlay]) {
+		display: inline-flex;
+	}
+}

@@ -18,12 +18,12 @@ package com.holonplatform.artisan.vaadin.flow.components.templates;
 import com.holonplatform.artisan.core.utils.Obj;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 @Tag("holon-input-filter")
-@HtmlImport("frontend://src/holon-input-filter.html")
+@JsModule("./src/holon-input-filter.js")
 public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 
 	private static final long serialVersionUID = -8446468454355099170L;
@@ -42,7 +42,7 @@ public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 	public void setInputComponent(Component input) {
 		Obj.argumentNotNull(input, "Component must be not null");
 		if (input != null) {
-			//input.getElement().getStyle().set("flex-grow", "1");
+			// input.getElement().getStyle().set("flex-grow", "1");
 			input.getElement().getStyle().set("width", "100%");
 			addToSlot("input", input);
 		}
@@ -51,7 +51,7 @@ public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
 	public void setAdditionalInputComponent(Component input) {
 		Obj.argumentNotNull(input, "Component must be not null");
 		if (input != null) {
-			//input.getElement().getStyle().set("flex-grow", "1");
+			// input.getElement().getStyle().set("flex-grow", "1");
 			input.getElement().getStyle().set("width", "100%");
 			addToSlot("additional-input", input);
 		}

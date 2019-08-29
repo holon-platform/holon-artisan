@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -28,19 +30,6 @@
 		<dependency>
 			<groupId>com.holon-platform.vaadin</groupId>
 			<artifactId>holon-vaadin-flow</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.vaadin</groupId>
-					<artifactId>vaadin-app-layout-flow</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<!-- Vaadin app-layout -->
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-app-layout-flow</artifactId>
-			<version>2.0.1</version>
 		</dependency>
 
 	</dependencies>

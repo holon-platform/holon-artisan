@@ -15,6 +15,7 @@ import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -23,6 +24,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.ParentLayout;
 
 @ParentLayout(MainLayout.class)
+@CssImport(value = "./styles/app-layout-styles.css", themeFor = "vaadin-app-layout")
+@CssImport(value = "./styles/app-layout-drawer-toggle-styles.css", themeFor = "vaadin-drawer-toggle")
+@CssImport(value = "./styles/app-layout-topbar-styles.css", themeFor = "vaadin-horizontal-layout")
 public class Menu extends AppRouterLayout {
 
 	private static final long serialVersionUID = 1L;

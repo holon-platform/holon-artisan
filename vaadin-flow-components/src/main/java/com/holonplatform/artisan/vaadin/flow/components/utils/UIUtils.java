@@ -61,7 +61,7 @@ public final class UIUtils implements Serializable {
 	public static boolean isTouchDevice() {
 		final VaadinSession session = VaadinSession.getCurrent();
 		if (session != null) {
-			return session.getBrowser().isTouchDevice();
+			return session.getBrowser().isAndroid() || session.getBrowser().isIOS();
 		}
 		return false;
 	}

@@ -56,7 +56,7 @@ public interface Product {
 
 	// Product property set with the ID property as identifier property
 	public static final PropertySet<?> PRODUCT = PropertySet
-			.builderOf(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN, DATE).identifier(ID).build();
+			.builderOf(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN, DATE).withIdentifier(ID).build();
 
 	public static final DataTarget<?> TARGET = DataTarget.named("products");
 

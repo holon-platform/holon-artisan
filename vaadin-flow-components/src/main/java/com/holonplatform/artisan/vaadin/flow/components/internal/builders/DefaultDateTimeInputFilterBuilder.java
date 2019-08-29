@@ -134,6 +134,12 @@ public class DefaultDateTimeInputFilterBuilder extends
 	}
 
 	@Override
+	public DateTimeInputFilterBuilder clearButtonVisible(boolean clearButtonVisible) {
+		inputBuilder.clearButtonVisible(clearButtonVisible);
+		return this;
+	}
+
+	@Override
 	public DateTimeInputFilterBuilder tabIndex(int tabIndex) {
 		inputBuilder.tabIndex(tabIndex);
 		return this;

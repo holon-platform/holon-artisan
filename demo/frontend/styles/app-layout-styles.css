@@ -1,0 +1,29 @@
+:root {
+	--app-layout-navbar-slots-spacing: 1em;
+	--app-layout-navbar-drawer-small-width: 4em;
+}
+      
+:host([app-router-layout]) {
+	--safe-area-inset-left: 1em;
+	--safe-area-inset-right: 1em;
+}
+      
+:host([app-router-layout]) [part="drawer"] {
+	padding-left: 0;
+}
+      
+:host([app-router-layout][overlay]) {
+	--safe-area-inset-left: 0;
+}
+      
+:host(:not([overlay])[app-router-layout][theme~="small"]) [part="drawer"] {
+	width: var(--app-layout-navbar-drawer-small-width, 4em);
+}
+
+@media (max-width: 800px),
+      (max-height: 600px) {
+	:host {
+		--vaadin-app-layout-touch-optimized: true;
+    }
+}
+      

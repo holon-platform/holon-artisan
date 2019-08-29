@@ -32,12 +32,10 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.PropertyChangeEvent;
 
-@HtmlImport("frontend://com/holonplatform/artisan/vaadin/flow/app/layout/app-layout-styles.html")
 public class AppRouterLayout extends AppLayout implements ApplicationLayout {
 
 	private static final long serialVersionUID = 8726407799332318387L;

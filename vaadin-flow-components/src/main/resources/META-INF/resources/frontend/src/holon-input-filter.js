@@ -1,10 +1,9 @@
-<!-- Dependency resources -->
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
+import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 
-<!-- Element definition -->
-<dom-module id="holon-input-filter">
-    <template>
-    	<style>
+class HolonInputFilter extends PolymerElement {
+    static get template() {
+        return html`
+            <style>
     		:host {
     			display: flex;
     			display: -webkit-box;
@@ -60,16 +59,12 @@
     		<div part="additional-input">
     			<slot name="additional-input"></slot>
     		</div>
-    	</div>
-    </template>
-    
-    <!-- Register the element -->
-    <script>
-        class HolonInputFilter extends Polymer.Element {
-            static get is() {
-                return 'holon-input-filter'
-            }
-        }
-        customElements.define(HolonInputFilter.is, HolonInputFilter);
-    </script>
-</dom-module>
+    	</div>`;
+    }
+
+    static get is() {
+        return 'holon-input-filter'
+    }
+}
+
+customElements.define(HolonInputFilter.is, HolonInputFilter);

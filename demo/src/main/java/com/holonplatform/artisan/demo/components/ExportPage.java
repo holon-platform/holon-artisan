@@ -124,9 +124,9 @@ public class ExportPage extends VerticalLayout implements HasViewTitle, HasViewA
 			}).abortable(true).text("Exporting...").execute(fileName -> {
 				// download file
 				UI.getCurrent().getPage()
-						.executeJavaScript("window.open('" + FileDownloadServlet.build().fileName(fileName)
+						.open(FileDownloadServlet.build().fileName(fileName)
 								.fileType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-								.removeAfterDowload().build() + "','_blank');");
+								.removeAfterDowload().build());
 			});
 
 		} catch (IOException e) {

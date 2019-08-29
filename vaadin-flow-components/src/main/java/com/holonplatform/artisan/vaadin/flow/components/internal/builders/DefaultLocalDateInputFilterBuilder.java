@@ -126,6 +126,12 @@ public class DefaultLocalDateInputFilterBuilder
 	}
 
 	@Override
+	public LocalDateInputFilterBuilder clearButtonVisible(boolean clearButtonVisible) {
+		inputBuilder.clearButtonVisible(clearButtonVisible);
+		return this;
+	}
+
+	@Override
 	public LocalDateInputFilterBuilder tabIndex(int tabIndex) {
 		inputBuilder.tabIndex(tabIndex);
 		return this;
