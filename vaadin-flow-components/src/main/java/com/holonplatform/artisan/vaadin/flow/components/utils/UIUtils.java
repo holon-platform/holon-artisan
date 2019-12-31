@@ -38,9 +38,10 @@ public final class UIUtils implements Serializable {
 
 	/**
 	 * Provides exclusive access to this UI from outside a request handling thread.
-	 * @param ui The UI (not null)
+	 * @param ui   The UI (not null)
 	 * @param task The task to execute
-	 * @return A future that can be used to check for task completion and to cancel the task
+	 * @return A future that can be used to check for task completion and to cancel
+	 *         the task
 	 */
 	public static Future<Void> access(UI ui, final Consumer<UI> task) {
 		Obj.argumentNotNull(ui, "UI must be not null");
@@ -59,9 +60,14 @@ public final class UIUtils implements Serializable {
 	 * @return Whether the current browser is running on a touch device
 	 */
 	public static boolean isTouchDevice() {
+		final UI ui = UI.getCurrent();
+		if (ui != null) {
+			return UI.getCurrent().getInternals().getExtendedClientDetails().isTouchDevice();
+		}
 		final VaadinSession session = VaadinSession.getCurrent();
 		if (session != null) {
-			return session.getBrowser().isAndroid() || session.getBrowser().isIOS();
+			return session.getBrowser().isAndroid() || session.getBrowser().isIPhone();
+
 		}
 		return false;
 	}
