@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.holon-platform.artisan</groupId>
 		<artifactId>holon-artisan-root</artifactId>
-		<version>2.1.1-SNAPSHOT</version>
+		<version>2.1.1</version>
 	</parent>
 
 	<artifactId>holon-artisan-vaadin-flow-app-layout</artifactId>
