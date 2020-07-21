@@ -70,25 +70,19 @@ public class DefaultWindow extends Dialog implements Window {
 		btnClose.setIcon(VaadinIcon.CLOSE_SMALL.create());
 		btnClose.addThemeVariants(ButtonVariant.LUMO_ICON);
 		btnClose.getStyle().set("min-width", "0px");
-		btnClose.addClickListener(evt -> {
-			close();
-		});
+		btnClose.addClickListener(evt -> close());
 
 		btnMaximize = new Button();
 		btnMaximize.setIcon(VaadinIcon.PLUS.create());
 		btnMaximize.addThemeVariants(ButtonVariant.LUMO_ICON);
 		btnMaximize.getStyle().set("min-width", "0px");
-		btnMaximize.addClickListener(evt -> {
-			addThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT);
-		});
+		btnMaximize.addClickListener(evt -> addThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT));
 
 		btnMinimize = new Button();
 		btnMinimize.setIcon(VaadinIcon.MINUS.create());
 		btnMinimize.addThemeVariants(ButtonVariant.LUMO_ICON);
 		btnMinimize.getStyle().set("min-width", "0px");
-		btnMinimize.addClickListener(evt -> {
-			removeThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT);
-		});
+		btnMinimize.addClickListener(evt -> removeThemeVariants(WindowVariant.FULL_WIDTH, WindowVariant.FULL_HEIGHT));
 		buttons.add(btnMaximize, btnMinimize, btnClose);
 
 		add(header);
@@ -107,7 +101,6 @@ public class DefaultWindow extends Dialog implements Window {
 		footer.setJustifyContentMode(JustifyContentMode.END);
 		add(footer);
 
-		// title.setVisible(false);
 		buttons.setVisible(false);
 		btnMaximize.setVisible(false);
 		btnMinimize.setVisible(false);
@@ -158,7 +151,8 @@ public class DefaultWindow extends Dialog implements Window {
 	 * <p>
 	 * This method add a close button on window header
 	 * </p>
-	 * @param closable <code>true</code> value for closable window, <code>false</code> otherwise
+	 * @param closable <code>true</code> value for closable window,
+	 *                 <code>false</code> otherwise
 	 */
 	public void setClosable(boolean closable) {
 		buttons.setVisible(closable);
@@ -166,21 +160,16 @@ public class DefaultWindow extends Dialog implements Window {
 	}
 
 	/**
-	 * Checks if window is resizable
-	 * @return true if maximize/minimize buttons are visible
-	 */
-	public boolean isResizable() {
-		return buttons.isVisible() && btnMaximize.isVisible() && btnMinimize.isVisible();
-	}
-
-	/**
 	 * Makes the window resizable
 	 * <p>
 	 * This method add classic buttons to maximize and minimize window
 	 * </p>
-	 * @param resizable <code>true</code> value for resizable window, <code>false</code> otherwise
+	 * @param resizable <code>true</code> value for resizable window,
+	 *                  <code>false</code> otherwise
 	 */
+	@Override
 	public void setResizable(boolean resizable) {
+		super.setResizable(resizable);
 		buttons.setVisible(resizable);
 		btnMaximize.setVisible(resizable);
 		btnMinimize.setVisible(resizable);

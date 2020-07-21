@@ -128,6 +128,14 @@ public class DefaultLocalDateInputFilterBuilder
 	@Override
 	public LocalDateInputFilterBuilder clearButtonVisible(boolean clearButtonVisible) {
 		inputBuilder.clearButtonVisible(clearButtonVisible);
+		additionalInputBuilder.clearButtonVisible(clearButtonVisible);
+		return this;
+	}
+
+	@Override
+	public LocalDateInputFilterBuilder autoOpen(boolean autoOpen) {
+		inputBuilder.autoOpen(autoOpen);
+		additionalInputBuilder.autoOpen(autoOpen);
 		return this;
 	}
 

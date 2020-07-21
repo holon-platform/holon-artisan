@@ -101,13 +101,6 @@ public class DefaultDateTimeInputFilterBuilder extends
 	}
 
 	@Override
-	public DateTimeInputFilterBuilder initialPosition(Date initialPosition) {
-		inputBuilder.initialPosition(initialPosition);
-		additionalInputBuilder.initialPosition(initialPosition);
-		return this;
-	}
-
-	@Override
 	public DateTimeInputFilterBuilder weekNumbersVisible(boolean weekNumbersVisible) {
 		inputBuilder.weekNumbersVisible(weekNumbersVisible);
 		additionalInputBuilder.weekNumbersVisible(weekNumbersVisible);
@@ -134,8 +127,8 @@ public class DefaultDateTimeInputFilterBuilder extends
 	}
 
 	@Override
-	public DateTimeInputFilterBuilder clearButtonVisible(boolean clearButtonVisible) {
-		inputBuilder.clearButtonVisible(clearButtonVisible);
+	public DateTimeInputFilterBuilder autoOpen(boolean autoOpen) {
+		inputBuilder.autoOpen(autoOpen);
 		return this;
 	}
 

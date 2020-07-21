@@ -99,6 +99,13 @@ public class DefaultDateInputFilterBuilder extends AbstractOperatorInputFilterBu
 	}
 
 	@Override
+	public DateInputFilterBuilder autoOpen(boolean autoOpen) {
+		inputBuilder.autoOpen(autoOpen);
+		additionalInputBuilder.autoOpen(autoOpen);
+		return this;
+	}
+
+	@Override
 	public DateInputFilterBuilder initialPosition(Date initialPosition) {
 		inputBuilder.initialPosition(initialPosition);
 		additionalInputBuilder.initialPosition(initialPosition);
