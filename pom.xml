@@ -57,7 +57,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Holon Platform -->
-		<holon.platform.version>5.5.2</holon.platform.version>
+		<holon.platform.version>5.5.3</holon.platform.version>
 
 		<!-- Apache POI -->
 		<poi.version>4.1.2</poi.version>
