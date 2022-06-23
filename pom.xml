@@ -9,7 +9,7 @@
 
 	<groupId>com.holon-platform.artisan</groupId>
 	<artifactId>holon-artisan-root</artifactId>
-	<version>2.2.5-SNAPSHOT</version>
+	<version>2.2.4-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
