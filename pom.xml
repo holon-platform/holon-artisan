@@ -57,12 +57,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Holon Platform -->
-		<holon.platform.version>5.5.3</holon.platform.version>
+		<holon.platform.version>5.5.4</holon.platform.version>
 
 		<!-- Apache POI -->
 		<poi.version>4.1.2</poi.version>
 
-		<!-- Vaadin plugin -->
+		<!-- Vaadin plugin: this property is used only for demo module! -->
 		<vaadin.version>14.3.1</vaadin.version>
 		<!-- Spring Boot plugin -->
 		<spring.boot.version>2.3.1.RELEASE</spring.boot.version>
