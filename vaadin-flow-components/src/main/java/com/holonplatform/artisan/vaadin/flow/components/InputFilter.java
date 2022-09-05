@@ -50,10 +50,9 @@ import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.data.converter.Converter;
 
 /**
- * An {@link Input} component which provides a {@link QueryFilter} according to the current input value, if available.
- *
+ * An {@link Input} component which provides a {@link QueryFilter} according to the current input value, if
+ * available.
  * @param <T> Value type
- *
  * @since 1.0.0
  */
 public interface InputFilter<T> extends Input<T> {
@@ -200,6 +199,21 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
+	 * Get a builder to create an {@link InputFilter} with operator support from two distinct <code>input</code> to
+	 * support between operator filter.
+	 * @param <T> Value type
+	 * @param input The {@link Input} component (not null)
+	 * @param additionalInput The second optional {@link Input} component (not null)
+	 * @param property The property to use as query filter expression (not null)
+	 * @param operators The available filter operators (not null)
+	 * @return A new {@link OperatorInputFilterAdapterBuilder}
+	 */
+	static <T> OperatorInputFilterAdapterBuilder<T> builder(Input<T> input, Optional<Input<T>> additionalInput,
+			Property<? super T> property, InputFilterOperator... operators) {
+		return new DefaultOperatorInputFilterAdapterBuilder<>(input, additionalInput, property, operators);
+	}
+
+	/**
 	 * Get a builder to create a {@link String} type {@link InputFilter}.
 	 * @param property The property to use as filter expression (not null)
 	 * @return A new {@link StringInputFilterBuilder}
@@ -283,7 +297,8 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
-	 * Get a builder to create an enumeration type {@link InputFilter}, using a radio button group as input component.
+	 * Get a builder to create an enumeration type {@link InputFilter}, using a radio button group as input
+	 * component.
 	 * @param <T> Enumeratin type
 	 * @param property The property to use as filter expression (not null)
 	 * @return A new {@link EnumSingleOptionInputFilterBuilder}
@@ -303,8 +318,8 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
-	 * Get a generic builder to create an enumeration type {@link InputFilter}, using given property and given rendering
-	 * mode.
+	 * Get a generic builder to create an enumeration type {@link InputFilter}, using given property and given
+	 * rendering mode.
 	 * <p>
 	 * For specific builders according to rendering mode, use:
 	 * <ul>
@@ -322,9 +337,9 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
-	 * Get a generic builder to create an enumeration type {@link InputFilter}, using given property and the rendering
-	 * mode specified in property configuration using {@link PROPERTY_ENUM_FILTER_MODE}. If the configuration value is
-	 * not available, the {@link EnumFilterMode#SINGLE_SELECT} is used by default.
+	 * Get a generic builder to create an enumeration type {@link InputFilter}, using given property and the
+	 * rendering mode specified in property configuration using {@link PROPERTY_ENUM_FILTER_MODE}. If the
+	 * configuration value is not available, the {@link EnumFilterMode#SINGLE_SELECT} is used by default.
 	 * <p>
 	 * For specific builders according to rendering mode, use:
 	 * <ul>
@@ -399,7 +414,6 @@ public interface InputFilter<T> extends Input<T> {
 	/**
 	 * A convenience interface with a fixed {@link InputFilter} rendering type to use a {@link InputFilter}
 	 * {@link PropertyRenderer} as a functional interface.
-	 * 
 	 * @param <T> Property type
 	 */
 	@FunctionalInterface

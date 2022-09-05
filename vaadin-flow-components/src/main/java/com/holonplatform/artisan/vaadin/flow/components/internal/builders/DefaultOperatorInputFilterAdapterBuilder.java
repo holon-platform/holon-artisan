@@ -29,9 +29,7 @@ import com.holonplatform.vaadin.flow.components.events.ReadonlyChangeListener;
 
 /**
  * Default {@link OperatorInputFilterAdapterBuilder} implementation.
- *
  * @param <T> Value type
- *
  * @since 1.0.0
  */
 public class DefaultOperatorInputFilterAdapterBuilder<T>
@@ -39,12 +37,23 @@ public class DefaultOperatorInputFilterAdapterBuilder<T>
 		implements OperatorInputFilterAdapterBuilder<T> {
 
 	private final Input<T> input;
+	private final Optional<Input<T>> additionalInput;
+
+	public DefaultOperatorInputFilterAdapterBuilder(Input<T> input, Optional<Input<T>> additionalInput,
+			Property<? super T> property, InputFilterOperator... operators) {
+		super(property, operators);
+		Obj.argumentNotNull(input, "Input must be not null");
+		Obj.argumentNotNull(additionalInput, "Additional Input must be not null");
+		this.input = input;
+		this.additionalInput = additionalInput;
+	}
 
 	public DefaultOperatorInputFilterAdapterBuilder(Input<T> input, Property<? super T> property,
 			InputFilterOperator... operators) {
 		super(property, operators);
 		Obj.argumentNotNull(input, "Input must be not null");
 		this.input = input;
+		this.additionalInput = Optional.empty();
 	}
 
 	@Override
@@ -54,7 +63,7 @@ public class DefaultOperatorInputFilterAdapterBuilder<T>
 
 	@Override
 	protected Optional<Input<T>> buildAdditionalInput() {
-		return Optional.empty();
+		return additionalInput;
 	}
 
 	@Override

@@ -215,6 +215,10 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		if (getOperatorSelect().isVisible()) {
 			getOperatorSelect().clear();
 		}
+		// clear additional input in case of between operator
+		if (supportsBetween) {
+			betweenInput.clear();
+		}
 	}
 
 	@Override
