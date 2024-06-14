@@ -46,18 +46,14 @@ import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
  * {@link InputFilter} with operator support adapter.
- * 
  * @param <T> Value type
- *
  * @since 1.0.0
  */
-@HtmlImport("frontend://com-holonplatform-operator-input-filter-styles.html")
 public class OperatorInputFilterAdapter<T> extends CustomField<T> implements InputFilter<T>, HasStyle, HasTheme {
 
 	private static final long serialVersionUID = 3088317891629157757L;

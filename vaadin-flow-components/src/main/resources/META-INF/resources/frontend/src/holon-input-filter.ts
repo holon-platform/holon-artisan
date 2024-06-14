@@ -1,10 +1,11 @@
-import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
+import { css, html, LitElement } from 'lit';
 
-class HolonInputFilter extends PolymerElement {
-    static get template() {
-        return html`
-            <style>
-    		:host {
+class HolonInputFilter extends LitElement {
+	
+	static get styles() {
+		return css`
+
+		   	:host {
     			display: flex;
     			display: -webkit-box;
     			display: -webkit-flex;
@@ -48,7 +49,12 @@ class HolonInputFilter extends PolymerElement {
     			width: calc(50% - 1px);
     			float: right;
     		}
-    	</style>
+	
+    `;
+	}
+	
+	render() {
+		return html`
     	<div part="operator">
     		<slot name="operator"></slot>
     	</div>
@@ -60,11 +66,8 @@ class HolonInputFilter extends PolymerElement {
     			<slot name="additional-input"></slot>
     		</div>
     	</div>`;
-    }
+	}
 
-    static get is() {
-        return 'holon-input-filter'
-    }
 }
 
-customElements.define(HolonInputFilter.is, HolonInputFilter);
+customElements.define('holon-input-filter', HolonInputFilter);

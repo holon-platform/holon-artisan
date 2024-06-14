@@ -32,7 +32,6 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 
 /**
  * Default {@link TabLayout} implementation.
- *
  * @since 1.0.0
  */
 public class DefaultTabLayout implements TabLayout {
@@ -55,7 +54,7 @@ public class DefaultTabLayout implements TabLayout {
 	 * @param layout Layout component (not null)
 	 * @param orientation Tabs orientation
 	 */
-	public <L extends Component & FlexComponent<L>> DefaultTabLayout(L layout, Orientation orientation) {
+	public <L extends Component & FlexComponent> DefaultTabLayout(L layout, Orientation orientation) {
 		super();
 		Obj.argumentNotNull(layout, "Layout must be not null");
 		// layout
@@ -102,8 +101,8 @@ public class DefaultTabLayout implements TabLayout {
 	}
 
 	/**
-	 * Sets the flex grow property of all enclosed tabs. The flex grow property specifies what amount of the available
-	 * space inside the layout the component should take up, proportionally to the other components.
+	 * Sets the flex grow property of all enclosed tabs. The flex grow property specifies what amount of the
+	 * available space inside the layout the component should take up, proportionally to the other components.
 	 * @param flexGrow the proportion of the available space the enclosed tabs should take up
 	 * @throws IllegalArgumentException if {@code flexGrow} is negative
 	 */
@@ -172,8 +171,8 @@ public class DefaultTabLayout implements TabLayout {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.TabLayout#setSelectedTab(com.holonplatform.artisan.vaadin.flow.
-	 * components.TabLayout.Tab)
+	 * com.holonplatform.artisan.vaadin.flow.components.TabLayout#setSelectedTab(com.holonplatform.artisan.vaadin.
+	 * flow. components.TabLayout.Tab)
 	 */
 	@Override
 	public boolean setSelectedTab(Tab tab) {
@@ -204,8 +203,8 @@ public class DefaultTabLayout implements TabLayout {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.TabLayout#addSelectedTabChangeListener(com.holonplatform.artisan
-	 * .vaadin.flow.components.TabLayout.SelectedTabChangeListener)
+	 * com.holonplatform.artisan.vaadin.flow.components.TabLayout#addSelectedTabChangeListener(com.holonplatform.
+	 * artisan .vaadin.flow.components.TabLayout.SelectedTabChangeListener)
 	 */
 	@Override
 	public Registration addSelectedTabChangeListener(SelectedTabChangeListener listener) {
@@ -359,7 +358,7 @@ public class DefaultTabLayout implements TabLayout {
 
 	// -------
 
-	private static class TabsContent<L extends Component & FlexComponent<L>> implements Serializable {
+	private static class TabsContent<L extends Component & FlexComponent> implements Serializable {
 
 		private static final long serialVersionUID = 7185961023873772306L;
 
@@ -374,7 +373,7 @@ public class DefaultTabLayout implements TabLayout {
 			return layout;
 		}
 
-		FlexComponent<?> getFlexComponent() {
+		FlexComponent getFlexComponent() {
 			return layout;
 		}
 

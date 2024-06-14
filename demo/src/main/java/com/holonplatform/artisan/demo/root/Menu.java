@@ -24,9 +24,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.ParentLayout;
 
 @ParentLayout(MainLayout.class)
-@CssImport(value = "./styles/app-layout-styles.css", themeFor = "vaadin-app-layout")
-@CssImport(value = "./styles/app-layout-drawer-toggle-styles.css", themeFor = "vaadin-drawer-toggle")
-@CssImport(value = "./styles/app-layout-topbar-styles.css", themeFor = "vaadin-horizontal-layout")
+//@CssImport(value = "./styles/app-layout-styles.css", themeFor = "vaadin-app-layout")
+//@CssImport(value = "./styles/app-layout-drawer-toggle-styles.css", themeFor = "vaadin-drawer-toggle")
+//@CssImport(value = "./styles/app-layout-topbar-styles.css", themeFor = "vaadin-horizontal-layout")
 public class Menu extends AppRouterLayout {
 
 	private static final long serialVersionUID = 1L;
