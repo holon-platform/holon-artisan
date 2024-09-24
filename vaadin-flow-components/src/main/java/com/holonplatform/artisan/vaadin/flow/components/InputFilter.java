@@ -65,13 +65,13 @@ public interface InputFilter<T> extends Input<T> {
 	Optional<QueryFilter> getFilter();
 
 	/**
-	 * Get the {@link Input<T>} of the current component, if available
+	 * Get the {@link Input} of the current component, if available
 	 * @return Optional input
 	 */
 	Optional<Input<T>> getInputFilter();
 
 	/**
-	 * Get the {@link Input<T>} of the current additional component (for Between input), if available
+	 * Get the {@link Input} of the current additional component (for Between input), if available
 	 * @return Optional empty default
 	 */
 	default Optional<Input<T>> getBetweenInputFilter() {
@@ -79,7 +79,7 @@ public interface InputFilter<T> extends Input<T> {
 	}
 
 	/**
-	 * Get the {@link Select<InputFilterOperator>} of the current input, if available
+	 * Get the {@link Select} of the current input, if available
 	 * @return Optional empty default
 	 */
 	default Optional<Select<InputFilterOperator>> getFilterOperatorSelect() {
