@@ -47,6 +47,7 @@ import com.holonplatform.core.query.QueryFilter;
 import com.holonplatform.vaadin.flow.components.Input;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.converter.Converter;
 
 /**
@@ -62,6 +63,28 @@ public interface InputFilter<T> extends Input<T> {
 	 * @return Optional filter
 	 */
 	Optional<QueryFilter> getFilter();
+
+	/**
+	 * Get the {@link Input<T>} of the current component, if available
+	 * @return Optional input
+	 */
+	Optional<Input<T>> getInputFilter();
+
+	/**
+	 * Get the {@link Input<T>} of the current additional component (for Between input), if available
+	 * @return Optional empty default
+	 */
+	default Optional<Input<T>> getBetweenInputFilter() {
+		return Optional.empty();
+	}
+
+	/**
+	 * Get the {@link Select<InputFilterOperator>} of the current input, if available
+	 * @return Optional empty default
+	 */
+	default Optional<Select<InputFilterOperator>> getFilterOperatorSelect() {
+		return Optional.empty();
+	}
 
 	/**
 	 * Reset the input filter, clearing its value.

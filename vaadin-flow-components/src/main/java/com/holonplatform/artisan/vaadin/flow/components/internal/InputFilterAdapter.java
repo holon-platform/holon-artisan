@@ -37,9 +37,7 @@ import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
  * Adapter to turn a {@link Input} component into a {@link InputFilter}.
- *
  * @param <T> Value type
- *
  * @since 1.0.0
  */
 public class InputFilterAdapter<T> implements InputFilter<T> {
@@ -178,7 +176,8 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.ValueHolder#addValueChangeListener(com.holonplatform.vaadin.flow.
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.ValueHolder#addValueChangeListener(com.holonplatform.vaadin.flow.
 	 * components.ValueHolder.ValueChangeListener)
 	 */
 	@Override
@@ -252,6 +251,11 @@ public class InputFilterAdapter<T> implements InputFilter<T> {
 	@Override
 	public Optional<HasValidation> hasValidation() {
 		return getInput().hasValidation();
+	}
+
+	@Override
+	public Optional<Input<T>> getInputFilter() {
+		return Optional.of(input);
 	}
 
 }

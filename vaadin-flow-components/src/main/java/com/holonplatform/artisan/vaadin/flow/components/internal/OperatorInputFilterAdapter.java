@@ -149,13 +149,29 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	protected Optional<Input<T>> getInput() {
 		return Optional.ofNullable(input);
 	}
-
+	
 	/**
 	 * Get the filter operator select.
 	 * @return the filter operator select
 	 */
 	protected FilterOperatorSelect getOperatorSelect() {
 		return operatorSelect;
+	}
+	
+	@Override
+	public Optional<Input<T>> getInputFilter() {
+		return getInput();
+	}
+
+	@Override
+	public Optional<Input<T>> getBetweenInputFilter() {
+		return getBetweenInput();
+	}
+
+
+	@Override
+	public Optional<Select<InputFilterOperator>> getFilterOperatorSelect() {
+		return Optional.of(operatorSelect);
 	}
 
 	/**
@@ -441,7 +457,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	}
 
-	class FilterOperatorSelect extends Select<InputFilterOperator> implements HasTheme {
+	public class FilterOperatorSelect extends Select<InputFilterOperator> implements HasTheme {
 
 		private static final long serialVersionUID = -8923120517061581962L;
 
