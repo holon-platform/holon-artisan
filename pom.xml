@@ -1,15 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
 		<groupId>com.holon-platform</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.1.6</version>
+		<version>1.2.1-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.holon-platform.artisan</groupId>
 	<artifactId>holon-artisan-root</artifactId>
-	<version>2.2.7-SNAPSHOT</version>
+	<version>2.3.2-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
@@ -57,15 +59,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Holon Platform -->
-		<holon.platform.version>5.5.4</holon.platform.version>
+		<holon.platform.version>5.7.0</holon.platform.version>
 
 		<!-- Apache POI -->
 		<poi.version>4.1.2</poi.version>
 
 		<!-- Vaadin plugin: this property is used only for demo module! -->
-		<vaadin.version>14.3.1</vaadin.version>
+		<vaadin.version>23.3.21</vaadin.version>
 		<!-- Spring Boot plugin -->
-		<spring.boot.version>2.3.1.RELEASE</spring.boot.version>
+		<spring.boot.version>2.7.14</spring.boot.version>
 
 	</properties>
 
