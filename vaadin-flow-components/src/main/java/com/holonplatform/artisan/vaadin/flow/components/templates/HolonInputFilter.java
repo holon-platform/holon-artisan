@@ -19,12 +19,11 @@ import com.holonplatform.artisan.core.utils.Obj;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.templatemodel.TemplateModel;
+import com.vaadin.flow.component.littemplate.LitTemplate;
 
 @Tag("holon-input-filter")
-@JsModule("./src/holon-input-filter.js")
-public class HolonInputFilter extends PolymerTemplate<TemplateModel> {
+@JsModule("./src/holon-input-filter.ts")
+public class HolonInputFilter extends LitTemplate {
 
 	private static final long serialVersionUID = -8446468454355099170L;
 

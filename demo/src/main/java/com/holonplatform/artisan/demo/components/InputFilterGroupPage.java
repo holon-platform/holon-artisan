@@ -24,6 +24,7 @@ import static com.holonplatform.artisan.demo.model.Product.TARGET;
 import static com.holonplatform.artisan.demo.model.Product.UNIT_PRICE;
 import static com.holonplatform.artisan.demo.model.Product.WITHDRAWN;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.holonplatform.artisan.demo.root.Menu;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilter;
 import com.holonplatform.artisan.vaadin.flow.components.InputFilterComponent;
+import com.holonplatform.artisan.vaadin.flow.components.InputFilterOperator;
 import com.holonplatform.core.datastore.Datastore;
 import com.holonplatform.core.property.SetPathProperty;
 import com.holonplatform.vaadin.flow.components.Components;
@@ -81,6 +83,10 @@ public class InputFilterGroupPage extends VerticalLayout {
 					if (evt.getValue() != null && !evt.getValue().trim().equals("")) {
 						evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
 							i.hasEnabled().ifPresent(e -> e.setEnabled(true));
+							i.getFilterOperatorSelect()
+									.ifPresent(select -> select.setValue(InputFilterOperator.BETWEEN));
+							i.getInputFilter().ifPresent(input -> input.setValue(LocalDate.now()));
+							i.getBetweenInputFilter().ifPresent(input -> input.setValue(LocalDate.now().plusDays(1)));
 						});
 					} else {
 						evt.getInputGroup().getInputFilter(DATE).ifPresent(i -> {
@@ -89,6 +95,7 @@ public class InputFilterGroupPage extends VerticalLayout {
 						});
 					}
 				}).bind(MULTI, mf).build();
+
 		add(filters.getComponent());
 
 		// listing

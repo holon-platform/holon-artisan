@@ -40,12 +40,10 @@ import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
- * Adapter class to build a {@link InputFilter} of a different value type from another {@link InputFilter}, using a
- * suitable {@link Converter}.
- * 
+ * Adapter class to build a {@link InputFilter} of a different value type from another {@link InputFilter},
+ * using a suitable {@link Converter}.
  * @param <T> Presentation value type
  * @param <V> Model value type
- *
  * @since 5.2.0
  */
 public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
@@ -99,7 +97,8 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.components.ValueHolder#addValueChangeListener(com.holonplatform.vaadin.components.
+	 * @see
+	 * com.holonplatform.vaadin.components.ValueHolder#addValueChangeListener(com.holonplatform.vaadin.components.
 	 * ValueHolder.ValueChangeListener)
 	 */
 	@Override
@@ -344,6 +343,11 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 		} else {
 			return new ValueContext();
 		}
+	}
+
+	@Override
+	public Optional<Input<V>> getInputFilter() {
+		return Optional.of(this);
 	}
 
 }

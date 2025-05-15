@@ -9,7 +9,6 @@ import com.holonplatform.artisan.vaadin.flow.components.Window;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
@@ -20,10 +19,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 /**
  * Default {@link Window} implementation.
- * 
  * @since 1.0.0
  */
-@HtmlImport("frontend://com-holonplatform-vaadin-window-styles.html")
 public class DefaultWindow extends Dialog implements Window {
 
 	private static final long serialVersionUID = -4024830017084261133L;
@@ -151,8 +148,7 @@ public class DefaultWindow extends Dialog implements Window {
 	 * <p>
 	 * This method add a close button on window header
 	 * </p>
-	 * @param closable <code>true</code> value for closable window,
-	 *                 <code>false</code> otherwise
+	 * @param closable <code>true</code> value for closable window, <code>false</code> otherwise
 	 */
 	public void setClosable(boolean closable) {
 		buttons.setVisible(closable);
@@ -164,8 +160,7 @@ public class DefaultWindow extends Dialog implements Window {
 	 * <p>
 	 * This method add classic buttons to maximize and minimize window
 	 * </p>
-	 * @param resizable <code>true</code> value for resizable window,
-	 *                  <code>false</code> otherwise
+	 * @param resizable <code>true</code> value for resizable window, <code>false</code> otherwise
 	 */
 	@Override
 	public void setResizable(boolean resizable) {
