@@ -31,7 +31,7 @@ import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H5;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -45,7 +45,7 @@ public class HomePage extends VerticalLayout implements HasViewTitle, HasViewAct
 		super();
 		add(new H1("Welcome to Holon Artisan Demo"));
 
-		Label lblText = new Label();
+		NativeLabel lblText = new NativeLabel();
 		lblText.getElement().setProperty("innerHTML",
 				"Welcome to the <b>Artisan Demo Project</b> of the Holon Platform.</br> Here you can find all custom components developed by our team "
 						+ "to give you a set of new useful objects to improve your web apps...");

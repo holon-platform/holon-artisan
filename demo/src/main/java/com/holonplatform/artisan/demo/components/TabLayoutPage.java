@@ -15,6 +15,8 @@
  */
 package com.holonplatform.artisan.demo.components;
 
+import com.vaadin.flow.component.textfield.TextField;
+
 import com.holonplatform.artisan.demo.root.Menu;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -38,6 +40,8 @@ public class TabLayoutPage extends VerticalLayout {
 		add(new RouterLink("Tab content selection", Tabs9Page.class));
 		add(new RouterLink("Scrollable tab content", Tabs10Page.class));
 		add(new RouterLink("Vertical tab content", Tabs11Page.class));
+TextField textField = new TextField("Text field");
+add(textField);
 	}
 
 }

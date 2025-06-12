@@ -149,7 +149,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	protected Optional<Input<T>> getInput() {
 		return Optional.ofNullable(input);
 	}
-	
+
 	/**
 	 * Get the filter operator select.
 	 * @return the filter operator select
@@ -157,7 +157,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	protected FilterOperatorSelect getOperatorSelect() {
 		return operatorSelect;
 	}
-	
+
 	@Override
 	public Optional<Input<T>> getInputFilter() {
 		return getInput();
@@ -167,7 +167,6 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 	public Optional<Input<T>> getBetweenInputFilter() {
 		return getBetweenInput();
 	}
-
 
 	@Override
 	public Optional<Select<InputFilterOperator>> getFilterOperatorSelect() {
@@ -391,12 +390,12 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 
 	@Override
 	public void setReadOnly(boolean readOnly) {
-		super.setReadOnly(readOnly);
+		getInput().ifPresent(input -> input.setReadOnly(readOnly));
 	}
 
 	@Override
 	public boolean isReadOnly() {
-		return super.isReadOnly();
+		return getElement().getProperty("readonly", false);
 	}
 
 	@Override
@@ -466,7 +465,7 @@ public class OperatorInputFilterAdapter<T> extends CustomField<T> implements Inp
 		private InputFilterOperator defaultOperator;
 
 		public FilterOperatorSelect(InputFilterOperator... operators) {
-			super(operators);
+			setItems(operators);
 			this.operators = Arrays.asList(operators);
 			this.defaultOperator = this.operators.isEmpty() ? null : this.operators.get(0);
 

@@ -409,17 +409,6 @@ public class DefaultNumberInputFilterBuilder<T extends Number> extends
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasPatternConfigurator#preventInvalidInput(boolean)
-	 */
-	@Override
-	public NumberInputFilterBuilder<T> preventInvalidInput(boolean preventInvalidInput) {
-		inputBuilder.preventInvalidInput(preventInvalidInput);
-		additionalInputBuilder.preventInvalidInput(preventInvalidInput);
-		return this;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see
 	 * com.holonplatform.vaadin.flow.components.builders.HasThemeVariantConfigurator#withThemeVariants(java.lang.Enum[])
 	 */

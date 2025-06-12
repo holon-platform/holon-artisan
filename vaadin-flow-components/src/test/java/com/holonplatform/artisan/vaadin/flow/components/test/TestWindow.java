@@ -34,7 +34,7 @@ import com.holonplatform.artisan.vaadin.flow.components.internal.builders.Defaul
 import com.holonplatform.core.i18n.Localizable;
 import com.holonplatform.vaadin.flow.components.support.Unit;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 
 public class TestWindow {
 
@@ -65,7 +65,7 @@ public class TestWindow {
 		assertTrue(wnd.getTitle().isPresent());
 		assertEquals("defaultTitle", wnd.getTitle().get());
 
-		wnd = (DefaultWindow) Window.builder().content(new Label("Content label")).build();
+		wnd = (DefaultWindow) Window.builder().content(new NativeLabel("Content label")).build();
 		Stream<Component> components = wnd.getChildren();
 		assertNotNull(components);
 

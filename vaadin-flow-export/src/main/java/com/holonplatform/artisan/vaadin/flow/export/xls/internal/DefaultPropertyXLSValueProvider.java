@@ -21,7 +21,7 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.annotation.Priority;
+import jakarta.annotation.Priority;
 
 import com.holonplatform.artisan.core.utils.Obj;
 import com.holonplatform.artisan.vaadin.flow.export.xls.PropertyXLSValueProvider;

@@ -35,13 +35,15 @@ import com.vaadin.flow.component.HasEnabled;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.HasValidation;
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.data.value.HasValueChangeMode;
 
 /**
- * Adapter class to build a {@link InputFilter} of a different value type from another {@link InputFilter},
- * using a suitable {@link Converter}.
+ * Adapter class to build a {@link InputFilter} of a different value type from another
+ * {@link InputFilter}, using a suitable {@link Converter}.
  * @param <T> Presentation value type
  * @param <V> Model value type
  * @since 5.2.0
@@ -98,8 +100,8 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.vaadin.components.ValueHolder#addValueChangeListener(com.holonplatform.vaadin.components.
-	 * ValueHolder.ValueChangeListener)
+	 * com.holonplatform.vaadin.components.ValueHolder#addValueChangeListener(com.holonplatform.vaadin.
+	 * components. ValueHolder.ValueChangeListener)
 	 */
 	@Override
 	public Registration addValueChangeListener(ValueHolder.ValueChangeListener<V, ValueChangeEvent<V>> listener) {
@@ -339,9 +341,9 @@ public class InputFilterConverterAdapter<T, V> implements InputFilter<V> {
 	private ValueContext _valueContext() {
 		final Component component = getComponent();
 		if (component != null) {
-			return new ValueContext(component);
+			return new ValueContext((Binder<?>) null, component, (HasValue<?, ?>) null);
 		} else {
-			return new ValueContext();
+			return new ValueContext((Binder<?>) null, (Component) null, (HasValue<?, ?>) null);
 		}
 	}
 

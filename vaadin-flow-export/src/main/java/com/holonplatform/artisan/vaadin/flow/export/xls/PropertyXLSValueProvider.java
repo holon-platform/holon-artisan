@@ -15,7 +15,7 @@
  */
 package com.holonplatform.artisan.vaadin.flow.export.xls;
 
-import javax.annotation.Priority;
+import jakarta.annotation.Priority;
 
 import com.holonplatform.core.property.Property;
 

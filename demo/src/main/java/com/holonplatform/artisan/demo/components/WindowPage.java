@@ -24,7 +24,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.notification.Notification;
@@ -40,7 +40,7 @@ public class WindowPage extends SplitLayout {
 
 	private static final long serialVersionUID = 1L;
 
-	private final Label codeLabel;
+	private final NativeLabel codeLabel;
 
 	private static final String LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore "
 			+ "et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
@@ -61,13 +61,13 @@ public class WindowPage extends SplitLayout {
 		super();
 		setSizeFull();
 
-		codeLabel = new Label();
+		codeLabel = new NativeLabel();
 		codeLabel.getStyle().set("font-family", "Courier New");
 
 		// message window
 		Button btnMessage = new Button("Message window");
 		btnMessage.addClickListener(event -> {
-			Window.builder().content(new Label("This is a message window.")).build().open();
+			Window.builder().content(new NativeLabel("This is a message window.")).build().open();
 			setCodeLabel("<b>Window.builder()</b>.content(new Label(\"This is a message window.\")).build().open();");
 		});
 
@@ -77,7 +77,7 @@ public class WindowPage extends SplitLayout {
 			Window.builder()
 					.withAttachListener(evt -> Notification.show("Window attach listener", 2500, Position.BOTTOM_END))
 					.withDetachListener(evt -> Notification.show("Window detach listener", 2500, Position.BOTTOM_END))
-					.content(new Label("Click outside or press 'Esc' to fire detach listener")).build().open();
+					.content(new NativeLabel("Click outside or press 'Esc' to fire detach listener")).build().open();
 			setCodeLabel(
 					"Window.builder()<b>.withAttachListener(evt -> Notification.show(\"Window attach listener\", 2500, Position.BOTTOM_END))"
 							+ ".withDetachListener(evt -> Notification.show(\"Window detach listener\", 2500, Position.BOTTOM_END))</b>"
@@ -89,7 +89,7 @@ public class WindowPage extends SplitLayout {
 		btnClosable.addClickListener(event -> {
 			Window.builder().closable(true).closeOnEsc(false).closeOnOutsideClick(false)
 					.content(new Div(new H3("Closable window:"),
-							new Label("this window can only be closed with the 'close' button.")))
+							new NativeLabel("this window can only be closed with the 'close' button.")))
 					.build().open();
 			setCodeLabel("Window.builder()<b>.closable(true)</b>.closeOnEsc(false).closeOnOutsideClick(false)"
 					+ ".content(new Div(new H3(\"Closable window:\"), new Label(\"this window can only be closed with the 'close' button.\"))).build().open();");
@@ -98,8 +98,10 @@ public class WindowPage extends SplitLayout {
 		// resizable window
 		Button btnResizable = new Button("Resizable window");
 		btnResizable.addClickListener(event -> {
-			Window.builder().resizable(true).content(new Div(new H3("Resizable window:"),
-					new Label("this window can be maximized/minimized with proper buttons."))).build().open();
+			Window.builder().resizable(true)
+					.content(new Div(new H3("Resizable window:"),
+							new NativeLabel("this window can be maximized/minimized with proper buttons.")))
+					.build().open();
 			setCodeLabel(
 					"Window.builder()<b>.resizable(true)</b>.content(new Div(new H3(\"Resizable window:\"),new Label(\"this window can be "
 							+ "maximized/minimized with proper buttons.\"))).build().open();");
@@ -136,9 +138,9 @@ public class WindowPage extends SplitLayout {
 		// components in header window
 		Button btnHeader = new Button("Components in header window");
 		btnHeader.addClickListener(event -> {
-			Window.builder().closable(true).resizable(true).withHeaderComponent(new Label("Label in header"))
+			Window.builder().closable(true).resizable(true).withHeaderComponent(new NativeLabel("Label in header"))
 					.withHeaderComponent(new Button("Button"))
-					.content(new Label("Window with multiple components in header")).build().open();
+					.content(new NativeLabel("Window with multiple components in header")).build().open();
 			setCodeLabel(
 					"Window.builder().closable(true).resizable(true)<b>.withHeaderComponent(new Label(\"Label in header\"))"
 							+ ".withHeaderComponent(new Button(\"Button\"))</b>.content(new Label(\"Window with multiple components in header\")).build().open();");
@@ -148,7 +150,7 @@ public class WindowPage extends SplitLayout {
 		Button btnFooter = new Button("Components in footer window");
 		btnFooter.addClickListener(event -> {
 			Window.builder().withFooterComponent(new Button("Button 1")).withFooterComponent(new Button("Button 2"))
-					.content(new Label("Window with multiple components in footer")).build().open();
+					.content(new NativeLabel("Window with multiple components in footer")).build().open();
 			setCodeLabel(
 					"Window.builder()<b>.withFooterComponent(new Button(\"Button 1\")).withFooterComponent(new Button(\"Button 2\"))</b>"
 							+ ".content(new Label(\"Window with multiple components in footer\")).build().open();");
@@ -175,8 +177,8 @@ public class WindowPage extends SplitLayout {
 					.withAttachListener(evt -> Notification.show("Window attach listener", 2500, Position.BOTTOM_END))
 					.withDetachListener(evt -> Notification.show("Window detach listener", 2500, Position.BOTTOM_END))
 					.closeOnOutsideClick(false).closeOnEsc(false).title("Complex Window")
-					.withHeaderComponent(new Label("Label added to header")).withFooterComponent(btnSave).width("700px")
-					.content(content).build().open();
+					.withHeaderComponent(new NativeLabel("Label added to header")).withFooterComponent(btnSave)
+					.width("700px").content(content).build().open();
 			setCodeLabel("Window.builder().closable(true).id(\"window-id-X\").withAttachListener(evt -> "
 					+ "Notification.show(\"Window attach listener\", 2500, Position.BOTTOM_END)).withDetachListener(evt -> "
 					+ "Notification.show(\"Window detach listener\", 2500, Position.BOTTOM_END)).closeOnOutsideClick(false)"

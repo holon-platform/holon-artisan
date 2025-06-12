@@ -57,7 +57,7 @@ public class InputFilterComponentsPage extends VerticalLayout {
 
 	}
 
-	private static final StringProperty STR = StringProperty.create("str").message("String value");
+	private static final StringProperty STR1 = StringProperty.create("str").message("String value");
 	private static final StringProperty STR2 = StringProperty.create("str2").message("String value 2");
 	private static final NumericProperty<Integer> ITG = NumericProperty.integerType("itg").message("Integer value");
 	private static final NumericProperty<Double> DBL = NumericProperty.doubleType("dbl").message("Double value");
@@ -80,7 +80,7 @@ public class InputFilterComponentsPage extends VerticalLayout {
 	public InputFilterComponentsPage() {
 		super();
 
-		add(buildRow(InputFilter.string(STR).build()));
+		add(buildRow(InputFilter.string(STR1).build()));
 		add(buildRow(
 				InputFilter.string(STR2).maxLength(3).filterOperatorSelectConfiguration(c -> c.width("5em")).build(),
 				true));
@@ -101,12 +101,12 @@ public class InputFilterComponentsPage extends VerticalLayout {
 		add(buildRow(InputFilter.date(DATE).build()));
 		add(buildRow(InputFilter.dateTime(DATE_TIME).build()));
 
-		InputFilter.create(STR).ifPresent(i -> add(buildRow(i)));
+		InputFilter.create(STR1).ifPresent(i -> add(buildRow(i)));
 
 		add(new Hr());
 
 		final HorizontalLayout hl = new HorizontalLayout();
-		final InputFilter<String> sf = InputFilter.string(STR).build();
+		final InputFilter<String> sf = InputFilter.string(STR1).build();
 		hl.add(sf.getComponent());
 
 		hl.add(new Button("Get value", e -> Notification.show("Value: " + sf.getValue())));
