@@ -46,6 +46,8 @@ public class InputFilterHorizontalPage extends VerticalLayout {
 
 		// listing
 		PropertyListing listing = Components.listing.properties(PRODUCT).dataSource(datastore, TARGET)
+				// empty state text
+				.emptyStateText("No data found!")
 				// filters
 				.withQueryConfigurationProvider(() -> filters.getFilter().orElse(null))
 				// sorts

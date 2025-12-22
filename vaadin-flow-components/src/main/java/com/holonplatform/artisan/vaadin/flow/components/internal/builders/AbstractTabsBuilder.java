@@ -113,8 +113,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withAttachListener(com.vaadin.flow.
-	 * component.ComponentEventListener)
+	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withAttachListener(com.
+	 * vaadin.flow. component.ComponentEventListener)
 	 */
 	@Override
 	public TabsBuilder withAttachListener(ComponentEventListener<AttachEvent> listener) {
@@ -125,8 +125,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withDetachListener(com.vaadin.flow.
-	 * component.ComponentEventListener)
+	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#withDetachListener(com.
+	 * vaadin.flow. component.ComponentEventListener)
 	 */
 	@Override
 	public TabsBuilder withDetachListener(ComponentEventListener<DetachEvent> listener) {
@@ -136,7 +136,9 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withThemeName(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withThemeName(java.lang.
+	 * String)
 	 */
 	@Override
 	public TabsBuilder withThemeName(String themeName) {
@@ -147,8 +149,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.lang.String,
-	 * com.vaadin.flow.dom.DomEventListener)
+	 * com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.
+	 * lang.String, com.vaadin.flow.dom.DomEventListener)
 	 */
 	@Override
 	public TabsBuilder withEventListener(String eventType, DomEventListener listener) {
@@ -159,8 +161,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.lang.String,
-	 * com.vaadin.flow.dom.DomEventListener, java.lang.String)
+	 * com.holonplatform.vaadin.flow.components.builders.HasElementConfigurator#withEventListener(java.
+	 * lang.String, com.vaadin.flow.dom.DomEventListener, java.lang.String)
 	 */
 	@Override
 	public TabsBuilder withEventListener(String eventType, DomEventListener listener, String filter) {
@@ -170,8 +172,9 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#elementConfiguration(java.util.
-	 * function. Consumer)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.ComponentConfigurator#elementConfiguration(java
+	 * .util. function. Consumer)
 	 */
 	@Override
 	public TabsBuilder elementConfiguration(Consumer<Element> element) {
@@ -181,7 +184,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#width(java.lang.String)
 	 */
 	@Override
 	public TabsBuilder width(String width) {
@@ -191,7 +195,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#height(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#height(java.lang.String)
 	 */
 	@Override
 	public TabsBuilder height(String height) {
@@ -201,7 +206,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minWidth(java.lang.String)
 	 */
 	@Override
 	public TabsBuilder minWidth(String minWidth) {
@@ -211,7 +217,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxWidth(java.lang.String)
 	 */
 	@Override
 	public TabsBuilder maxWidth(String maxWidth) {
@@ -221,7 +228,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#minHeight(java.lang.String)
 	 */
 	@Override
 	public TabsBuilder minHeight(String minHeight) {
@@ -231,7 +239,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.HasSizeConfigurator#maxHeight(java.lang.String)
 	 */
 	@Override
 	public TabsBuilder maxHeight(String maxHeight) {
@@ -241,7 +250,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.String[])
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleNames(java.lang.
+	 * String[])
 	 */
 	@Override
 	public TabsBuilder styleNames(String... styleNames) {
@@ -251,7 +261,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleName(java.lang.String)
+	 * @see com.holonplatform.vaadin.flow.components.builders.HasStyleConfigurator#styleName(java.lang.
+	 * String)
 	 */
 	@Override
 	public TabsBuilder styleName(String styleName) {
@@ -262,8 +273,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.vaadin.flow.components.builders.HasThemeVariantConfigurator#withThemeVariants(java.lang.
-	 * Enum[])
+	 * com.holonplatform.vaadin.flow.components.builders.HasThemeVariantConfigurator#withThemeVariants(
+	 * java.lang. Enum[])
 	 */
 	@Override
 	public TabsBuilder withThemeVariants(TabsVariant... variants) {
@@ -283,7 +294,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#padding(boolean)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#padding(boolean)
 	 */
 	@Override
 	public TabsBuilder padding(boolean padding) {
@@ -293,7 +305,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#spacing(boolean)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#spacing(boolean)
 	 */
 	@Override
 	public TabsBuilder spacing(boolean spacing) {
@@ -303,8 +316,9 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#boxSizing(com.vaadin.flow.
-	 * component. orderedlayout.BoxSizing)
+	 * @see
+	 * com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#boxSizing(com.vaadin
+	 * .flow. component. orderedlayout.BoxSizing)
 	 */
 	@Override
 	public TabsBuilder boxSizing(BoxSizing boxSizing) {
@@ -314,9 +328,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#withTab(com.holonplatform.artisan.
-	 * vaadin.flow.components.TabLayout.TabContent)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#withTab(com.
+	 * holonplatform.artisan. vaadin.flow.components.TabLayout.TabContent)
 	 */
 	@Override
 	public TabBuilder withTab(TabContent content) {
@@ -325,7 +338,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#flexGrowForTabs(double)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#flexGrowForTabs(
+	 * double)
 	 */
 	@Override
 	public TabsBuilder flexGrowForTabs(double flexGrow) {
@@ -335,7 +349,8 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#selectedTabIndex(int)
+	 * @see
+	 * com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#selectedTabIndex(int)
 	 */
 	@Override
 	public TabsBuilder selectedTabIndex(int index) {
@@ -346,7 +361,18 @@ public abstract class AbstractTabsBuilder<L extends Component & FlexComponent & 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#withSelectedTabChangeListener(com.
+	 * com.holonplatform.vaadin.flow.components.builders.ThemableLayoutConfigurator#wrap(boolean)
+	 */
+	@Override
+	public TabsBuilder wrap(boolean wrap) {
+		getLayout().setWrap(wrap);
+		return this;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.holonplatform.artisan.vaadin.flow.components.builders.TabLayoutBuilder#
+	 * withSelectedTabChangeListener(com.
 	 * holonplatform.artisan.vaadin.flow.components.TabLayout.SelectedTabChangeListener)
 	 */
 	@Override

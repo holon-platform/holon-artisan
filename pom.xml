@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.holon-platform</groupId>
 		<artifactId>parent</artifactId>
-		<version>2.0.0</version>
+		<version>2.0.1</version>
 	</parent>
 
 	<groupId>com.holon-platform.artisan</groupId>
@@ -57,13 +57,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Holon Platform -->
-		<holon.platform.version>6.0.1</holon.platform.version>
+		<holon.platform.version>6.0.2</holon.platform.version>
 
 		<!-- Apache POI -->
 		<poi.version>5.4.1</poi.version>
 
 		<!-- Vaadin plugin: this property is used only for demo module! -->
-		<vaadin.version>24.7.4</vaadin.version>
+		<vaadin.version>24.8.15</vaadin.version>
 		<!-- Spring Boot plugin -->
 		<spring.boot.version>3.4.5</spring.boot.version>
 

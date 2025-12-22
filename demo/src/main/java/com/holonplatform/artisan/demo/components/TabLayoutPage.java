@@ -40,8 +40,6 @@ public class TabLayoutPage extends VerticalLayout {
 		add(new RouterLink("Tab content selection", Tabs9Page.class));
 		add(new RouterLink("Scrollable tab content", Tabs10Page.class));
 		add(new RouterLink("Vertical tab content", Tabs11Page.class));
-TextField textField = new TextField("Text field");
-add(textField);
 	}
 
 }

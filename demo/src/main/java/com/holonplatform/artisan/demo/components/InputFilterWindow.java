@@ -26,6 +26,7 @@ import com.holonplatform.artisan.vaadin.flow.components.internal.DefaultWindow;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class InputFilterWindow extends DefaultWindow {
 
@@ -37,28 +38,31 @@ public class InputFilterWindow extends DefaultWindow {
 		setTitle("Window filters");
 		setClosable(true);
 
-		add(Components.h3().text("Form input filter").build());
+		VerticalLayout vlRoot = Components.vl().fullSize().build();
+		setContent(vlRoot);
+
+		vlRoot.add(Components.h3().text("Form input filter").build());
 		// vertical filters
 		final InputFilterComponent filters1 = InputFilterComponent
 				.formLayout(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN).build();
 
-		add(filters1.getComponent());
-		add(new Hr());
+		vlRoot.add(filters1.getComponent());
+		vlRoot.add(new Hr());
 
-		add(Components.h3().text("Horizontal input filter").build());
+		vlRoot.add(Components.h3().text("Horizontal input filter").build());
 		// vertical filters
 		final InputFilterComponent filters2 = InputFilterComponent.horizontalLayout(ID, DESCRIPTION, CATEGORY).build();
 		((HorizontalLayout) filters2.getComponent()).setSpacing(true);
 
-		add(filters2.getComponent());
-		add(new Hr());
+		vlRoot.add(filters2.getComponent());
+		vlRoot.add(new Hr());
 
-		add(Components.h3().text("Vertical input filter").build());
+		vlRoot.add(Components.h3().text("Vertical input filter").build());
 		// vertical filters
 		final InputFilterComponent filters3 = InputFilterComponent
 				.verticalLayout(ID, DESCRIPTION, CATEGORY, UNIT_PRICE, WITHDRAWN).build();
 
-		add(filters3.getComponent());
+		vlRoot.add(filters3.getComponent());
 
 	}
 }

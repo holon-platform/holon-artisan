@@ -9,6 +9,7 @@ import com.holonplatform.artisan.demo.components.InputFiltersPage;
 import com.holonplatform.artisan.demo.components.OperationProgressDialogPage;
 import com.holonplatform.artisan.demo.components.TabLayoutPage;
 import com.holonplatform.artisan.demo.components.WindowPage;
+import com.holonplatform.artisan.demo.components.WrappedLayoutPage;
 import com.holonplatform.artisan.vaadin.flow.app.layout.components.AppRouterLayout;
 import com.holonplatform.vaadin.flow.components.Components;
 import com.holonplatform.vaadin.flow.i18n.LocalizationProvider;
@@ -109,6 +110,12 @@ public class Menu extends AppRouterLayout {
 		btn = new Button("Download link");
 		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		btn.addClickListener(event -> getUI().get().navigate(DownloadLinkPage.class));
+		btn.setWidth("100%");
+		vl.add(btn);
+
+		btn = new Button("Wrapped Layout");
+		btn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		btn.addClickListener(event -> getUI().get().navigate(WrappedLayoutPage.class));
 		btn.setWidth("100%");
 		vl.add(btn);
 

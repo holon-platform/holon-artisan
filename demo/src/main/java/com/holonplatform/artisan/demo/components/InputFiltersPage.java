@@ -33,7 +33,7 @@ public class InputFiltersPage extends VerticalLayout {
 		add(new RouterLink("Input filter group", InputFilterGroupPage.class));
 		add(new RouterLink("Input filter vertical", InputFilterVerticalPage.class));
 		add(new RouterLink("Input filter horizontal", InputFilterHorizontalPage.class));
-		add(Components.button().text("Input filter window").withThemeVariants(ButtonVariant.LUMO_TERTIARY)
+		add(Components.button().text("Input filter window").withThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE)
 				.onClick(evt -> {
 					InputFilterWindow wnd = new InputFilterWindow();
 					wnd.open();
